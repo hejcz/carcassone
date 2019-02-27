@@ -1,4 +1,4 @@
-package io.github.hejcz
+package io.github.hejcz.helper
 
 import io.github.hejcz.engine.RemainingTiles
 import io.github.hejcz.tiles.basic.NoTile
