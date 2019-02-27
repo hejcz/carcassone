@@ -1,6 +1,9 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.*
+import io.github.hejcz.Command
+import io.github.hejcz.GameEvent
+import io.github.hejcz.PiecePlacedInInvalidPlace
+import io.github.hejcz.PutPiece
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Knight
 import io.github.hejcz.mapples.Monk

@@ -4,14 +4,14 @@ import io.github.hejcz.placement.*
 
 object TileU : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     setOf(
-            Location(Left),
-            Location(Up, LeftSide),
-            Location(Down, RightSide)
+        Location(Left),
+        Location(Up, LeftSide),
+        Location(Down, RightSide)
     ),
     setOf(
-            Location(Right),
-            Location(Up, RightSide),
-            Location(Down, LeftSide)
+        Location(Right),
+        Location(Up, RightSide),
+        Location(Down, LeftSide)
     )
 ) {
     override fun exploreCastle(direction: Direction) = emptySet<Direction>()

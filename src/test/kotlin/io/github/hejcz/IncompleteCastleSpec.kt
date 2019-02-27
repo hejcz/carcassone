@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Knight
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.placement.*
@@ -20,11 +18,10 @@ object IncompleteCastleSpec : Spek({
 
         Scenario("Simple case ") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCastleRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileG)
+                emptySet(),
+                setOf(IncompleteCastleRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileG))
             )
 
             Then("") {
@@ -35,11 +32,10 @@ object IncompleteCastleSpec : Spek({
 
         Scenario("Simple case with emblem") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCastleRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileF)
+                emptySet(),
+                setOf(IncompleteCastleRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileF))
             )
 
             Then("") {
@@ -50,11 +46,10 @@ object IncompleteCastleSpec : Spek({
 
         Scenario("Simple case") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCastleRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileD)
+                emptySet(),
+                setOf(IncompleteCastleRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("") {

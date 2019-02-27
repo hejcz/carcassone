@@ -1,6 +1,8 @@
 package io.github.hejcz.rules.basic
 
-import io.github.hejcz.*
+import io.github.hejcz.GameEvent
+import io.github.hejcz.OccupiedAreaCompleted
+import io.github.hejcz.PlayerScored
 import io.github.hejcz.engine.State
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Mapple
@@ -8,7 +10,9 @@ import io.github.hejcz.mapples.PieceId
 import io.github.hejcz.mapples.PieceRole
 import io.github.hejcz.placement.*
 import io.github.hejcz.rules.Rule
-import io.github.hejcz.rules.helpers.*
+import io.github.hejcz.rules.helpers.ProcessedRoad
+import io.github.hejcz.rules.helpers.RoadExplorer
+import io.github.hejcz.rules.helpers.TestedRoad
 
 object RoadCompletedRule : Rule {
 
@@ -28,7 +32,7 @@ object RoadCompletedRule : Rule {
         val maxPiecesCount = importantFacts.maxBy { it.piecesCount }?.piecesCount!!
         val (losers, winners) = importantFacts.partition { it.piecesCount < maxPiecesCount }
         return winners.map { PlayerScored(it.playerId, score(it), (1..it.piecesCount).map<Int, PieceId> { Mapple }) } +
-                losers.map { OccupiedAreaCompleted(it.playerId, (1..it.piecesCount).map<Int, PieceId> { Mapple }) }
+            losers.map { OccupiedAreaCompleted(it.playerId, (1..it.piecesCount).map<Int, PieceId> { Mapple }) }
     }
 
     override fun afterPiecePlaced(state: State, pieceId: PieceId, pieceRole: PieceRole): Collection<GameEvent> {
@@ -42,13 +46,15 @@ object RoadCompletedRule : Rule {
         }
         val processedRoad =
             ProcessedRoad(road.completed, road.tilesCount, state.currentPlayerId(), 1)
-        return setOf(PlayerScored(processedRoad.playerId,
-            score(processedRoad), (1..processedRoad.piecesCount).map { pieceId }))
+        return setOf(
+            PlayerScored(processedRoad.playerId,
+                score(processedRoad), (1..processedRoad.piecesCount).map { pieceId })
+        )
     }
 
     private fun score(road: ProcessedRoad) = road.tilesCount
 
-    private fun explore(state: State, startingPosition: Position, startingDirection: Direction) : TestedRoad {
+    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): TestedRoad {
         if (!state.tileAt(startingPosition).exploreRoad(startingDirection).contains(startingDirection)) {
             return TestedRoad.empty()
         }

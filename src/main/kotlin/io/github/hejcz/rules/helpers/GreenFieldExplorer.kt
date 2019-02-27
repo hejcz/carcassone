@@ -1,11 +1,15 @@
 package io.github.hejcz.rules.helpers
 
+import io.github.hejcz.engine.State
 import io.github.hejcz.placement.Location
 import io.github.hejcz.placement.Position
-import io.github.hejcz.engine.State
 import io.github.hejcz.tiles.basic.NoTile
 
-class GreenFieldExplorer(private val state: State, private val initialPosition: Position, private val initialLocation: Location) {
+class GreenFieldExplorer(
+    private val state: State,
+    private val initialPosition: Position,
+    private val initialLocation: Location
+) {
     private val visited: MutableSet<LocationOnPosition> = mutableSetOf()
 
     @Synchronized

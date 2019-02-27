@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.*
 import io.github.hejcz.placement.*
 import io.github.hejcz.tiles.basic.TileD
@@ -14,8 +12,8 @@ object PutPieceValidatorSpec : Spek({
     Feature("Putting pieces in invalid places") {
 
         Scenario("monk on tile without cloister") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -25,8 +23,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("knight on road") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -36,8 +34,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("knight on road 2") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -47,8 +45,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("knight on green field") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -58,8 +56,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("knight on green field") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -69,8 +67,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("brigand in castle") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -80,8 +78,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("brigand on green field") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -91,8 +89,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("peasant in castle") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -102,8 +100,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("peasant on road") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {
@@ -113,8 +111,8 @@ object PutPieceValidatorSpec : Spek({
         }
 
         Scenario("peasant on road 2") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(TileD)
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
             )
 
             Then("move is detected as invalid") {

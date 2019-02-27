@@ -1,13 +1,17 @@
 package io.github.hejcz.rules.basic
 
-import io.github.hejcz.*
+import io.github.hejcz.GameEvent
+import io.github.hejcz.PlayerScored
 import io.github.hejcz.engine.State
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.placement.Direction
 import io.github.hejcz.placement.Position
 import io.github.hejcz.placement.PositionedDirection
 import io.github.hejcz.rules.EndRule
-import io.github.hejcz.rules.helpers.*
+import io.github.hejcz.rules.helpers.ProcessedRoad
+import io.github.hejcz.rules.helpers.RoadExplorer
+import io.github.hejcz.rules.helpers.TestedRoad
+import io.github.hejcz.rules.helpers.filterPieces
 
 object IncompleteRoadRule : EndRule {
 

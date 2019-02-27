@@ -7,11 +7,11 @@ object TileA : Tile {
     override fun exploreCastle(direction: Direction) = emptySet<Direction>()
     override fun exploreGreenFields(location: Location): Collection<Location> =
         setOf(
-                Location(Right),
-                Location(Up),
-                Location(Left),
-                Location(Down, RightSide),
-                Location(Down, LeftSide)
+            Location(Right),
+            Location(Up),
+            Location(Left),
+            Location(Down, RightSide),
+            Location(Down, LeftSide)
         )
 
     override fun exploreRoad(direction: Direction): Collection<Direction> = setOf(Down)

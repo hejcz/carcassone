@@ -7,8 +7,8 @@ object TileG : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     setOf(Location(Down))
 ) {
     override fun exploreCastle(direction: Direction): Collection<Direction> = setOf(
-            Left,
-            Right
+        Left,
+        Right
     )
 
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()

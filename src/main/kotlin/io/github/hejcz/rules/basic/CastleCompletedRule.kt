@@ -1,6 +1,8 @@
 package io.github.hejcz.rules.basic
 
-import io.github.hejcz.*
+import io.github.hejcz.GameEvent
+import io.github.hejcz.OccupiedAreaCompleted
+import io.github.hejcz.PlayerScored
 import io.github.hejcz.engine.CompletedCastle
 import io.github.hejcz.engine.State
 import io.github.hejcz.mapples.Knight
@@ -32,7 +34,7 @@ object CastleCompletedRule : Rule {
         val maxPiecesCount = importantFacts.maxBy { it.piecesCount }?.piecesCount!!
         val (losers, winners) = importantFacts.partition { it.piecesCount < maxPiecesCount }
         return winners.map { PlayerScored(it.playerId, score(it), (1..it.piecesCount).map<Int, PieceId> { Mapple }) } +
-                losers.map { OccupiedAreaCompleted(it.playerId, (1..it.piecesCount).map<Int, PieceId> { Mapple }) }
+            losers.map { OccupiedAreaCompleted(it.playerId, (1..it.piecesCount).map<Int, PieceId> { Mapple }) }
     }
 
     override fun afterPiecePlaced(state: State, pieceId: PieceId, pieceRole: PieceRole): Collection<GameEvent> {
@@ -52,7 +54,7 @@ object CastleCompletedRule : Rule {
 
     private fun score(processedCastle: ProcessedCastle) = (processedCastle.tilesCount + processedCastle.emblems) * 2
 
-    private fun explore(state: State, startingPosition: Position, startingDirection: Direction) : TestedCastle {
+    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): TestedCastle {
         if (!state.tileAt(startingPosition).exploreCastle(startingDirection).contains(startingDirection)) {
             return TestedCastle.empty()
         }

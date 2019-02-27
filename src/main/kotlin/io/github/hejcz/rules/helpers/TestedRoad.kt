@@ -1,7 +1,7 @@
 package io.github.hejcz.rules.helpers
 
-import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.engine.State
+import io.github.hejcz.mapples.Brigand
 
 data class TestedRoad(
     val completed: Boolean,

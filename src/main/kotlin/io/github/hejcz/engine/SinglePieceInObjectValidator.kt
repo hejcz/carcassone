@@ -1,6 +1,9 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.*
+import io.github.hejcz.Command
+import io.github.hejcz.GameEvent
+import io.github.hejcz.PiecePlacedInInvalidPlace
+import io.github.hejcz.PutPiece
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Knight
 import io.github.hejcz.mapples.Peasant
@@ -19,7 +22,14 @@ object SinglePieceInObjectValidator : CommandValidator {
                             CastleExplorer(state, PositionedDirection(state.recentPosition, role.direction))
                         explorer.explore()
                         val pieceAlreadyPresentOnObject = explorer.parts()
-                            .any { part -> state.players.any { player -> player.isPieceOn(part.position, Knight(part.direction)) } }
+                            .any { part ->
+                                state.players.any { player ->
+                                    player.isPieceOn(
+                                        part.position,
+                                        Knight(part.direction)
+                                    )
+                                }
+                            }
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     is Brigand -> {
@@ -27,7 +37,14 @@ object SinglePieceInObjectValidator : CommandValidator {
                             RoadExplorer(state, PositionedDirection(state.recentPosition, role.direction))
                         explorer.explore()
                         val pieceAlreadyPresentOnObject = explorer.parts()
-                            .any { part -> state.players.any { player -> player.isPieceOn(part.position, Brigand(part.direction)) } }
+                            .any { part ->
+                                state.players.any { player ->
+                                    player.isPieceOn(
+                                        part.position,
+                                        Brigand(part.direction)
+                                    )
+                                }
+                            }
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     is Peasant -> {
@@ -35,7 +52,14 @@ object SinglePieceInObjectValidator : CommandValidator {
                             GreenFieldExplorer(state, state.recentPosition, role.location)
                         explorer.explore()
                         val pieceAlreadyPresentOnObject = explorer.parts()
-                            .any { part -> state.players.any { player -> player.isPieceOn(part.first, Peasant(part.second)) } }
+                            .any { part ->
+                                state.players.any { player ->
+                                    player.isPieceOn(
+                                        part.first,
+                                        Peasant(part.second)
+                                    )
+                                }
+                            }
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     else -> return emptySet()

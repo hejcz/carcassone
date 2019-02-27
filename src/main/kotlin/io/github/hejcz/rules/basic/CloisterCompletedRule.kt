@@ -1,6 +1,7 @@
 package io.github.hejcz.rules.basic
 
-import io.github.hejcz.*
+import io.github.hejcz.GameEvent
+import io.github.hejcz.PlayerScored
 import io.github.hejcz.engine.State
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.mapples.Monk
@@ -19,7 +20,7 @@ object CloisterCompletedRule : Rule {
                 state.players.firstOrNull { player ->
                     player.isPieceOn(
                         completedCloisterPosition,
-                            Monk
+                        Monk
                     )
                 }
             }

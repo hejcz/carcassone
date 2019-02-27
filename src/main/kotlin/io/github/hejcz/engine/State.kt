@@ -9,9 +9,9 @@ import io.github.hejcz.tiles.basic.NoTile
 import io.github.hejcz.tiles.basic.Tile
 
 class State(
-        var board: Board,
-        var players: Collection<Player>,
-        var remainingTiles: RemainingTiles
+    var board: Board,
+    var players: Collection<Player>,
+    var remainingTiles: RemainingTiles
 ) {
     private var queue = PlayersQueue(players)
     var currentPlayer = queue.next()

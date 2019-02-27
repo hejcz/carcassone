@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.mapples.Monk
 import io.github.hejcz.placement.*
@@ -19,18 +17,19 @@ object CloisterIncompletedSpec : Spek({
 
         Scenario("7 tiles adjacent to cloister ") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCloisterRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB
+                emptySet(),
+                setOf(IncompleteCloisterRule),
+                Players.singlePlayer(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB
+                    )
                 )
             )
 
@@ -54,17 +53,18 @@ object CloisterIncompletedSpec : Spek({
 
         Scenario("6 tiles adjacent to cloister ") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCloisterRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB
+                emptySet(),
+                setOf(IncompleteCloisterRule),
+                Players.singlePlayer(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB
+                    )
                 )
             )
 
@@ -86,11 +86,10 @@ object CloisterIncompletedSpec : Spek({
 
         Scenario("Single tile adjacent to cloister") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCloisterRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileB)
+                emptySet(),
+                setOf(IncompleteCloisterRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileB))
             )
 
             Then("") {
@@ -101,18 +100,19 @@ object CloisterIncompletedSpec : Spek({
 
         Scenario("Completed cloister as a last tile ") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCloisterRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB
+                emptySet(),
+                setOf(IncompleteCloisterRule),
+                Players.singlePlayer(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB
+                    )
                 )
             )
 
@@ -136,20 +136,21 @@ object CloisterIncompletedSpec : Spek({
 
         Scenario("Two different players cloisters surrounded in single move") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCloisterRule),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileW,
-                    TileV,
-                    TileE,
-                    TileE,
-                    TileB,
-                    TileB,
-                    TileH,
-                    TileK
+                emptySet(),
+                setOf(IncompleteCloisterRule),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileW,
+                        TileV,
+                        TileE,
+                        TileE,
+                        TileB,
+                        TileB,
+                        TileH,
+                        TileK
+                    )
                 )
             )
 
@@ -179,21 +180,22 @@ object CloisterIncompletedSpec : Spek({
 
         Scenario("Two same player cloisters surrounded in single move") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteCloisterRule),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileW,
-                    TileV,
-                    TileE,
-                    TileB,
-                    TileE,
-                    TileB,
-                    TileH,
-                    TileH,
-                    TileK
+                emptySet(),
+                setOf(IncompleteCloisterRule),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileW,
+                        TileV,
+                        TileE,
+                        TileB,
+                        TileE,
+                        TileB,
+                        TileH,
+                        TileH,
+                        TileK
+                    )
                 )
             )
 

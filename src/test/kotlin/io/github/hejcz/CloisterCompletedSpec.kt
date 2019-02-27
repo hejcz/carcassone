@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.mapples.Monk
 import io.github.hejcz.placement.*
@@ -19,19 +17,20 @@ object CloisterCompletedSpec : Spek({
 
         Scenario("Place last tile ") {
             val game = Game(
-                    setOf(CloisterCompletedRule),
-                    emptySet(),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB
+                setOf(CloisterCompletedRule),
+                emptySet(),
+                Players.singlePlayer(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB
+                    )
                 )
             )
 
@@ -56,19 +55,20 @@ object CloisterCompletedSpec : Spek({
 
         Scenario("Completed cloister as a last tile ") {
             val game = Game(
-                    setOf(CloisterCompletedRule),
-                    emptySet(),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB,
-                    TileB
+                setOf(CloisterCompletedRule),
+                emptySet(),
+                Players.singlePlayer(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB,
+                        TileB
+                    )
                 )
             )
 
@@ -94,22 +94,23 @@ object CloisterCompletedSpec : Spek({
 
         Scenario("Two different players cloisters surrounded in single move") {
             val game = Game(
-                    setOf(CloisterCompletedRule),
-                    emptySet(),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileW,
-                    TileV,
-                    TileE,
-                    TileE,
-                    TileB,
-                    TileB,
-                    TileH,
-                    TileH,
-                    TileK,
-                    TileJ
+                setOf(CloisterCompletedRule),
+                emptySet(),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileW,
+                        TileV,
+                        TileE,
+                        TileE,
+                        TileB,
+                        TileB,
+                        TileH,
+                        TileH,
+                        TileK,
+                        TileJ
+                    )
                 )
             )
 
@@ -142,22 +143,23 @@ object CloisterCompletedSpec : Spek({
 
         Scenario("Two same player cloisters surrounded in single move") {
             val game = Game(
-                    setOf(CloisterCompletedRule),
-                    emptySet(),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileW,
-                    TileV,
-                    TileE,
-                    TileB,
-                    TileE,
-                    TileB,
-                    TileH,
-                    TileH,
-                    TileK,
-                    TileJ
+                setOf(CloisterCompletedRule),
+                emptySet(),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileW,
+                        TileV,
+                        TileE,
+                        TileB,
+                        TileE,
+                        TileB,
+                        TileH,
+                        TileH,
+                        TileK,
+                        TileJ
+                    )
                 )
             )
 
@@ -183,7 +185,11 @@ object CloisterCompletedSpec : Spek({
                 game.dispatch(PutTile(Position(0, -2), Rotation270)) shouldNotContain PlayerScored(1, 9, setOf(Mapple))
                 game.dispatch(SkipPiece)
                 val events = game.dispatch(PutTile(Position(1, -2), Rotation90))
-                events shouldEqual listOf(PlayerScored(1, 9, setOf(Mapple)), PlayerScored(1, 9, setOf(Mapple)), SelectPiece)
+                events shouldEqual listOf(
+                    PlayerScored(1, 9, setOf(Mapple)),
+                    PlayerScored(1, 9, setOf(Mapple)),
+                    SelectPiece
+                )
             }
         }
 

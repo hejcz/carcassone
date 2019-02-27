@@ -1,7 +1,5 @@
 package io.github.hejcz.placement
 
-import java.lang.RuntimeException
-
 data class Position(val x: Int, val y: Int) {
     fun surrounding(): Set<Position> = adjacent.map { it(x, y) }.toSet()
     fun relativeDirectionTo(other: Position) = relativePosition(Pair(x - other.x, y - other.y))

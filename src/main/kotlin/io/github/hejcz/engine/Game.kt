@@ -1,6 +1,7 @@
 package io.github.hejcz.engine
 
 import io.github.hejcz.*
+import io.github.hejcz.placement.Position
 import io.github.hejcz.rules.EndRule
 import io.github.hejcz.rules.Rule
 import io.github.hejcz.tiles.basic.NoTile
@@ -11,13 +12,19 @@ class Game(
     private val rules: Collection<Rule>,
     private val endRules: Collection<EndRule>,
     players: Collection<Player>,
-    board: Board,
-    remainingTiles: RemainingTiles
+    gameSetup: GameSetup
 ) {
-    private var state = State(board, players, remainingTiles)
 
-    private val validators: Collection<CommandValidator> =
-        setOf(PutTileValidator, PiecePlacementValidator, SinglePieceInObjectValidator, MappleAvailabilityValidator)
+    private val state: State
+
+    private val validators: Collection<CommandValidator>
+
+    init {
+        val tiles = gameSetup.tiles()
+        val board = Board(mapOf(Position(0, 0) to tiles.next()))
+        state = State(board, players, tiles)
+        validators = gameSetup.validators()
+    }
 
     private val listeners: Collection<EventListener> = setOf(ReturnPieceListener)
 
@@ -49,7 +56,8 @@ class Game(
         }
 
     private fun validate(command: Command) =
-        validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet() ?: emptySet()
+        validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet()
+            ?: emptySet()
 
     private fun endTurn(events: Events = emptySet()): Events {
         state.endTurn()

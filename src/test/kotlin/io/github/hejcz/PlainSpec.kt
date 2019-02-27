@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.mapples.Peasant
 import io.github.hejcz.placement.*
@@ -21,11 +19,10 @@ object PlainSpec : Spek({
 
         Scenario("Simple case with scoring") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileE)
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileE))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -36,11 +33,10 @@ object PlainSpec : Spek({
 
         Scenario("Simple case without scoring") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileE)
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileE))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -51,11 +47,10 @@ object PlainSpec : Spek({
 
         Scenario("Scoring for two castles") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileI, TileE)
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileI, TileE))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -68,11 +63,10 @@ object PlainSpec : Spek({
 
         Scenario("Wrong side of road") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileJ)
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileJ))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -83,26 +77,28 @@ object PlainSpec : Spek({
 
         Scenario("Right side of road") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileJ)
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileJ))
             )
 
             Then("on next tile it should detect completed castle") {
                 game.dispatch(PutTile(Position(0, 1), Rotation180))
-                game.dispatch(PutPiece(Mapple, Peasant(Location(Up, RightSide)))) shouldContain PlayerScored(1, 3, emptySet())
+                game.dispatch(PutPiece(Mapple, Peasant(Location(Up, RightSide)))) shouldContain PlayerScored(
+                    1,
+                    3,
+                    emptySet()
+                )
             }
         }
 
         Scenario("Multiple players disconnected green fields") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(TileF, TileE)
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.twoPlayers(),
+                TestGameSetup(TestBasicRemainingTiles(TileF, TileE))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -117,17 +113,18 @@ object PlainSpec : Spek({
 
         Scenario("Multiple players dominance of one") {
             val game = Game(
-                    setOf(CastleCompletedRule),
-                    setOf(PlainCompletedRule),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileF,
-                    TileF,
-                    TileE,
-                    TileA,
-                    TileA,
-                    TileA
+                setOf(CastleCompletedRule),
+                setOf(PlainCompletedRule),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileF,
+                        TileF,
+                        TileE,
+                        TileA,
+                        TileA,
+                        TileA
+                    )
                 )
             )
 

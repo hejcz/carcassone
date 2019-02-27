@@ -1,9 +1,7 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
 import io.github.hejcz.engine.Player
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Knight
 import io.github.hejcz.mapples.Mapple
@@ -24,10 +22,12 @@ object MappleAvailabilityValidatorSpec : Spek({
         fun playerWithTwoMapples() = Player(id = 1, order = 1, mapples = listOf(Mapple, Mapple))
 
         Scenario("no mapples available") {
-            val game = Game(emptySet(), emptySet(), setOf(playerWithSingleMapple()), Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD
+            val game = Game(
+                emptySet(), emptySet(), setOf(playerWithSingleMapple()), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD
+                    )
                 )
             )
 
@@ -40,11 +40,13 @@ object MappleAvailabilityValidatorSpec : Spek({
         }
 
         Scenario("restored mapples can be used again") {
-            val game = Game(setOf(CastleCompletedRule), emptySet(), setOf(playerWithSingleMapple()), Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileD,
-                    TileD
+            val game = Game(
+                setOf(CastleCompletedRule), emptySet(), setOf(playerWithSingleMapple()), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileD,
+                        TileD
+                    )
                 )
             )
 
@@ -59,15 +61,17 @@ object MappleAvailabilityValidatorSpec : Spek({
         }
 
         Scenario("multiple mapples restored") {
-            val game = Game(setOf(CastleCompletedRule), emptySet(), setOf(playerWithTwoMapples()), Board(),
-                RemainingTilesFromSeq(
-                    TileG,
-                    TileV,
-                    TileE,
-                    TileM,
-                    TileU,
-                    TileV,
-                    TileD
+            val game = Game(
+                setOf(CastleCompletedRule), emptySet(), setOf(playerWithTwoMapples()), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileG,
+                        TileV,
+                        TileE,
+                        TileM,
+                        TileU,
+                        TileV,
+                        TileD
+                    )
                 )
             )
 

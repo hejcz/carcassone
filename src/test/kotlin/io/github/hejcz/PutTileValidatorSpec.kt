@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.placement.*
 import io.github.hejcz.tiles.basic.TileA
 import org.amshove.kluent.shouldContain
@@ -14,11 +12,10 @@ object PutTileValidatorSpec : Spek({
 
         Scenario("roads validation") {
             val game = Game(
-                    emptySet(),
-                    emptySet(),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileA)
+                emptySet(),
+                emptySet(),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileA))
             )
 
             Then("move is detected as invalid") {

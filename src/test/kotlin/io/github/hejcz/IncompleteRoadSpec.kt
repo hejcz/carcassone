@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.placement.*
@@ -19,11 +17,10 @@ object IncompleteRoadSpec : Spek({
 
         Scenario("Simple case ") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteRoadRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileK)
+                emptySet(),
+                setOf(IncompleteRoadRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileK))
             )
 
             Then("") {
@@ -34,11 +31,10 @@ object IncompleteRoadSpec : Spek({
 
         Scenario("Simple case another part of road") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteRoadRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileK)
+                emptySet(),
+                setOf(IncompleteRoadRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileK))
             )
 
             Then("") {
@@ -49,11 +45,10 @@ object IncompleteRoadSpec : Spek({
 
         Scenario("Simple case but some tiles left in deck") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteRoadRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileK, TileA)
+                emptySet(),
+                setOf(IncompleteRoadRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileK, TileA))
             )
 
             Then("") {
@@ -64,11 +59,10 @@ object IncompleteRoadSpec : Spek({
 
         Scenario("Road bounded from one side") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteRoadRule),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileK, TileL)
+                emptySet(),
+                setOf(IncompleteRoadRule),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileK, TileL))
             )
 
             Then("") {
@@ -81,15 +75,16 @@ object IncompleteRoadSpec : Spek({
 
         Scenario("Shared road") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteRoadRule),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileK,
-                    TileU,
-                    TileJ,
-                    TileK
+                emptySet(),
+                setOf(IncompleteRoadRule),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileK,
+                        TileU,
+                        TileJ,
+                        TileK
+                    )
                 )
             )
 
@@ -109,18 +104,19 @@ object IncompleteRoadSpec : Spek({
 
         Scenario("Shared road with advantage of one player") {
             val game = Game(
-                    emptySet(),
-                    setOf(IncompleteRoadRule),
-                    Players.twoPlayers(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileV,
-                    TileV,
-                    TileB,
-                    TileU,
-                    TileV,
-                    TileV,
-                    TileV
+                emptySet(),
+                setOf(IncompleteRoadRule),
+                Players.twoPlayers(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileV,
+                        TileV,
+                        TileB,
+                        TileU,
+                        TileV,
+                        TileV,
+                        TileV
+                    )
                 )
             )
 

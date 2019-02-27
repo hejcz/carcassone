@@ -1,15 +1,15 @@
 package io.github.hejcz.rules.helpers
 
+import io.github.hejcz.engine.State
 import io.github.hejcz.mapples.Knight
 import io.github.hejcz.placement.PositionedDirection
-import io.github.hejcz.engine.State
 
 data class TestedCastle(
-        val completed: Boolean,
-        val tilesCount: Int,
-        val pieces: Set<FoundPiece>,
-        val elements: Set<PositionedDirection>,
-        val emblems: Int
+    val completed: Boolean,
+    val tilesCount: Int,
+    val pieces: Set<FoundPiece>,
+    val elements: Set<PositionedDirection>,
+    val emblems: Int
 ) {
     companion object {
         fun from(state: State, castleExplorer: CastleExplorer) =

@@ -1,7 +1,7 @@
 package io.github.hejcz.rules.helpers
 
-import io.github.hejcz.placement.PositionedDirection
 import io.github.hejcz.engine.State
+import io.github.hejcz.placement.PositionedDirection
 import io.github.hejcz.tiles.basic.NoTile
 
 class RoadExplorer(private val state: State, private val initial: PositionedDirection) {

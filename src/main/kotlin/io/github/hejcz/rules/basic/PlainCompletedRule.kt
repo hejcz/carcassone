@@ -1,6 +1,7 @@
 package io.github.hejcz.rules.basic
 
-import io.github.hejcz.*
+import io.github.hejcz.GameEvent
+import io.github.hejcz.PlayerScored
 import io.github.hejcz.engine.State
 import io.github.hejcz.mapples.Peasant
 import io.github.hejcz.placement.Location
@@ -14,13 +15,16 @@ object PlainCompletedRule : EndRule {
     override fun apply(state: State): Collection<GameEvent> {
         return state.players.flatMap { player -> player.pieces().map { piece -> Pair(player.id, piece) } }
             .filter { (_, piece) -> piece.role is Peasant }
-            .map { (playerId, piece) -> Pair(playerId,
-                testPlain(
-                    state,
-                    piece.position,
-                    (piece.role as Peasant).location
+            .map { (playerId, piece) ->
+                Pair(
+                    playerId,
+                    testPlain(
+                        state,
+                        piece.position,
+                        (piece.role as Peasant).location
+                    )
                 )
-            ) }
+            }
             .groupBy { (_, fieldParts) -> fieldParts }
             .values
             .flatMap { fieldParts ->
@@ -56,8 +60,8 @@ object PlainCompletedRule : EndRule {
         setOf(PositionedDirection(position, location.direction)) +
             if (location.side == null)
                 setOf(
-                        PositionedDirection(position, location.direction.left()),
-                        PositionedDirection(position, location.direction.right())
+                    PositionedDirection(position, location.direction.left()),
+                    PositionedDirection(position, location.direction.right())
                 )
             else emptySet()
 }

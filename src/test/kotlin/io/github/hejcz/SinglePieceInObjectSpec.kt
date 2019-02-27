@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Knight
 import io.github.hejcz.mapples.Mapple
@@ -19,10 +17,12 @@ object SinglePieceInObjectSpec : Spek({
     Feature("Putting pieces in taken object") {
 
         Scenario("knights") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(
-                    TileF,
-                    TileD
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileF,
+                        TileD
+                    )
                 )
             )
 
@@ -35,10 +35,12 @@ object SinglePieceInObjectSpec : Spek({
         }
 
         Scenario("knights two players") {
-            val game = Game(emptySet(), emptySet(), Players.twoPlayers(), Board(),
-                RemainingTilesFromSeq(
-                    TileF,
-                    TileD
+            val game = Game(
+                emptySet(), emptySet(), Players.twoPlayers(), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileF,
+                        TileD
+                    )
                 )
             )
 
@@ -51,10 +53,12 @@ object SinglePieceInObjectSpec : Spek({
         }
 
         Scenario("brigands") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileV
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileV
+                    )
                 )
             )
 
@@ -67,10 +71,12 @@ object SinglePieceInObjectSpec : Spek({
         }
 
         Scenario("brigands two players") {
-            val game = Game(emptySet(), emptySet(), Players.twoPlayers(), Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileV
+            val game = Game(
+                emptySet(), emptySet(), Players.twoPlayers(), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileV
+                    )
                 )
             )
 
@@ -83,10 +89,12 @@ object SinglePieceInObjectSpec : Spek({
         }
 
         Scenario("peasants") {
-            val game = Game(emptySet(), emptySet(), Players.singlePlayer(), Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileV
+            val game = Game(
+                emptySet(), emptySet(), Players.singlePlayer(), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileV
+                    )
                 )
             )
 
@@ -99,10 +107,12 @@ object SinglePieceInObjectSpec : Spek({
         }
 
         Scenario("peasants two players") {
-            val game = Game(emptySet(), emptySet(), Players.twoPlayers(), Board(),
-                RemainingTilesFromSeq(
-                    TileD,
-                    TileV
+            val game = Game(
+                emptySet(), emptySet(), Players.twoPlayers(), TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileD,
+                        TileV
+                    )
                 )
             )
 

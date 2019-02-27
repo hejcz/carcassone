@@ -1,8 +1,6 @@
 package io.github.hejcz
 
-import io.github.hejcz.engine.Board
 import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.RemainingTilesFromSeq
 import io.github.hejcz.mapples.Brigand
 import io.github.hejcz.mapples.Mapple
 import io.github.hejcz.placement.*
@@ -18,11 +16,10 @@ object RoadCompletedSpec : Spek({
 
         Scenario("Simple road example") {
             val game = Game(
-                    setOf(RoadCompletedRule),
-                    emptySet(),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileS, TileS)
+                setOf(RoadCompletedRule),
+                emptySet(),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileS, TileS))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -34,11 +31,10 @@ object RoadCompletedSpec : Spek({
 
         Scenario("Simple road example with piece placed after tile") {
             val game = Game(
-                    setOf(RoadCompletedRule),
-                    emptySet(),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(TileS, TileS)
+                setOf(RoadCompletedRule),
+                emptySet(),
+                Players.singlePlayer(),
+                TestGameSetup(TestBasicRemainingTiles(TileS, TileS))
             )
 
             Then("on next tile it should detect completed castle") {
@@ -51,14 +47,15 @@ object RoadCompletedSpec : Spek({
 
         Scenario("Simple road 3") {
             val game = Game(
-                    setOf(RoadCompletedRule),
-                    emptySet(),
-                    Players.singlePlayer(),
-                    Board(),
-                RemainingTilesFromSeq(
-                    TileS,
-                    TileV,
-                    TileS
+                setOf(RoadCompletedRule),
+                emptySet(),
+                Players.singlePlayer(),
+                TestGameSetup(
+                    TestBasicRemainingTiles(
+                        TileS,
+                        TileV,
+                        TileS
+                    )
                 )
             )
 
