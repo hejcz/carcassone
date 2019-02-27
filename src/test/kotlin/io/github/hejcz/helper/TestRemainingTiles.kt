@@ -1,10 +1,10 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.engine.RemainingTiles
-import io.github.hejcz.tiles.basic.NoTile
-import io.github.hejcz.tiles.basic.Tile
-import io.github.hejcz.tiles.basic.TileD
-import io.github.hejcz.tiles.river.TileBB6F1
+import io.github.hejcz.basic.tiles.NoTile
+import io.github.hejcz.basic.tiles.Tile
+import io.github.hejcz.basic.tiles.TileD
+import io.github.hejcz.core.RemainingTiles
+import io.github.hejcz.river.tiles.TileBB6F1
 
 class TestBasicRemainingTiles(private val tiles: List<Tile>) : RemainingTiles {
     constructor(vararg tiles: Tile) : this(tiles.toList())

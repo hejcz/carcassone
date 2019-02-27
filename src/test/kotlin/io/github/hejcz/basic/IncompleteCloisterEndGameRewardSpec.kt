@@ -1,22 +1,12 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.PlayerScored
-import io.github.hejcz.PutPiece
-import io.github.hejcz.PutTile
-import io.github.hejcz.SkipPiece
-import io.github.hejcz.engine.Game
+import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
-import io.github.hejcz.mapples.Mapple
-import io.github.hejcz.mapples.Monk
-import io.github.hejcz.placement.*
-import io.github.hejcz.rules.basic.CloisterCompletedRule
-import io.github.hejcz.rules.basic.IncompleteCloisterRule
-import io.github.hejcz.tiles.basic.*
 import org.amshove.kluent.shouldContain
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotContain
 import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.gherkin.Feature
 import org.spekframework.spek2.style.specification.describe
 
 object IncompleteCloisterEndGameRewardSpec : Spek({
@@ -24,15 +14,11 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
     describe("Incomplete cloister detector") {
 
         fun singlePlayer(vararg tiles: Tile) = Game(
-            emptySet(),
-            setOf(IncompleteCloisterRule),
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
         )
 
         fun multiPlayer(vararg tiles: Tile) = Game(
-            emptySet(),
-            setOf(IncompleteCloisterRule),
             Players.twoPlayers(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
         )
@@ -46,7 +32,7 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(PutPiece(Mapple, Monk))
+            game.dispatch(PutPiece(SmallPiece, Monk))
             game.dispatch(PutTile(Position(-1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
@@ -64,7 +50,7 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(PutPiece(Mapple, Monk))
+            game.dispatch(PutPiece(SmallPiece, Monk))
             game.dispatch(PutTile(Position(-1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
@@ -74,7 +60,7 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
         it("should detect cloister with 1/8 surrounding tiles") {
             val game = singlePlayer(TileB)
             game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(PutPiece(Mapple, Monk)) shouldContain PlayerScored(1, 2, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Monk)) shouldContain PlayerScored(1, 2, emptySet())
         }
 
         it("should detect cloister added as a last tile") {
@@ -92,7 +78,7 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(0, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(PutPiece(Mapple, Monk)) shouldContain PlayerScored(1, 8, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Monk)) shouldContain PlayerScored(1, 8, emptySet())
         }
 
 
@@ -109,9 +95,9 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(Mapple, Monk)).shouldContainPlaceTileOnly()
+            game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(1, -1), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(Mapple, Monk)).shouldContainPlaceTileOnly()
+            game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPieceOnly()
@@ -131,11 +117,11 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(-1, -1), Rotation270)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(Mapple, Monk)).shouldContainPlaceTileOnly()
+            game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(1, -1), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(Mapple, Monk)).shouldContainPlaceTileOnly()
+            game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(2, -2), NoRotation)).shouldContainSelectPieceOnly()

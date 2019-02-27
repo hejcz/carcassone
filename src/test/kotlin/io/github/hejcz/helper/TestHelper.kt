@@ -1,7 +1,7 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.PlaceTile
-import io.github.hejcz.SelectPiece
+import io.github.hejcz.core.PlaceTile
+import io.github.hejcz.core.SelectPiece
 
 fun <T> Collection<T>.shouldContainSelectPieceOnly() =
     if (this.size != 1 || this.iterator().next() != SelectPiece) {

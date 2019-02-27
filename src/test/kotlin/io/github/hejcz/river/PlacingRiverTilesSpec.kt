@@ -1,16 +1,11 @@
 package io.github.hejcz.river
 
-import io.github.hejcz.*
-import io.github.hejcz.engine.DefaultDeck
-import io.github.hejcz.engine.Game
-import io.github.hejcz.engine.River
+import io.github.hejcz.basic.tiles.Tile
+import io.github.hejcz.basic.tiles.TileD
+import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
-import io.github.hejcz.mapples.*
-import io.github.hejcz.placement.*
-import io.github.hejcz.rules.basic.CastleCompletedRule
-import io.github.hejcz.tiles.basic.Tile
-import io.github.hejcz.tiles.basic.TileD
-import io.github.hejcz.tiles.river.*
+import io.github.hejcz.river.tiles.*
+import io.github.hejcz.setup.TilesSetup
 import org.amshove.kluent.shouldContain
 import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
@@ -21,12 +16,8 @@ object PlacingRiverTilesSpec : Spek({
     // TODO fix tests names
     describe("River tile") {
 
-        fun singlePlayer(vararg tiles: Tile) = Game(
-            setOf(CastleCompletedRule),
-            emptySet(),
-            Players.singlePlayer(),
-            RiverTestGameSetup(TestRiverRemainingTiles(*tiles))
-        )
+        fun singlePlayer(vararg tiles: Tile) =
+            Game(Players.singlePlayer(), RiverTestGameSetup(TestRiverRemainingTiles(*tiles)))
 
         it("Placing river tile") {
             val game = singlePlayer(TileBB6F6)
@@ -80,64 +71,64 @@ object PlacingRiverTilesSpec : Spek({
         }
 
         it("Can place knight in castle on river tile") {
-            val game = singlePlayer(TileBB6F2)
+            val game = singlePlayer(TileBB6F2, TileBB6F3)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Knight(Right))) shouldEqual emptyList()
+            game.dispatch(PutPiece(SmallPiece, Knight(Right))).shouldContainPlaceTileOnly()
         }
 
         it("Can place brigand on a road on river tile") {
-            val game = singlePlayer(TileBB6F2)
+            val game = singlePlayer(TileBB6F2, TileBB6F3)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Brigand(Left))) shouldEqual emptyList()
+            game.dispatch(PutPiece(SmallPiece, Brigand(Left))).shouldContainPlaceTileOnly()
         }
 
         it("Can place peasant on a field on river tile") {
-            val game = singlePlayer(TileBB6F2)
+            val game = singlePlayer(TileBB6F2, TileBB6F3)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Peasant(Location(Left, RightSide)))) shouldEqual emptyList()
+            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Left, RightSide)))).shouldContainPlaceTileOnly()
         }
 
         it("Can place monk on a field on river tile") {
-            val game = singlePlayer(TileBB6F8)
+            val game = singlePlayer(TileBB6F8, TileBB6F3)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Monk)) shouldEqual emptyList()
+            game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
         }
 
         it("Can't place a knight on river") {
             val game = singlePlayer(TileBB6F2)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Knight(Down))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PiecePlacedInInvalidPlace
         }
 
         it("Can't place a brigand on river") {
             val game = singlePlayer(TileBB6F2)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Brigand(Down))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain PiecePlacedInInvalidPlace
         }
 
         it("Can't place a peasant on river") {
             val game = singlePlayer(TileBB6F2)
             game.dispatch(PutTile(Position(0, -1), Rotation90))
-            game.dispatch(PutPiece(Mapple, Peasant(Location(Down)))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Down)))) shouldContain PiecePlacedInInvalidPlace
         }
 
         it("If river enabled source should be first") {
-            val deck = DefaultDeck().withExtensions(River)
+            val deck = TilesSetup().withExtensions(RiverExtension)
             deck.remainingTiles().next() shouldEqual TileBB6F1
         }
 
         it("Amount of tiles in basic deck") {
-            val deck = DefaultDeck()
+            val deck = TilesSetup()
             deck.remainingTiles().size() shouldEqual 72
         }
 
         it("Amount of tiles in game with river extension") {
-            val deck = DefaultDeck().withExtensions(River)
+            val deck = TilesSetup().withExtensions(RiverExtension)
             deck.remainingTiles().size() shouldEqual 84
         }
 
         it("If river enabled estuary should be last of river tiles") {
-            val deck = DefaultDeck().withExtensions(River)
+            val deck = TilesSetup().withExtensions(RiverExtension)
             val remainingTiles = deck.remainingTiles()
             (1..11).forEach { _ -> remainingTiles.next() }
             remainingTiles.next() shouldEqual TileBB6F12
