@@ -8,6 +8,11 @@ class DefaultDeck {
 
     fun remainingTiles(): RemainingTiles = RemainingTilesFromSequence(deck)
 
+    @Synchronized
+    fun addTop(topTiles: List<Tile>) {
+        deck = topTiles + deck
+    }
+
     fun withExtensions(vararg extension: Extension): DefaultDeck {
         extension.forEach { it.modify(this) }
         return this
