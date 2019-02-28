@@ -1,17 +1,21 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.engine.Extension
-import io.github.hejcz.engine.GameSetup
-import io.github.hejcz.engine.RemainingTiles
-import io.github.hejcz.engine.River
+import io.github.hejcz.abbot.AbbotExtension
+import io.github.hejcz.core.RemainingTiles
+import io.github.hejcz.river.RiverExtension
+import io.github.hejcz.setup.Extension
+import io.github.hejcz.setup.GameSetup
 
-open class TestGameSetup(private val remainingTiles: RemainingTiles, extensions: List<Extension>) :
-    GameSetup(*extensions.toTypedArray()) {
+open class TestGameSetup(
+    private val remainingTiles: RemainingTiles,
+    extensions: List<Extension>
+) : GameSetup(*extensions.toTypedArray()) {
     constructor(remainingTiles: RemainingTiles) : this(remainingTiles, emptyList())
-
-    override fun tiles(): RemainingTiles {
-        return remainingTiles
-    }
+    override fun tiles(): RemainingTiles = remainingTiles
 }
 
-class RiverTestGameSetup(remainingTiles: RemainingTiles) : TestGameSetup(remainingTiles, listOf(River))
+class RiverTestGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(RiverExtension))
+
+class AbbotTestGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(AbbotExtension))
