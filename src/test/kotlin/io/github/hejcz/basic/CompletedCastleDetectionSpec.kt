@@ -4,6 +4,7 @@ import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
+import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -145,6 +146,18 @@ object CompletedCastleDetectionSpec : Spek({
             val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
             events shouldContain PlayerScored(1, 6, listOf(SmallPiece))
             events shouldContain PlayerScored(2, 4, listOf(SmallPiece))
+        }
+
+        it("should return single score event if the same castle is on multiple tiles directions") {
+            val game = singlePlayer(TileD, TileN, TileN)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), Rotation90))
+            game.dispatch(SkipPiece)
+            val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
+            events.size shouldEqual 2
+            events shouldContain PlayerScored(1, 8, listOf(SmallPiece))
+            events shouldContain SelectPiece
         }
 
     }

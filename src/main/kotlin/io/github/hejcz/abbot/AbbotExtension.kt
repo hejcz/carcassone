@@ -7,8 +7,8 @@ object AbbotExtension : Extension {
     override fun modify(piecesSetup: PiecesSetup) = piecesSetup.add(AbbotPiece)
     override fun modify(commandHandlersSetup: CommandHandlersSetup) = commandHandlersSetup.add(PickUpAbbotHandler)
     override fun modify(rulesSetup: RulesSetup) {
-        rulesSetup.add(AbbotInGardenScoredRule, AbbotPickedUpRule)
-        rulesSetup.add(IncompleteGardenRule)
+        rulesSetup.add(GardenCompletedRule, AbbotPickedUp)
+        rulesSetup.add(RewardIncompleteGardens)
     }
     override fun modify(validatorsSetup: ValidatorsSetup) = validatorsSetup.add(PickUpAbbotValidator)
 }

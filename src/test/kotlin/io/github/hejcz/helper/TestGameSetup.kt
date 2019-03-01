@@ -2,6 +2,7 @@ package io.github.hejcz.helper
 
 import io.github.hejcz.abbot.AbbotExtension
 import io.github.hejcz.core.RemainingTiles
+import io.github.hejcz.inn.InnAndCathedralsExtension
 import io.github.hejcz.river.RiverExtension
 import io.github.hejcz.setup.Extension
 import io.github.hejcz.setup.GameSetup
@@ -19,3 +20,6 @@ class RiverTestGameSetup(remainingTiles: RemainingTiles) :
 
 class AbbotTestGameSetup(remainingTiles: RemainingTiles) :
     TestGameSetup(remainingTiles, listOf(AbbotExtension))
+
+class InnAndCathedralsTestGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(InnAndCathedralsExtension))

@@ -1,7 +1,7 @@
 package io.github.hejcz.basic.tiles
 
-import io.github.hejcz.core.Location
+import io.github.hejcz.core.*
 
 interface GreenFieldExplorable {
-    fun exploreGreenFields(location: Location): Collection<io.github.hejcz.core.Location>
+    fun exploreGreenFields(location: Location): Locations
 }

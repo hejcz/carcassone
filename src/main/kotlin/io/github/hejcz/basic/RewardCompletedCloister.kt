@@ -3,7 +3,7 @@ package io.github.hejcz.basic
 import io.github.hejcz.basic.tiles.NoTile
 import io.github.hejcz.core.*
 
-object CloisterCompletedRule : Rule {
+object RewardCompletedCloister : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state.recentPosition, state)
