@@ -1,9 +1,7 @@
 package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
-import io.github.hejcz.helpers.CastleExplorer
-import io.github.hejcz.helpers.GreenFieldExplorer
-import io.github.hejcz.helpers.RoadExplorer
+import io.github.hejcz.helpers.*
 
 object SinglePieceInObjectValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> {
@@ -41,10 +39,8 @@ object SinglePieceInObjectValidator : CommandValidator {
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     is Peasant -> {
-                        val explorer =
-                            GreenFieldExplorer(state, state.recentPosition, role.location)
-                        explorer.explore()
-                        val pieceAlreadyPresentOnObject = explorer.parts()
+                        val pieceAlreadyPresentOnObject = GreenFieldExplorer(state, state.recentPosition, role.location)
+                            .explore()
                             .any { part ->
                                 state.players.any { player ->
                                     player.isPieceOn(

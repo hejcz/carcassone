@@ -10,7 +10,7 @@ object TileBB6F11 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorabl
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),
     setOf(Location(Right, LeftSide), Location(Up, RightSide))
 ) {
-    override fun exploreRiver(): Collection<io.github.hejcz.core.Direction> = setOf(Down, Up)
-    override fun exploreCastle(direction: Direction): Collection<io.github.hejcz.core.Direction> = emptySet()
-    override fun exploreRoad(direction: Direction): Collection<io.github.hejcz.core.Direction> = setOf(Left, Right)
+    override fun exploreRiver(): Directions = setOf(Down, Up)
+    override fun exploreCastle(direction: Direction): Directions = emptySet()
+    override fun exploreRoad(direction: Direction): Directions = setOf(Left, Right)
 }

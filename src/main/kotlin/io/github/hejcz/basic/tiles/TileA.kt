@@ -4,8 +4,8 @@ import io.github.hejcz.core.*
 import io.github.hejcz.core.*
 object TileA : Tile {
     override fun hasCloister(): Boolean = true
-    override fun exploreCastle(direction: Direction) = emptySet<io.github.hejcz.core.Direction>()
-    override fun exploreGreenFields(location: Location): Collection<io.github.hejcz.core.Location> =
+    override fun exploreCastle(direction: Direction) = emptySet<Direction>()
+    override fun exploreGreenFields(location: Location): Locations =
         setOf(
             Location(Right),
             Location(Up),
@@ -14,5 +14,5 @@ object TileA : Tile {
             Location(Down, LeftSide)
         )
 
-    override fun exploreRoad(direction: Direction): Collection<io.github.hejcz.core.Direction> = setOf(Down)
+    override fun exploreRoad(direction: Direction): Directions = setOf(Down)
 }

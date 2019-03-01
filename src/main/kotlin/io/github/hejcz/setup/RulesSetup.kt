@@ -1,8 +1,8 @@
 package io.github.hejcz.setup
 
 import io.github.hejcz.basic.*
-import io.github.hejcz.core.EndRule
-import io.github.hejcz.core.Rule
+import io.github.hejcz.core.*
+import kotlin.reflect.*
 
 class RulesSetup {
     private var rules = BASIC_RULES
@@ -30,10 +30,24 @@ class RulesSetup {
 
     fun endRules(): Collection<EndRule> = endRules
 
+    fun <T : Any> replace(replaced: KClass<T>, replacement: Rule) {
+        rules = rules.filter { it::class != replaced } + replacement
+    }
+
+    fun <T : Any> replace(replaced: KClass<T>, replacement: EndRule) {
+        endRules = endRules.filter { it::class != replaced } + replacement
+    }
+
     companion object {
-        private val BASIC_RULES: List<Rule> = listOf(CastleCompletedRule, RoadCompletedRule, CloisterCompletedRule)
+        private val BASIC_RULES: List<Rule> =
+            listOf(RewardCompletedCastle(BasicCastleScoring), RewardCompletedRoad(BasicRoadScoring), RewardCompletedCloister)
 
         private val BASIC_END_RULES: List<EndRule> =
-            listOf(IncompleteCastleRule, IncompleteRoadRule, IncompleteCloisterRule, RewardGreenFieldsRule)
+            listOf(
+                RewardIncompleteCastles(BasicIncompleteCastleScoring),
+                RewardIncompleteRoads(BasicRoadScoring),
+                RewardIncompleteCloister,
+                RewardPeasants
+            )
     }
 }

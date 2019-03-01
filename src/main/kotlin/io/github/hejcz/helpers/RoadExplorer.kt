@@ -1,11 +1,10 @@
 package io.github.hejcz.helpers
 
-import io.github.hejcz.basic.tiles.NoTile
-import io.github.hejcz.core.PositionedDirection
-import io.github.hejcz.core.State
+import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.core.*
 
 class RoadExplorer(private val state: State, private val initial: PositionedDirection) {
-    private val visited: MutableSet<io.github.hejcz.core.PositionedDirection> = mutableSetOf()
+    private val visited: MutableSet<PositionedDirection> = mutableSetOf()
     private var isCompleted = true
 
     @Synchronized
@@ -26,7 +25,7 @@ class RoadExplorer(private val state: State, private val initial: PositionedDire
     }
 
     private fun doExplore(current: PositionedDirection) {
-        if (visited.contains(current)) {
+        if (current in visited) {
             return
         }
         when (val tile = state.tileAt(current.position)) {

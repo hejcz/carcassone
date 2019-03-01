@@ -30,8 +30,8 @@ object PutRiverTileValidator : CommandValidator {
 
     private fun riverTurnsInSameDirection(
         recentTileDirection: Direction,
-        recentRiver: Collection<io.github.hejcz.core.Direction>,
-        currentRiver: Collection<io.github.hejcz.core.Direction>
+        recentRiver: Directions,
+        currentRiver: Directions
     ): Boolean =
         recentTileDirection.opposite().left() in recentRiver && recentTileDirection.right() in currentRiver
             || recentTileDirection.opposite().right() in recentRiver && recentTileDirection.left() in currentRiver

@@ -1,9 +1,9 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.tiles.NoTile
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 
-object AbbotPickedUpRule : Rule {
+object AbbotPickedUp : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PickUpAbbot -> afterAbbotPicked(state, command.position)

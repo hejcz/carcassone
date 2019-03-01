@@ -1,5 +1,7 @@
 package io.github.hejcz.core
 
+typealias Directions = Collection<Direction>
+
 sealed class Direction {
     abstract fun opposite(): Direction
     abstract fun left(): Direction
@@ -37,4 +39,11 @@ object Right : Direction() {
     override fun right(): Direction = Down
     override fun move(position: Position): Position =
         Position(position.x + 1, position.y)
+}
+
+object Center : Direction() {
+    override fun opposite(): Direction = Center
+    override fun left(): Direction = Center
+    override fun right(): Direction = Center
+    override fun move(position: Position): Position = position
 }

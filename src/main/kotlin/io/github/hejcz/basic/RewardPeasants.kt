@@ -1,9 +1,9 @@
 package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
-import io.github.hejcz.helpers.GreenFieldExplorer
+import io.github.hejcz.helpers.*
 
-object RewardGreenFieldsRule : EndRule {
+object RewardPeasants : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.players.flatMap { player -> player.pieces().map { piece -> Pair(player.id, piece) } }
@@ -11,11 +11,7 @@ object RewardGreenFieldsRule : EndRule {
             .map { (playerId, piece) ->
                 Pair(
                     playerId,
-                    testPlain(
-                        state,
-                        piece.position,
-                        (piece.role as Peasant).location
-                    )
+                    GreenFieldExplorer(state, piece.position, (piece.role as Peasant).location).explore()
                 )
             }
             .groupBy { (_, fieldParts) -> fieldParts }
@@ -24,29 +20,18 @@ object RewardGreenFieldsRule : EndRule {
                 val completedCastles =
                     fieldParts.first()
                         .second
-                        .flatMap {
-                            reachableCastles(
-                                it.first,
-                                it.second
-                            )
-                        }
+                        .flatMap { (position, direction) -> reachableCastles(position, direction) }
                         .mapNotNull { state.completedCastle(it) }
                         .distinct()
                         .count()
                 if (completedCastles == 0) {
                     return emptySet()
                 }
-                val countedPieces = fieldParts.groupingBy { it.first }.eachCount()
+                val countedPieces = fieldParts.groupingBy { (playerId, _) -> playerId }.eachCount()
                 val maxElement = countedPieces.maxBy { it.value }!!.value
                 countedPieces.filter { it.value == maxElement }
                     .map { PlayerScored(it.key, 3 * completedCastles, emptySet()) }
             }
-    }
-
-    private fun testPlain(state: State, position: Position, location: Location): Set<Pair<io.github.hejcz.core.Position, Location>> {
-        val explorer = GreenFieldExplorer(state, position, location)
-        explorer.explore()
-        return explorer.parts()
     }
 
     private fun reachableCastles(position: Position, location: Location) =

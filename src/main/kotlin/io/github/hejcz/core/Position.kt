@@ -1,9 +1,9 @@
 package io.github.hejcz.core
 
 data class Position(val x: Int, val y: Int) {
-    fun surrounding(): Set<io.github.hejcz.core.Position> = Position.Companion.adjacent.map { it(x, y) }.toSet()
+    fun surrounding(): Set<Position> = Position.adjacent.map { it(x, y) }.toSet()
     fun relativeDirectionTo(other: Position) =
-        Position.Companion.relativePosition(Pair(x - other.x, y - other.y))
+        Position.relativePosition(Pair(x - other.x, y - other.y))
 
     companion object {
         private fun relativePosition(diff: Pair<Int, Int>) = when (diff) {

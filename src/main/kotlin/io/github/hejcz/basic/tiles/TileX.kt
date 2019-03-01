@@ -20,6 +20,6 @@ object TileX : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
         Location(Up, RightSide)
     )
 ) {
-    override fun exploreCastle(direction: Direction): Collection<io.github.hejcz.core.Direction> = emptySet()
-    override fun exploreRoad(direction: Direction): Collection<io.github.hejcz.core.Direction> = setOf(direction)
+    override fun exploreCastle(direction: Direction): Directions = emptySet()
+    override fun exploreRoad(direction: Direction): Directions = setOf(direction)
 }
