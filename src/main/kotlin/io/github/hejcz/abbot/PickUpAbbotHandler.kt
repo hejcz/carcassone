@@ -1,6 +1,6 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.GameAction
+import io.github.hejcz.basic.*
 import io.github.hejcz.core.*
 
 object PickUpAbbotHandler : CommandHandler {

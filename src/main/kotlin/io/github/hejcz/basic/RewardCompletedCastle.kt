@@ -3,11 +3,11 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.helpers.*
 
-class RewardCompletedCastle(private val castleScoringStrategy: CastleScoringStrategy) : Rule {
+class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state)
-        is PutPiece -> afterPiecePlaced(state, command.piece, command.pieceRole)
+        is PutPiece -> afterPiecePlaced(state, command.piece, command.role)
         else -> emptySet()
     }
 
@@ -22,10 +22,10 @@ class RewardCompletedCastle(private val castleScoringStrategy: CastleScoringStra
             .toList()
             .flatMap { exploredCastle ->
                 val (winners, losers) = WinnerSelector.find(exploredCastle.pieces)
-                val score = castleScoringStrategy.score(state, exploredCastle)
-                winners.map { id ->
+                val score = castleScoring.score(state, exploredCastle)
+                winners.ids.map { id ->
                     PlayerScored(id, score, exploredCastle.pieces.filter { piece -> piece.playerId == id }.map { it.piece })} +
-                        losers.map { id -> OccupiedAreaCompleted(id, exploredCastle.pieces.filter { piece -> piece.playerId == id }.map { it.piece })}
+                        losers.ids.map { id -> OccupiedAreaCompleted(id, exploredCastle.pieces.filter { piece -> piece.playerId == id }.map { it.piece })}
             }
     }
 
@@ -33,11 +33,11 @@ class RewardCompletedCastle(private val castleScoringStrategy: CastleScoringStra
         .flatMap { this.tileAt(position).exploreCastle(it) }
         .distinct()
 
-    private fun afterPiecePlaced(state: State, piece: Piece, pieceRole: PieceRole): Collection<GameEvent> {
-        if (pieceRole !is Knight) {
+    private fun afterPiecePlaced(state: State, piece: Piece, role: Role): Collection<GameEvent> {
+        if (role !is Knight) {
             return emptySet()
         }
-        val castle = explore(state, state.recentPosition, pieceRole.direction)
+        val castle = explore(state, state.recentPosition, role.direction)
         if (!castle.completed) {
             return emptyList()
         }
@@ -49,10 +49,10 @@ class RewardCompletedCastle(private val castleScoringStrategy: CastleScoringStra
 
     private fun score(processedCastle: ProcessedCastle) = (processedCastle.tilesCount + processedCastle.emblems) * 2
 
-    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): ExploredCastle {
+    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Castle {
         val exploredCastle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
         exploredCastle.explore()
-        return ExploredCastle.from(state, exploredCastle)
+        return Castle.from(state, exploredCastle)
     }
 
 }

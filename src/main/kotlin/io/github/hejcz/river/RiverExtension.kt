@@ -1,9 +1,7 @@
 package io.github.hejcz.river
 
 import io.github.hejcz.river.tiles.*
-import io.github.hejcz.setup.Extension
-import io.github.hejcz.setup.TilesSetup
-import io.github.hejcz.setup.ValidatorsSetup
+import io.github.hejcz.setup.*
 
 object RiverExtension : Extension {
     override fun modify(deck: TilesSetup): Unit = deck.addOnTop(riverTiles())

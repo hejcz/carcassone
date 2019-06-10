@@ -1,6 +1,6 @@
 package io.github.hejcz.inn.tiles
 
-import io.github.hejcz.basic.tiles.Tile
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 
 interface InnTile : Tile {

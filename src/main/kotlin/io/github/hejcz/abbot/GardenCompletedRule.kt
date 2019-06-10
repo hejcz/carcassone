@@ -7,7 +7,7 @@ object GardenCompletedRule : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state.recentPosition, state)
-        is PutPiece -> afterPiecePlaced(state, command.pieceRole)
+        is PutPiece -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
 
@@ -22,8 +22,8 @@ object GardenCompletedRule : Rule {
             .mapNotNull { player -> player.pieceOn(completedCloisterPosition, Abbot)?.let { Pair(player, it) } }
             .firstOrNull()
 
-    private fun afterPiecePlaced(state: State, pieceRole: PieceRole): Collection<GameEvent> = when {
-        pieceRole is Abbot && state.recentPosition.isSurrounded(state) ->
+    private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> = when {
+        role is Abbot && state.recentPosition.isSurrounded(state) ->
             setOf(PlayerScored(state.currentPlayerId(), 9, setOf(AbbotPiece)))
         else -> emptySet()
     }

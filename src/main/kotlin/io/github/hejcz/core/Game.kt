@@ -1,7 +1,7 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.ReturnPieceListener
-import io.github.hejcz.setup.GameSetup
+import io.github.hejcz.basic.*
+import io.github.hejcz.setup.*
 
 class Game(players: Collection<Player>, gameSetup: GameSetup) {
 

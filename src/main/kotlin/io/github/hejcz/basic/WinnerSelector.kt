@@ -2,17 +2,23 @@ package io.github.hejcz.basic
 
 import io.github.hejcz.helpers.*
 
+inline class Winners(val ids: Collection<Long> = emptySet())
+
+inline class Losers(val ids: Collection<Long> = emptySet())
+
 object WinnerSelector {
 
-    fun find(pieces: Collection<PieceOnObject>): Pair<Collection<Long>, Collection<Long>> {
-        if (pieces.isEmpty()) {
-            return Pair(emptySet(), emptySet())
-        }
-        val scores = pieces.groupBy { piece -> piece.playerId }
-            .mapValues { (_, pieces) -> pieces.sumBy { foundPiece -> foundPiece.piece.power() } }
-        val maxScore = scores.maxBy { (_, score) -> score }!!.value
-        return scores.entries.partition { (_, score) -> score == maxScore }
-            .let { (winners, loser) -> Pair(winners.map { (playerId, _) -> playerId }, loser.map { (playerId, _) -> playerId }) }
+    fun find(pieces: Collection<PieceOnObject>): Pair<Winners, Losers> = when {
+        pieces.isEmpty() -> Pair(Winners(), Losers())
+        else -> findWinner(pieces)
+    }
+
+    private fun findWinner(pieces: Collection<PieceOnObject>): Pair<Winners, Losers> {
+        val totalScoreByPlayer = pieces.groupBy { piece -> piece.playerId }
+            .mapValues { (_, pieces) -> pieces.sumBy { it.power() } }
+        val maxScore = totalScoreByPlayer.maxBy { (_, totalScore) -> totalScore }!!.value
+        return totalScoreByPlayer.entries.partition { (_, totalScore) -> totalScore == maxScore }
+            .let { (winners, loser) -> Pair(Winners(winners.map { it.key }), Losers(loser.map { it.key })) }
     }
 
 }

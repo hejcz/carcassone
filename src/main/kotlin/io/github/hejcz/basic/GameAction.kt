@@ -1,9 +1,7 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.NoTile
-import io.github.hejcz.core.Game
-import io.github.hejcz.core.GameEvent
-import io.github.hejcz.core.PlaceTile
+import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.core.*
 
 object GameAction {
     fun endTurn(game: Game, events: Collection<GameEvent> = emptySet()): Collection<GameEvent> {

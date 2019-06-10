@@ -1,10 +1,7 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.CommandValidator
-import io.github.hejcz.basic.PieceAvailabilityValidator
-import io.github.hejcz.basic.PiecePlacementValidator
-import io.github.hejcz.basic.TilePlacementValidator
-import io.github.hejcz.basic.SinglePieceInObjectValidator
+import io.github.hejcz.basic.*
+import io.github.hejcz.core.*
 
 class ValidatorsSetup {
 

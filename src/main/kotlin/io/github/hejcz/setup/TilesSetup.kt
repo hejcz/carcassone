@@ -1,8 +1,7 @@
 package io.github.hejcz.setup
 
 import io.github.hejcz.basic.tiles.*
-import io.github.hejcz.core.RemainingTiles
-import io.github.hejcz.core.RemainingTilesFromSequence
+import io.github.hejcz.core.*
 
 class TilesSetup {
 

@@ -1,7 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.Piece
-import io.github.hejcz.core.SmallPiece
+import io.github.hejcz.core.*
 
 class PiecesSetup {
     private var pieces = BASIC_PIECES

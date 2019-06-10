@@ -2,7 +2,7 @@ package io.github.hejcz.helpers
 
 import io.github.hejcz.core.*
 
-open class ExploredCastle(
+open class Castle(
     val completed: Boolean,
     val tilesCount: Int,
     val pieces: Set<FoundPiece>,
@@ -11,7 +11,7 @@ open class ExploredCastle(
 ) {
     companion object {
         fun from(state: State, castleExplorer: CastleExplorer) =
-            ExploredCastle(
+            Castle(
                 castleExplorer.isCompleted(),
                 castleExplorer.positions().size,
                 castleExplorer.parts().flatMap { castle ->
@@ -23,10 +23,10 @@ open class ExploredCastle(
                 castleExplorer.positions().map { state.tileAt(it) }.count { it.hasEmblem() }
             )
 
-        fun empty(): ExploredCastle = ExploredCastle(false, 0, emptySet(), emptySet(), 0)
+        fun empty(): Castle = Castle(false, 0, emptySet(), emptySet(), 0)
     }
 
-
+    fun countEmblemsAndTiles() = emblems + tilesCount
 }
 
 private fun Player.knightOn(element: PositionedDirection): PieceOnBoard? =

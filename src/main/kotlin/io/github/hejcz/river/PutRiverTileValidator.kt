@@ -1,14 +1,13 @@
 package io.github.hejcz.river
 
 import io.github.hejcz.core.*
-import io.github.hejcz.river.tiles.RiverTile
+import io.github.hejcz.river.tiles.*
 
 object PutRiverTileValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> =
         when {
             command is PutTile && state.currentTile is RiverTile -> when {
                 state.recentTile !is RiverTile -> setOf(TilePlacedInInvalidPlace)
-
                 else -> {
                     val recentTileDirection: Direction = state.recentPosition.relativeDirectionTo(command.position)
                     val currentTile = state.currentTile.rotate(command.rotation) as RiverTile

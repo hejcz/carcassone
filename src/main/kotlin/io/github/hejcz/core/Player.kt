@@ -4,20 +4,20 @@ data class Player(val id: Long, val order: Int, private val initialPieces: List<
     private val unavailablePieces: MutableSet<PieceOnBoard> = mutableSetOf()
     private val availablePieces: MutableList<Piece> = initialPieces.toMutableList()
 
-    fun putPiece(position: Position, piece: Piece, role: PieceRole) {
+    fun putPiece(position: Position, piece: Piece, role: Role) {
         unavailablePieces.add(PieceOnBoard(position, piece, role))
         availablePieces.remove(piece)
     }
 
     fun isAvailable(piece: Piece) = piece in availablePieces
 
-    fun pieceOn(position: Position, role: PieceRole): PieceOnBoard? =
+    fun pieceOn(position: Position, role: Role): PieceOnBoard? =
         unavailablePieces.firstOrNull { position == it.position && role == it.role }
 
-    fun pieceOn(position: Position): Collection<PieceOnBoard> =
+    fun piecesOn(position: Position): Collection<PieceOnBoard> =
         unavailablePieces.filter { position == it.position }
 
-    fun isPieceOn(position: Position, role: PieceRole) =
+    fun isPieceOn(position: Position, role: Role) =
         unavailablePieces.any { position == it.position && role == it.role }
 
     fun pieces(): Set<PieceOnBoard> = unavailablePieces.toSet()

@@ -1,7 +1,6 @@
 package io.github.hejcz.inn.tiles
 
-import io.github.hejcz.basic.tiles.GreenFieldExplorable
-import io.github.hejcz.basic.tiles.RegionGreenFieldExplorable
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 
 object TileEA : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(

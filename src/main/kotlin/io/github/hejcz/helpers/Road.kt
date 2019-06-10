@@ -2,7 +2,7 @@ package io.github.hejcz.helpers
 
 import io.github.hejcz.core.*
 
-data class ExploredRoad(
+data class Road(
     val completed: Boolean,
     val tilesCount: Int,
     val pieces: Set<FoundPiece>
@@ -19,7 +19,7 @@ data class ExploredRoad(
 
     companion object {
         fun from(state: State, roadExplorer: RoadExplorer) =
-            ExploredRoad(
+            Road(
                 roadExplorer.isCompleted(),
                 roadExplorer.positions().size,
                 roadExplorer.parts().flatMap { road ->
@@ -29,7 +29,7 @@ data class ExploredRoad(
                     }.toSet()
             )
 
-        fun empty(): ExploredRoad = ExploredRoad(false, 0, emptySet())
+        fun empty(): Road = Road(false, 0, emptySet())
     }
 }
 

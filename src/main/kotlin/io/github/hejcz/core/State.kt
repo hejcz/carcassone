@@ -31,8 +31,8 @@ class State(
         currentTile = remainingTiles.next()
     }
 
-    fun addPiece(piece: Piece, pieceRole: PieceRole) {
-        currentPlayer.putPiece(recentPosition, piece, pieceRole)
+    fun addPiece(piece: Piece, role: Role) {
+        currentPlayer.putPiece(recentPosition, piece, role)
     }
 
     fun tileAt(position: Position): Tile = board.tiles[position] ?: NoTile
@@ -52,6 +52,6 @@ class State(
 
     fun currentTileName() = currentTile.name()
 
-    fun piecesOnPosition(position: Position) = players.flatMap { player -> player.pieceOn(position) }
+    fun piecesOnPosition(position: Position) = players.flatMap { it.piecesOn(position) }
 
 }

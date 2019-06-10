@@ -8,7 +8,7 @@ object PutPieceHandler : CommandHandler {
         handle(game, command as PutPiece)
 
     private fun handle(game: Game, command: PutPiece): Collection<GameEvent> {
-        game.state.addPiece(command.piece, command.pieceRole)
+        game.state.addPiece(command.piece, command.role)
         val events = game.rules.flatMap { it.afterCommand(command, game.state) }
         return GameAction.endTurn(game, events)
     }

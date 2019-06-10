@@ -7,7 +7,7 @@ object SinglePieceInObjectValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> {
         return when (command) {
             is PutPiece -> {
-                when (val role = command.pieceRole) {
+                when (val role = command.role) {
                     is Knight -> {
                         val explorer =
                             CastleExplorer(state, PositionedDirection(state.recentPosition, role.direction))

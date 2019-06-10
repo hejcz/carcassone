@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.NoTile
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 
 object TilePlacementValidator : CommandValidator {

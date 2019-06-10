@@ -1,8 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.Tile
-import io.github.hejcz.basic.tiles.TileF
-import io.github.hejcz.basic.tiles.TileG
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles

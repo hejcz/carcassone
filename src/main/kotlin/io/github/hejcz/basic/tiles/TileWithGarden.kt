@@ -3,6 +3,7 @@ package io.github.hejcz.basic.tiles
 import io.github.hejcz.core.*
 
 class TileWithGarden(tile: Tile) : Tile by tile {
+
     override fun hasGarden(): Boolean = true
 
     // rotation returns new instance of Tile not modifying it

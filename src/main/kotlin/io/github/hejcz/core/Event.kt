@@ -16,7 +16,7 @@ object PiecePlacedInInvalidPlace : GameEvent()
 
 object NoAbbotToPickUp : GameEvent()
 
-data class PieceMayNotBeUsedInARole(val piece: Piece, val role: PieceRole) : GameEvent()
+data class PieceMayNotBeUsedInARole(val piece: Piece, val role: Role) : GameEvent()
 
 data class NoMappleAvailable(val piece: Piece) : GameEvent()
 

@@ -1,8 +1,6 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.basic.tiles.NoTile
-import io.github.hejcz.basic.tiles.Tile
-import io.github.hejcz.basic.tiles.TileD
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.RemainingTiles
 import io.github.hejcz.river.tiles.TileBB6F1
 

@@ -1,7 +1,6 @@
 package io.github.hejcz.basic.tiles
 
-import io.github.hejcz.core.Direction
-import io.github.hejcz.core.Location
+import io.github.hejcz.core.*
 
 object NoTile : Tile {
     override fun exploreCastle(direction: Direction) = emptySet<Direction>()

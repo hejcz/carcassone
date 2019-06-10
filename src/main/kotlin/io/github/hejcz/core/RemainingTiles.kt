@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.tiles.Tile
+import io.github.hejcz.basic.tiles.*
 
 interface RemainingTiles {
     fun next(): Tile

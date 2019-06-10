@@ -1,7 +1,6 @@
 package io.github.hejcz.abbot
 
 import io.github.hejcz.core.*
-import io.github.hejcz.river.tiles.RiverTile
 
 object PickUpAbbotValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> =

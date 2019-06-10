@@ -1,6 +1,6 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.core.AbbotPiece
+import io.github.hejcz.core.*
 import io.github.hejcz.setup.*
 
 object AbbotExtension : Extension {

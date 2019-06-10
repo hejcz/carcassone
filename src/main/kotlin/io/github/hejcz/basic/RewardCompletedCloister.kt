@@ -1,13 +1,13 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.NoTile
+import io.github.hejcz.basic.tiles.*
 import io.github.hejcz.core.*
 
 object RewardCompletedCloister : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state.recentPosition, state)
-        is PutPiece -> afterPiecePlaced(state, command.pieceRole)
+        is PutPiece -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
 
@@ -22,8 +22,8 @@ object RewardCompletedCloister : Rule {
         state.players.mapNotNull { player -> player.pieceOn(completedCloisterPosition, Monk)?.let { Pair(player, it) } }
             .firstOrNull()
 
-    private fun afterPiecePlaced(state: State, pieceRole: PieceRole): Collection<GameEvent> =
-        when (pieceRole) {
+    private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> =
+        when (role) {
             !is Monk -> emptySet()
             else -> when {
                 isSurrounded(state, state.recentPosition) -> setOf(

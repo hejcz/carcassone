@@ -35,16 +35,16 @@ class RulesSetup {
     }
 
     fun <T : Any> replace(replaced: KClass<T>, replacement: EndRule) {
-        endRules = endRules.filter { it::class != replaced } + replacement
+        endRules = endRules.filterNot { it::class == replaced } + replacement
     }
 
     companion object {
         private val BASIC_RULES: List<Rule> =
-            listOf(RewardCompletedCastle(BasicCastleScoring), RewardCompletedRoad(BasicRoadScoring), RewardCompletedCloister)
+            listOf(RewardCompletedCastle(CompletedCastleScoring), RewardCompletedRoad(BasicRoadScoring), RewardCompletedCloister)
 
         private val BASIC_END_RULES: List<EndRule> =
             listOf(
-                RewardIncompleteCastles(BasicIncompleteCastleScoring),
+                RewardIncompleteCastles(IncompleteCastleScoring),
                 RewardIncompleteRoads(BasicRoadScoring),
                 RewardIncompleteCloister,
                 RewardPeasants
