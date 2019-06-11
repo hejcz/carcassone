@@ -1,6 +1,6 @@
 package io.github.hejcz.river
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
 import io.github.hejcz.river.tiles.*
@@ -132,6 +132,5 @@ object PlacingRiverTilesSpec : Spek({
             (1..11).forEach { _ -> remainingTiles.next() }
             remainingTiles.next() shouldEqual TileBB6F12
         }
-
     }
 })

@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 
 class RemainingTilesFromSequence(private val tiles: List<Tile>) : RemainingTiles {
     private val left: Iterator<Tile> = (tiles + NoTile).iterator()

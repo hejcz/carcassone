@@ -1,4 +1,4 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.rule
 
 import io.github.hejcz.core.*
 import io.github.hejcz.helpers.*
@@ -43,4 +43,3 @@ object RewardPeasants : EndRule {
                 )
             else emptySet()
 }
-

@@ -1,13 +1,13 @@
 package io.github.hejcz.river.tiles
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 interface RiverTile : Tile {
     fun exploreRiver(): Directions
     override fun isValidNeighborFor(other: Tile, direction: Direction): Boolean =
-        super.isValidNeighborFor(other, direction)
-            || (other is RiverTile && direction in exploreRiver() && direction.opposite() in other.exploreRiver())
+        super.isValidNeighborFor(other, direction) ||
+            (other is RiverTile && direction in exploreRiver() && direction.opposite() in other.exploreRiver())
 
     override fun rotate(rotation: Rotation): Tile = when (rotation) {
         NoRotation -> this

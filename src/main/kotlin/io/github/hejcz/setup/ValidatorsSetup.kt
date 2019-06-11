@@ -1,6 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.*
+import io.github.hejcz.basic.validator.*
 import io.github.hejcz.core.*
 
 class ValidatorsSetup {
@@ -23,5 +23,4 @@ class ValidatorsSetup {
             TilePlacementValidator, PiecePlacementValidator, SinglePieceInObjectValidator, PieceAvailabilityValidator
         )
     }
-
 }

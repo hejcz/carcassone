@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 
 sealed class Role {
     abstract fun canBePlacedOn(tile: Tile): Boolean

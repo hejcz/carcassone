@@ -1,6 +1,6 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 object RewardIncompleteGardens : EndRule {

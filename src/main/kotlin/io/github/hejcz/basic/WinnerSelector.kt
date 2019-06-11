@@ -20,5 +20,4 @@ object WinnerSelector {
         return totalScoreByPlayer.entries.partition { (_, totalScore) -> totalScore == maxScore }
             .let { (winners, loser) -> Pair(Winners(winners.map { it.key }), Losers(loser.map { it.key })) }
     }
-
 }

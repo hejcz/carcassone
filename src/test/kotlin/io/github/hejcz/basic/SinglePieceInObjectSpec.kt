@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles
@@ -21,7 +21,7 @@ object SinglePieceInObjectSpec : Spek({
             Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
 
         it("knights") {
-            val game = singlePlayer(TileF, TileD)
+            val game = singlePlayer(TileF, TileF)
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             game.dispatch(PutTile(Position(0, 2), Rotation180))
@@ -29,7 +29,7 @@ object SinglePieceInObjectSpec : Spek({
         }
 
         it("knights two players") {
-            val game = multiPlayer(TileF, TileD)
+            val game = multiPlayer(TileF, TileF)
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             game.dispatch(PutTile(Position(0, 2), Rotation180))
@@ -67,7 +67,5 @@ object SinglePieceInObjectSpec : Spek({
             game.dispatch(PutTile(Position(2, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain PiecePlacedInInvalidPlace
         }
-
     }
-
 })

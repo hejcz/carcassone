@@ -1,4 +1,4 @@
-package io.github.hejcz.basic.tiles
+package io.github.hejcz.basic.tile
 
 import io.github.hejcz.core.*
 

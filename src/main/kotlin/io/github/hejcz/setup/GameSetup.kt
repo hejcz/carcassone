@@ -13,5 +13,4 @@ open class GameSetup(private vararg val extensions: Extension) {
     open fun endRules() = RulesSetup().withExtensions(*extensions).endRules()
 
     open fun handlers() = CommandHandlersSetup().withExtensions(*extensions).handlers()
-
 }

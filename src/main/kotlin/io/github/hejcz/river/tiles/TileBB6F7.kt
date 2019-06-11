@@ -1,6 +1,6 @@
 package io.github.hejcz.river.tiles
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 object TileBB6F7 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(

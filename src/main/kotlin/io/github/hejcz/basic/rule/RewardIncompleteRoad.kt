@@ -1,9 +1,10 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.rule
 
+import io.github.hejcz.basic.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helpers.*
 
-class RewardIncompleteRoads(private val scoring: RoadScoring) : EndRule {
+class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.filterPieces { it is Brigand }
@@ -23,9 +24,8 @@ class RewardIncompleteRoads(private val scoring: RoadScoring) : EndRule {
         if (startingDirection !in state.tileAt(startingPosition).exploreRoad(startingDirection)) {
             return Road.empty()
         }
-        val exploredCastle = RoadExplorer(state, PositionedDirection(startingPosition, startingDirection))
-        exploredCastle.explore()
-        return Road.from(state, exploredCastle)
+        val road = RoadExplorer(state, PositionedDirection(startingPosition, startingDirection))
+        road.explore()
+        return Road.from(state, road)
     }
-
 }

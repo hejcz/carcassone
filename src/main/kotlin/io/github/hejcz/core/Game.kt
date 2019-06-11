@@ -37,5 +37,4 @@ class Game(players: Collection<Player>, gameSetup: GameSetup) {
     private fun validate(command: Command) =
         validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet()
             ?: emptySet()
-
 }

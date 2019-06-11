@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 
 class State(
     var board: Board,
@@ -53,5 +53,4 @@ class State(
     fun currentTileName() = currentTile.name()
 
     fun piecesOnPosition(position: Position) = players.flatMap { it.piecesOn(position) }
-
 }

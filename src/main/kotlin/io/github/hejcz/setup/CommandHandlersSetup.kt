@@ -1,6 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.*
+import io.github.hejcz.basic.handler.*
 import io.github.hejcz.core.*
 
 class CommandHandlersSetup {

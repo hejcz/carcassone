@@ -1,6 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 class TilesSetup {
@@ -9,7 +9,6 @@ class TilesSetup {
 
     fun remainingTiles(): RemainingTiles = RemainingTilesFromSequence(deck)
 
-    @Synchronized
     fun addOnTop(topTiles: List<Tile>) {
         deck = topTiles + deck
     }
@@ -55,7 +54,6 @@ class TilesSetup {
             1 * TileX
         ).flatten()
     }
-
 }
 
 private operator fun Int.times(tile: Tile): List<Tile> = (1..this).map { tile }

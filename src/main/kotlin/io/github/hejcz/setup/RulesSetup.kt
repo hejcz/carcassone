@@ -1,6 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.*
+import io.github.hejcz.basic.rule.*
 import io.github.hejcz.core.*
 import kotlin.reflect.*
 
@@ -44,8 +44,8 @@ class RulesSetup {
 
         private val BASIC_END_RULES: List<EndRule> =
             listOf(
-                RewardIncompleteCastles(IncompleteCastleScoring),
-                RewardIncompleteRoads(BasicRoadScoring),
+                RewardIncompleteCastle(IncompleteCastleScoring),
+                RewardIncompleteRoad(BasicRoadScoring),
                 RewardIncompleteCloister,
                 RewardPeasants
             )

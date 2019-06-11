@@ -17,7 +17,7 @@ open class Castle(
                 castleExplorer.parts().flatMap { castle ->
                     state.players.map { player -> Pair(player.id, player.knightOn(castle)) }
                         .filter { (_, knight) -> knight != null }
-                        .map { (id, knight) -> FoundPiece(id, knight!!.piece, castle.position, castle.direction) }
+                        .map { (id, knight) -> FoundPiece(id, knight!!, castle.position, castle.direction) }
                 }.toSet(),
                 castleExplorer.parts(),
                 castleExplorer.positions().map { state.tileAt(it) }.count { it.hasEmblem() }
@@ -27,6 +27,8 @@ open class Castle(
     }
 
     fun countEmblemsAndTiles() = emblems + tilesCount
+
+    fun piecesOf(playerId: Long) = pieces.filter { piece -> piece.playerId == playerId }.map { it.pieceOnBoard }.toSet()
 }
 
 private fun Player.knightOn(element: PositionedDirection): PieceOnBoard? =

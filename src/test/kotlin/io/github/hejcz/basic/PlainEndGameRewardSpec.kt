@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles
@@ -81,7 +81,5 @@ object PlainEndGameRewardSpec : Spek({
             events shouldNotContain PlayerScored(2, 3, emptySet())
             events shouldContain PlayerScored(1, 3, emptySet())
         }
-
     }
-
 })

@@ -2,9 +2,9 @@ package io.github.hejcz.core
 
 sealed class GameEvent
 
-data class OccupiedAreaCompleted(val playerId: Long, val returnedPieces: Collection<Piece>) : GameEvent()
+data class OccupiedAreaCompleted(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
 
-data class PlayerScored(val playerId: Long, val score: Int, val returnedPieces: Collection<Piece>) : GameEvent()
+data class PlayerScored(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
 
 data class PlaceTile(val tileId: String, val playerId: Long) : GameEvent()
 

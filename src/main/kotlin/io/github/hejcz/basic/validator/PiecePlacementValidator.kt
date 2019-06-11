@@ -1,4 +1,4 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.validator
 
 import io.github.hejcz.core.*
 

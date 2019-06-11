@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles
@@ -74,9 +74,6 @@ object PutPieceValidatorSpec : Spek({
             val game = game()
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Left)))) shouldContain PiecePlacedInInvalidPlace
-
         }
-
     }
-
 })

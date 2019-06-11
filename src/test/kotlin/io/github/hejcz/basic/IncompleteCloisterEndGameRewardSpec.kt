@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
@@ -81,7 +81,6 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(PutPiece(SmallPiece, Monk)) shouldContain PlayerScored(1, 8, emptySet())
         }
 
-
         it("should detect two incomplete cloisters of different players with 7/8 and 6/8 tiles surrounding tiles respectively") {
             val game = multiPlayer(TileD, TileW, TileV, TileE, TileE, TileB, TileB, TileH, TileK)
             game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
@@ -130,7 +129,5 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             val events = game.dispatch(SkipPiece)
             events shouldEqual listOf(PlayerScored(1, 8, emptySet()), PlayerScored(1, 8, emptySet()))
         }
-
     }
-
 })

@@ -1,6 +1,6 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.rule
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 object RewardIncompleteCloister : EndRule {

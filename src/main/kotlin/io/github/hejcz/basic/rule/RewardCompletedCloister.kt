@@ -1,13 +1,13 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.rule
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 object RewardCompletedCloister : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state.recentPosition, state)
-        is PutPiece -> afterPiecePlaced(state, command.role)
+        is PutPiece -> afterPiecePlaced(state, command.piece, command.role)
         else -> emptySet()
     }
 
@@ -16,13 +16,13 @@ object RewardCompletedCloister : Rule {
             .filter { state.tileAt(it).hasCloister() }
             .filter { isSurrounded(state, it) }
             .mapNotNull { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
-            .map { (player, pieceOnBoard) -> PlayerScored(player.id, 9, setOf(pieceOnBoard.piece)) }
+            .map { (player, pieceOnBoard) -> PlayerScored(player.id, 9, setOf(pieceOnBoard)) }
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
         state.players.mapNotNull { player -> player.pieceOn(completedCloisterPosition, Monk)?.let { Pair(player, it) } }
             .firstOrNull()
 
-    private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> =
+    private fun afterPiecePlaced(state: State, piece: Piece, role: Role): Collection<GameEvent> =
         when (role) {
             !is Monk -> emptySet()
             else -> when {
@@ -30,7 +30,7 @@ object RewardCompletedCloister : Rule {
                     PlayerScored(
                         state.currentPlayerId(),
                         9,
-                        setOf(SmallPiece)
+                        setOf(PieceOnBoard(state.recentPosition, piece, role))
                     )
                 )
                 else -> emptySet()

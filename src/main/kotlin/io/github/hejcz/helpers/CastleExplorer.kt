@@ -1,18 +1,15 @@
 package io.github.hejcz.helpers
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 class CastleExplorer(private val state: State, private val initial: PositionedDirection) {
     private val visited: MutableSet<PositionedDirection> = mutableSetOf()
     private var isCompleted = true
 
-    @Synchronized
     fun explore() = when {
         visited.isNotEmpty() -> throw IllegalStateException("Castle explorer should not be reused")
-        else -> {
-            doExplore(initial)
-        }
+        else -> doExplore(initial)
     }
 
     fun isCompleted() = isCompleted

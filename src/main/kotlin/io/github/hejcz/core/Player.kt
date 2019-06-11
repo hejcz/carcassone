@@ -22,8 +22,8 @@ data class Player(val id: Long, val order: Int, private val initialPieces: List<
 
     fun pieces(): Set<PieceOnBoard> = unavailablePieces.toSet()
 
-    // TODO pieces are not removed from unavailablePieces so they are considered in end game scoring
-    fun returnPieces(returnedPieces: Collection<Piece>) {
-        availablePieces.addAll(returnedPieces.map { SmallPiece })
+    fun returnPieces(returnedPieces: Collection<PieceOnBoard>) {
+        availablePieces.addAll(returnedPieces.map { it.piece })
+        unavailablePieces.removeAll(returnedPieces)
     }
 }

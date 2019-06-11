@@ -1,6 +1,6 @@
 package io.github.hejcz.inn
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
 import io.github.hejcz.inn.tiles.*
@@ -18,7 +18,8 @@ object InnAndCathedralsExtensionSpec : Spek({
     fun multiPlayer(vararg tiles: Tile) = Game(
         setOf(
             Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, SmallPiece, SmallPiece, BigPiece)),
-            Player(id = 2, order = 2, initialPieces = listOf(SmallPiece, SmallPiece, SmallPiece, BigPiece))),
+            Player(id = 2, order = 2, initialPieces = listOf(SmallPiece, SmallPiece, SmallPiece, BigPiece))
+        ),
         InnAndCathedralsTestGameSetup(TestBasicRemainingTiles(*tiles))
     )
 
@@ -31,13 +32,13 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 12, listOf(SmallPiece))
+            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle without emblem and without cathedral") {
             val game = singlePlayer(TileD, TileD)
             game.dispatch(PutTile(Position(0, 1), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 4, listOf(SmallPiece))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
     }
 
@@ -51,7 +52,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 15, listOf(SmallPiece))
+            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 15, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("bigger castle with cathedral") {
@@ -64,7 +65,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(2, 1), Rotation270))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 18, listOf(SmallPiece))
+            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 18, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle with two cathedral is treated the same as with single cathedral") {
@@ -81,7 +82,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 24, listOf(SmallPiece))
+            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 24, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle with cathedral and emblem") {
@@ -98,7 +99,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 27, listOf(SmallPiece))
+            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 27, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle with cathedral and multiple emblem") {
@@ -117,9 +118,8 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 33, listOf(SmallPiece))
+            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 33, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
-
     }
 
     describe("should score 0 points per unfinished castle with cathedral") {
@@ -143,9 +143,8 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
-            game.dispatch(SkipPiece)  shouldEqual emptyList()
+            game.dispatch(SkipPiece) shouldEqual emptyList()
         }
-
     }
 
     describe("should score 1 points per unfinished castle without cathedral") {
@@ -169,9 +168,8 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
-            game.dispatch(SkipPiece)  shouldContain PlayerScored(1, 7, emptySet())
+            game.dispatch(SkipPiece) shouldContain PlayerScored(1, 7, emptySet())
         }
-
     }
 
     describe("big piece") {
@@ -197,9 +195,9 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
-            events shouldContain PlayerScored(1, 12, listOf(BigPiece))
-            events shouldNotContain PlayerScored(2, 12, listOf(SmallPiece))
-            events shouldContain OccupiedAreaCompleted(2, listOf(SmallPiece))
+            events shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(1, 0), BigPiece, Knight(Up))))
+            events shouldNotContain PlayerScored(2, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            events shouldContain OccupiedAreaCompleted(2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("draws with 2 small pieces") {
@@ -213,22 +211,20 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, 1), Rotation180))
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(-1, 1), Rotation90))
-            events shouldContain PlayerScored(1, 16, listOf(SmallPiece, SmallPiece))
-            events shouldContain PlayerScored(2, 16, listOf(BigPiece))
+            events shouldContain PlayerScored(1, 16, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)), PieceOnBoard(Position(-1, 0), SmallPiece, Knight(Up))))
+            events shouldContain PlayerScored(2, 16, setOf(PieceOnBoard(Position(0, 1), BigPiece, Knight(Down))))
         }
-
     }
 
     describe("should score 2 points for road tile if there is one inn near road") {
 
-        it ("small road") {
+        it("small road") {
             val game = singlePlayer(TileEC, TileEF)
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
             val events = game.dispatch(PutTile(Position(-1, 0), NoRotation))
-            events shouldContain PlayerScored(1, 6, listOf(SmallPiece))
+            events shouldContain PlayerScored(1, 6, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
         }
-
     }
 
     describe("should score 1 points for road tile if there is no inn near road") {
@@ -238,31 +234,46 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
             val events = game.dispatch(PutTile(Position(-1, 0), NoRotation))
-            events shouldContain PlayerScored(1, 3, listOf(SmallPiece))
+            events shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
         }
-
     }
 
     describe("should score 0 points for road tile if there is one inn near incomplete road") {
 
-        it ("small road") {
+        it("small road") {
             val game = singlePlayer(TileEC)
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             val events = game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
             events shouldEqual emptyList()
         }
-
     }
 
     describe("should score 1 points for road tile if there is no inn near incomplete road") {
 
-        it ("small road") {
+        it("small road") {
             val game = singlePlayer(TileW)
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             val events = game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
             events shouldContain PlayerScored(1, 2, emptySet())
         }
-
     }
 
+    describe("big piece") {
+
+        it("should be returned if road is finished") {
+            val game = singlePlayer(TileL, TileU)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(BigPiece, Brigand(Left)))
+            game.dispatch(PutTile(Position(-1, 0), Rotation90))
+            game.dispatch(PutPiece(BigPiece, Peasant(Location(Up)))) shouldContain NoMappleAvailable(BigPiece)
+        }
+
+        it("should be returned if road is finished") {
+            val game = singlePlayer(TileL, TileL)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(BigPiece, Brigand(Left)))
+            game.dispatch(PutTile(Position(-1, 0), NoRotation))
+            game.dispatch(PutPiece(BigPiece, Brigand(Left))) shouldNotContain NoMappleAvailable(BigPiece)
+        }
+    }
 })

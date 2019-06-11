@@ -1,6 +1,6 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 object AbbotPickedUp : Rule {
@@ -13,7 +13,7 @@ object AbbotPickedUp : Rule {
     private fun afterAbbotPicked(state: State, position: Position): Collection<GameEvent> =
         state.players.map { player -> Pair(player, player.pieceOn(position, Abbot)) }
             .filter { (_, piece) -> piece != null }
-            .map { (player, piece) -> PlayerScored(player.id, score(state, piece!!.position), setOf(AbbotPiece)) }
+            .map { (player, piece) -> PlayerScored(player.id, score(state, piece!!.position), setOf(PieceOnBoard(position, AbbotPiece, Abbot))) }
 
     private fun score(state: State, cloisterPosition: Position): Int =
         1 + cloisterPosition.surrounding().count { state.tileAt(it) !is NoTile }

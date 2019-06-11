@@ -9,13 +9,13 @@ data class Road(
 ) {
 
     fun createPlayerScoredEvent(playerId: Long, score: Int) =
-        PlayerScored(playerId, score, List(pieces.count { it.playerId == playerId }) { SmallPiece })
+        PlayerScored(playerId, score, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
 
     fun createPlayerScoredEventWithoutPieces(playerId: Long, score: Int) =
         PlayerScored(playerId, score, emptySet())
 
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
-        OccupiedAreaCompleted(playerId, List(pieces.count { it.playerId == playerId }) { SmallPiece })
+        OccupiedAreaCompleted(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
 
     companion object {
         fun from(state: State, roadExplorer: RoadExplorer) =
@@ -25,7 +25,7 @@ data class Road(
                 roadExplorer.parts().flatMap { road ->
                     state.players.map { player -> Pair(player.id, player.brigandOn(road)) }
                         .filter { (_, brigand) -> brigand != null }
-                        .map { (id, brigand) -> FoundPiece(id, brigand!!.piece, road.position, road.direction) }
+                        .map { (id, brigand) -> FoundPiece(id, brigand!!, road.position, road.direction) }
                     }.toSet()
             )
 

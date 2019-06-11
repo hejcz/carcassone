@@ -32,7 +32,6 @@ object PutRiverTileValidator : CommandValidator {
         recentRiver: Directions,
         currentRiver: Directions
     ): Boolean =
-        recentTileDirection.opposite().left() in recentRiver && recentTileDirection.right() in currentRiver
-            || recentTileDirection.opposite().right() in recentRiver && recentTileDirection.left() in currentRiver
-
+        recentTileDirection.opposite().left() in recentRiver && recentTileDirection.right() in currentRiver ||
+            recentTileDirection.opposite().right() in recentRiver && recentTileDirection.left() in currentRiver
 }

@@ -11,6 +11,10 @@ repositories {
     maven { url "https://dl.bintray.com/spekframework/spek-dev" }
 }
 
+configurations {
+    ktlint
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation 'org.amshove.kluent:kluent:1.4'
@@ -18,6 +22,7 @@ dependencies {
     testImplementation 'org.spekframework.spek2:spek-dsl-jvm:2.0.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
     testRuntimeOnly 'org.spekframework.spek2:spek-runner-junit5:2.0.1'
+    ktlint "com.pinterest:ktlint:0.33.0"
 }
 
 compileKotlin {
@@ -34,4 +39,21 @@ test {
     useJUnitPlatform {
         includeEngines 'spek2'
     }
+}
+
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt"
+}
+
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt"
 }

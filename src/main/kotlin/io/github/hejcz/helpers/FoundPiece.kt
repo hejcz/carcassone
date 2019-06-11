@@ -4,7 +4,9 @@ import io.github.hejcz.core.*
 
 data class FoundPiece(
     override val playerId: Long,
-    override val piece: Piece,
+    val pieceOnBoard: PieceOnBoard,
     val position: Position,
     val direction: Direction
-): PieceOnObject
+) : PieceOnObject {
+    override val piece: Piece = pieceOnBoard.piece
+}

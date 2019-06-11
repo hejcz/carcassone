@@ -1,6 +1,6 @@
 package io.github.hejcz.helpers
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
 private data class LocationOnPosition(val position: Position, val location: Location)
@@ -32,5 +32,4 @@ class GreenFieldExplorer(
             }
         }
     }
-
 }

@@ -1,5 +1,6 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.rule
 
+import io.github.hejcz.basic.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helpers.*
 
@@ -11,8 +12,8 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         else -> emptySet()
     }
 
-    private fun afterTilePlaced(state: State): Collection<GameEvent> {
-        return state.castlesDirections(state.recentPosition)
+    private fun afterTilePlaced(state: State): Collection<GameEvent> =
+        state.castlesDirections(state.recentPosition)
             .asSequence()
             .map { explore(state, state.recentPosition, it) }
             .distinctBy { it.elements }
@@ -20,13 +21,13 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
             .onEach { state.addCompletedCastle(CompletedCastle(it.elements)) }
             .filter { it.pieces.isNotEmpty() }
             .toList()
-            .flatMap { exploredCastle ->
-                val (winners, losers) = WinnerSelector.find(exploredCastle.pieces)
-                val score = castleScoring.score(state, exploredCastle)
-                winners.ids.map { id ->
-                    PlayerScored(id, score, exploredCastle.pieces.filter { piece -> piece.playerId == id }.map { it.piece })} +
-                        losers.ids.map { id -> OccupiedAreaCompleted(id, exploredCastle.pieces.filter { piece -> piece.playerId == id }.map { it.piece })}
-            }
+            .flatMap { generateEvents(it, state) }
+
+    private fun generateEvents(castle: Castle, state: State): List<GameEvent> {
+        val (winners, losers) = WinnerSelector.find(castle.pieces)
+        val score = castleScoring.score(state, castle)
+        return winners.ids.map { id -> PlayerScored(id, score, castle.piecesOf(id)) } +
+            losers.ids.map { id -> OccupiedAreaCompleted(id, castle.piecesOf(id)) }
     }
 
     private fun State.castlesDirections(position: Position) = listOf(Up, Right, Down, Left)
@@ -44,16 +45,15 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         val processedCastle =
             ProcessedCastle(castle.completed, castle.tilesCount, state.currentPlayerId(), 1, castle.emblems)
         val score = score(processedCastle)
-        return setOf(PlayerScored(processedCastle.playerId, score, (1..processedCastle.piecesCount).map { piece }))
+        // if castle is finished and player could put piece then this is the only one piece on castle
+        return setOf(PlayerScored(processedCastle.playerId, score, setOf(PieceOnBoard(state.recentPosition, piece, role))))
     }
 
     private fun score(processedCastle: ProcessedCastle) = (processedCastle.tilesCount + processedCastle.emblems) * 2
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Castle {
-        val exploredCastle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
-        exploredCastle.explore()
-        return Castle.from(state, exploredCastle)
+        val castle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
+        castle.explore()
+        return Castle.from(state, castle)
     }
-
 }
-

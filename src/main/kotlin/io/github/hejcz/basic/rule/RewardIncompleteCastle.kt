@@ -1,19 +1,19 @@
-package io.github.hejcz.basic
+package io.github.hejcz.basic.rule
 
+import io.github.hejcz.basic.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helpers.*
 
-class RewardIncompleteCastles(private val castleScoring: CastleScoring) : EndRule {
+class RewardIncompleteCastle(private val castleScoring: CastleScoring) : EndRule {
 
     override fun apply(state: State) = state.filterPieces { it is Knight }
         .map { testCastle(state, it.position, (it.role as Knight).direction) }
         .distinctBy { it.elements }
-        .flatMap { exploredCastle ->
-            val score = castleScoring.score(state, exploredCastle)
-            when (score) {
+        .flatMap { castle ->
+            when (val score = castleScoring.score(state, castle)) {
                 0 -> emptyList()
                 else -> {
-                    val (winners, _) = WinnerSelector.find(exploredCastle.pieces)
+                    val (winners, _) = WinnerSelector.find(castle.pieces)
                     winners.ids.map { id -> PlayerScored(id, score, emptySet()) }
                 }
             }
@@ -23,9 +23,8 @@ class RewardIncompleteCastles(private val castleScoring: CastleScoring) : EndRul
         if (startingDirection !in state.tileAt(startingPosition).exploreCastle(startingDirection)) {
             return Castle.empty()
         }
-        val exploredCastle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
-        exploredCastle.explore()
-        return Castle.from(state, exploredCastle)
+        val castle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
+        castle.explore()
+        return Castle.from(state, castle)
     }
-
 }

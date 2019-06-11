@@ -1,4 +1,4 @@
-package io.github.hejcz.abbot;
+package io.github.hejcz.abbot
 
 import io.github.hejcz.core.*
 

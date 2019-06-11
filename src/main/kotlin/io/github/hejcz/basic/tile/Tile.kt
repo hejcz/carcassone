@@ -1,4 +1,4 @@
-package io.github.hejcz.basic.tiles
+package io.github.hejcz.basic.tile
 
 import io.github.hejcz.core.*
 
@@ -9,9 +9,9 @@ interface Tile : GreenFieldExplorable {
     fun hasCloister(): Boolean = false
     fun hasEmblem(): Boolean = false
     fun isValidNeighborFor(other: Tile, direction: Direction): Boolean =
-        direction in exploreCastle(direction) && direction.opposite() in other.exploreCastle(direction.opposite())
-            || direction in exploreRoad(direction) && direction.opposite() in other.exploreRoad(direction.opposite())
-            || Location(direction) in exploreGreenFields(Location(direction)) && Location(direction.opposite()) in other.exploreGreenFields(Location(direction.opposite()))
+        direction in exploreCastle(direction) && direction.opposite() in other.exploreCastle(direction.opposite()) ||
+            direction in exploreRoad(direction) && direction.opposite() in other.exploreRoad(direction.opposite()) ||
+            Location(direction) in exploreGreenFields(Location(direction)) && Location(direction.opposite()) in other.exploreGreenFields(Location(direction.opposite()))
 
     fun name() = javaClass.simpleName.substring(4)
     fun rotate(rotation: Rotation): Tile = when (rotation) {

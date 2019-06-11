@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles
@@ -29,7 +29,5 @@ object IncompleteCastleEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 3, emptySet())
         }
-
     }
-
 })

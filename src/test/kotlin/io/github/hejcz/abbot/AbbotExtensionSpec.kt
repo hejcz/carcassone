@@ -1,6 +1,6 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.AbbotTestGameSetup
 import io.github.hejcz.helper.TestBasicRemainingTiles
@@ -98,7 +98,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -2), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -2), NoRotation)) shouldContain PlayerScored(1, 9, setOf(AbbotPiece))
+            game.dispatch(PutTile(Position(1, -2), NoRotation)) shouldContain PlayerScored(1, 9, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Monk)))
         }
 
         it("should score for Abbot after finished garden") {
@@ -117,7 +117,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -2), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -2), NoRotation)) shouldContain PlayerScored(1, 9, setOf(AbbotPiece))
+            game.dispatch(PutTile(Position(1, -2), NoRotation)) shouldContain PlayerScored(1, 9, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot)))
         }
 
         it("should score for Abbot added as the last tile before garden completion") {
@@ -137,7 +137,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, -2), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -1), Rotation180)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(AbbotPiece, Abbot)) shouldContain PlayerScored(1, 9, setOf(AbbotPiece))
+            game.dispatch(PutPiece(AbbotPiece, Abbot)) shouldContain PlayerScored(1, 9, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot)))
         }
 
         it("should score for incomplete garden at the game end") {
@@ -163,7 +163,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, -1), Rotation90)).shouldContainSelectPieceOnly()
             game.dispatch(PutPiece(AbbotPiece, Abbot)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -2), Rotation180)).shouldContainSelectPieceOnly()
-            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 3, setOf(AbbotPiece))
+            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot)))
         }
 
         it("should be able to pick Abbot instead of placing piece") {
@@ -171,7 +171,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, -1), Rotation90)).shouldContainSelectPieceOnly()
             game.dispatch(PutPiece(AbbotPiece, Abbot)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, 1), Rotation180)).shouldContainSelectPieceOnly()
-            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 2, setOf(AbbotPiece))
+            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 2, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot)))
         }
 
         it("should be able to pick Abbot instead of placing piece") {
@@ -189,7 +189,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -2), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 8, setOf(AbbotPiece))
+            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot)))
         }
 
         it("should not be able to pick abbot from tile ha didn't put abbot on") {
@@ -205,9 +205,7 @@ object AbbotExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(PutPiece(AbbotPiece, Abbot)).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(1, -1), Rotation90)).shouldContainSelectPieceOnly()
-            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 3, setOf(AbbotPiece))
+            game.dispatch(PickUpAbbot(Position(0, -1))) shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot)))
         }
-
     }
-
 })

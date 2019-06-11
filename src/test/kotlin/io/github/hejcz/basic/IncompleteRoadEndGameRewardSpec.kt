@@ -1,6 +1,6 @@
 package io.github.hejcz.basic
 
-import io.github.hejcz.basic.tiles.*
+import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
@@ -75,7 +75,5 @@ object IncompleteRoadEndGameRewardSpec : Spek({
             events shouldContain PlayerScored(2, 7, emptySet())
             events shouldNotContain PlayerScored(1, 7, emptySet())
         }
-
     }
-
 })
