@@ -9,4 +9,6 @@ data class FoundPiece(
     val direction: Direction
 ) : PieceOnObject {
     override val piece: Piece = pieceOnBoard.piece
+
+    fun toPieceWithOwner() = OwnedPiece(pieceOnBoard, playerId)
 }

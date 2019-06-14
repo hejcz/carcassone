@@ -1,6 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.basic.tile.*
+import io.github.hejcz.helpers.*
 
 class State(
     var board: Board,
@@ -53,4 +54,11 @@ class State(
     fun currentTileName() = currentTile.name()
 
     fun piecesOnPosition(position: Position) = players.flatMap { it.piecesOn(position) }
+
+    fun returnPieces(pieces: Collection<OwnedPiece>): Collection<OwnedPiece> {
+        pieces.forEach { piece ->
+            players.find { it.id == piece.playerId }!!.returnPieces(setOf(piece.pieceOnBoard))
+        }
+        return pieces
+    }
 }

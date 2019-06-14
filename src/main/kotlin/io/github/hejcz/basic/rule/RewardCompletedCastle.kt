@@ -8,7 +8,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state)
-        is PutPiece -> afterPiecePlaced(state, command.piece, command.role)
+        is PutPiece -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
 
@@ -26,6 +26,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
     private fun generateEvents(castle: Castle, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(castle.pieces)
         val score = castleScoring.score(state, castle)
+        returnPieces(state, castle)
         return winners.ids.map { id -> PlayerScored(id, score, castle.piecesOf(id)) } +
             losers.ids.map { id -> OccupiedAreaCompleted(id, castle.piecesOf(id)) }
     }
@@ -34,7 +35,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         .flatMap { this.tileAt(position).exploreCastle(it) }
         .distinct()
 
-    private fun afterPiecePlaced(state: State, piece: Piece, role: Role): Collection<GameEvent> {
+    private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> {
         if (role !is Knight) {
             return emptySet()
         }
@@ -45,9 +46,13 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         val processedCastle =
             ProcessedCastle(castle.completed, castle.tilesCount, state.currentPlayerId(), 1, castle.emblems)
         val score = score(processedCastle)
+        val returnedPieces = returnPieces(state, castle)
         // if castle is finished and player could put piece then this is the only one piece on castle
-        return setOf(PlayerScored(processedCastle.playerId, score, setOf(PieceOnBoard(state.recentPosition, piece, role))))
+        return setOf(PlayerScored(processedCastle.playerId, score, returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
+
+    private fun returnPieces(state: State, castle: Castle) =
+        state.returnPieces(castle.pieces.map { it.toPieceWithOwner() })
 
     private fun score(processedCastle: ProcessedCastle) = (processedCastle.tilesCount + processedCastle.emblems) * 2
 

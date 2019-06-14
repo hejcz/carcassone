@@ -8,7 +8,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state.recentPosition, state)
-        is PutPiece -> afterPiecePlaced(state, command.piece, command.role)
+        is PutPiece -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
 
@@ -23,11 +23,12 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
     private fun generateEvents(road: Road, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(road.pieces)
         val score = scoring.score(state, road)
+        returnPieces(state, road)
         return winners.ids.map { id -> road.createPlayerScoredEvent(id, score) } +
                 losers.ids.map { id -> road.createOccupiedAreaCompletedEvent(id) }
     }
 
-    private fun afterPiecePlaced(state: State, piece: Piece, role: Role): Collection<GameEvent> {
+    private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> {
         if (role !is Brigand) {
             return emptySet()
         }
@@ -38,8 +39,12 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         val processedRoad =
             ProcessedRoad(road.tilesCount, state.currentPlayerId(), 1)
         // if road is finished and player could put piece then this is the only one piece on this road
-        return setOf(PlayerScored(processedRoad.playerId, score(processedRoad), setOf(PieceOnBoard(state.recentPosition, piece, role))))
+        val returnedPieces = returnPieces(state, road)
+        return setOf(PlayerScored(processedRoad.playerId, score(processedRoad), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
+
+    private fun returnPieces(state: State, road: Road) =
+        state.returnPieces(road.pieces.map { it.toPieceWithOwner() })
 
     private fun score(road: ProcessedRoad) = road.tilesCount
 

@@ -1,6 +1,5 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.*
 import io.github.hejcz.setup.*
 
 class Game(players: Collection<Player>, gameSetup: GameSetup) {
@@ -22,16 +21,12 @@ class Game(players: Collection<Player>, gameSetup: GameSetup) {
         handlers = gameSetup.handlers()
     }
 
-    private val listeners: Collection<EventListener> = setOf(ReturnPieceListener)
-
     fun dispatch(command: Command): Collection<GameEvent> {
         val errors = validate(command)
-        val events = when {
+        return when {
             errors.isNotEmpty() -> errors
             else -> handlers.firstOrNull { it.isApplicableTo(command) }?.handle(this, command) ?: setOf(InvalidCommand)
         }
-        listeners.forEach { listener -> events.forEach { event -> listener.handle(state, event) } }
-        return events
     }
 
     private fun validate(command: Command) =

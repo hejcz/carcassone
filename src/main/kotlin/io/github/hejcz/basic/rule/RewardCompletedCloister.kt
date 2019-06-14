@@ -2,6 +2,7 @@ package io.github.hejcz.basic.rule
 
 import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.helpers.*
 
 object RewardCompletedCloister : Rule {
 
@@ -16,6 +17,7 @@ object RewardCompletedCloister : Rule {
             .filter { state.tileAt(it).hasCloister() }
             .filter { isSurrounded(state, it) }
             .mapNotNull { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
+            .onEach { (player, pieceOnBoard) -> state.returnPieces(setOf(OwnedPiece(pieceOnBoard, player.id))) }
             .map { (player, pieceOnBoard) -> PlayerScored(player.id, 9, setOf(pieceOnBoard)) }
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
@@ -26,13 +28,11 @@ object RewardCompletedCloister : Rule {
         when (role) {
             !is Monk -> emptySet()
             else -> when {
-                isSurrounded(state, state.recentPosition) -> setOf(
-                    PlayerScored(
-                        state.currentPlayerId(),
-                        9,
-                        setOf(PieceOnBoard(state.recentPosition, piece, role))
-                    )
-                )
+                isSurrounded(state, state.recentPosition) -> {
+                    val returnedPieces =
+                        state.returnPieces(setOf(OwnedPiece(PieceOnBoard(state.recentPosition, piece, role), state.currentPlayerId())))
+                    setOf(PlayerScored(state.currentPlayerId(), 9, returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
+                }
                 else -> emptySet()
             }
         }
