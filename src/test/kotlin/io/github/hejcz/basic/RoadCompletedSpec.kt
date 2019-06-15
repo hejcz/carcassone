@@ -9,8 +9,7 @@ import org.spekframework.spek2.style.specification.*
 
 object RoadCompletedSpec : Spek({
 
-    // TODO fix tests names
-    describe("Castle completed rule") {
+    describe("Road completed rule") {
 
         fun singlePlayer(vararg tiles: Tile) =
             Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)))

@@ -7,6 +7,16 @@ sealed class Direction {
     abstract fun left(): Direction
     abstract fun right(): Direction
     abstract fun move(position: Position): Position
+
+    fun sameIfOneOf(vararg directions: Direction) = when {
+        this in directions -> setOf(this)
+        else -> emptySet()
+    }
+
+    fun allIfOneOf(vararg directions: Direction) = when {
+        this in directions -> directions.toSet()
+        else -> emptySet()
+    }
 }
 
 object Up : Direction() {

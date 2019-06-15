@@ -12,7 +12,6 @@ import org.spekframework.spek2.style.specification.describe
 
 object PutTileValidatorSpec : Spek({
 
-    // TODO fix tests names
     describe("Putting tile in invalid places") {
 
         fun singlePlayer(vararg tiles: Tile) =

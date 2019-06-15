@@ -7,7 +7,7 @@ interface Tile : GreenFieldExplorable {
     fun exploreRoad(direction: Direction): Directions
     fun hasGarden(): Boolean = false
     fun hasCloister(): Boolean = false
-    fun hasEmblem(): Boolean = false
+    fun hasEmblem(direction: Direction): Boolean = false
     fun isValidNeighborFor(other: Tile, direction: Direction): Boolean =
         direction in exploreCastle(direction) && direction.opposite() in other.exploreCastle(direction.opposite()) ||
             direction in exploreRoad(direction) && direction.opposite() in other.exploreRoad(direction.opposite()) ||

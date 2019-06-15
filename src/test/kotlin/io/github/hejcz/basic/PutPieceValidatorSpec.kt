@@ -11,7 +11,6 @@ import org.spekframework.spek2.style.specification.describe
 
 object PutPieceValidatorSpec : Spek({
 
-    // TODO fix tests names
     describe("Putting handlers in invalid places") {
 
         fun game() = Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD)))

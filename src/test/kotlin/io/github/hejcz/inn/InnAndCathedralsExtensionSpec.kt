@@ -276,4 +276,21 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutPiece(BigPiece, Brigand(Left))) shouldNotContain NoMappleAvailable(BigPiece)
         }
     }
+
+    describe("emblems") {
+
+        it("may exists on 1 out of 2 castles on a single tile - castle with emblem") {
+            val game = singlePlayer(TileEP, TileEJ)
+            game.dispatch(PutTile(Position(0, 1), Rotation90))
+            game.dispatch(PutPiece(SmallPiece, Knight(Right)))
+            game.dispatch(PutTile(Position(1, 1), Rotation270)) shouldContain PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Right))))
+        }
+
+        it("may exists on 1 out of 2 castles on a single tile - castle without emblem") {
+            val game = singlePlayer(TileEP)
+            game.dispatch(PutTile(Position(0, 1), Rotation270))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+        }
+
+    }
 })

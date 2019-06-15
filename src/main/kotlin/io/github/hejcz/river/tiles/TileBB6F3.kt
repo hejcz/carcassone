@@ -8,10 +8,7 @@ object TileBB6F3 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     setOf(Location(Left, LeftSide), Location(Right, RightSide))
 ) {
     override fun exploreRiver(): Directions = setOf(Left, Right)
-    override fun exploreCastle(direction: Direction): Directions = when (direction) {
-        Up, Down -> setOf(direction)
-        else -> emptySet()
-    }
+    override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Up, Down)
 
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }

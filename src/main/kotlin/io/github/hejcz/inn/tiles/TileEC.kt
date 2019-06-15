@@ -10,8 +10,5 @@ object TileEC : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
 ) {
     override fun isInnOnRoad(direction: Direction): Boolean = direction in setOf(Left, Right)
     override fun exploreCastle(direction: Direction): Directions = emptySet()
-    override fun exploreRoad(direction: Direction): Directions = when (direction) {
-        is Left, Down, Right -> setOf(direction)
-        else -> emptySet()
-    }
+    override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Down, Right)
 }

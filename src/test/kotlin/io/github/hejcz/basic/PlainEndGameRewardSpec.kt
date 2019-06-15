@@ -13,7 +13,6 @@ import org.spekframework.spek2.style.specification.describe
 
 object PlainEndGameRewardSpec : Spek({
 
-    // TODO fix tests names
     describe("Green field") {
 
         fun singlePlayer(vararg tiles: Tile) =

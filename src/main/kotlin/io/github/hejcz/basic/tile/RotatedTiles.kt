@@ -14,7 +14,7 @@ open class TileRotated90(private val tile: Tile) : Tile {
     override fun exploreRoad(direction: Direction): Directions =
         tile.exploreRoad(direction.left()).map { it.right() }
 
-    override fun hasEmblem(): Boolean = tile.hasEmblem()
+    override fun hasEmblem(direction: Direction): Boolean = tile.hasEmblem(direction.left())
 }
 
 open class TileRotated180(private val tile: Tile) : Tile {
@@ -29,7 +29,7 @@ open class TileRotated180(private val tile: Tile) : Tile {
     override fun exploreRoad(direction: Direction): Directions =
         tile.exploreRoad(direction.opposite()).map { it.opposite() }
 
-    override fun hasEmblem(): Boolean = tile.hasEmblem()
+    override fun hasEmblem(direction: Direction): Boolean = tile.hasEmblem(direction.opposite())
 }
 
 open class TileRotated270(private val tile: Tile) : Tile {
@@ -44,5 +44,5 @@ open class TileRotated270(private val tile: Tile) : Tile {
     override fun exploreRoad(direction: Direction): Directions =
         tile.exploreRoad(direction.right()).map { it.left() }
 
-    override fun hasEmblem(): Boolean = tile.hasEmblem()
+    override fun hasEmblem(direction: Direction): Boolean = tile.hasEmblem(direction.right())
 }

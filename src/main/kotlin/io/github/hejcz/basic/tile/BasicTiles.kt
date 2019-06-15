@@ -21,7 +21,7 @@ object TileB : Tile {
 }
 
 object TileC : Tile {
-    override fun hasEmblem(): Boolean = true
+    override fun hasEmblem(direction: Direction): Boolean = true
     override fun exploreCastle(direction: Direction) = setOf(Up, Down, Left, Right)
     override fun exploreGreenFields(location: Location) = emptySet<Location>()
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()
@@ -52,7 +52,7 @@ object TileF : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreCastle(direction: Direction): Directions = setOf(Left, Right)
 
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()
-    override fun hasEmblem(): Boolean = true
+    override fun hasEmblem(direction: Direction): Boolean = true
 }
 
 object TileG : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
@@ -67,10 +67,7 @@ object TileG : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
 object TileH : Tile {
     override fun exploreGreenFields(location: Location): Locations = setOf(Location(Up), Location(Down))
 
-    override fun exploreCastle(direction: Direction): Directions = when (direction) {
-        Left, Right -> setOf(direction)
-        else -> emptySet()
-    }
+    override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Left, Right)
 
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()
 }
@@ -80,10 +77,7 @@ object TileHWithGarden : Tile by TileWithGarden(TileH)
 object TileI : Tile {
     override fun exploreGreenFields(location: Location): Locations = setOf(Location(Left), Location(Down))
 
-    override fun exploreCastle(direction: Direction): Directions = when (direction) {
-        Up, Left -> setOf(direction)
-        else -> emptySet()
-    }
+    override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Up, Left)
 
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()
 }
@@ -112,10 +106,7 @@ object TileL : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     setOf(Location(Right, RightSide), Location(Down, LeftSide))
 ) {
     override fun exploreCastle(direction: Direction): Directions = setOf(Up)
-    override fun exploreRoad(direction: Direction): Directions = when (direction) {
-        Left, Right, Down -> setOf(direction)
-        else -> emptySet()
-    }
+    override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Right, Down)
 }
 
 object TileM : Tile {
@@ -124,7 +115,7 @@ object TileM : Tile {
     override fun exploreCastle(direction: Direction): Directions = setOf(Up, Right)
 
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()
-    override fun hasEmblem(): Boolean = true
+    override fun hasEmblem(direction: Direction): Boolean = true
 }
 
 object TileMWithGarden : Tile by TileWithGarden(TileM)
@@ -143,7 +134,7 @@ object TileO : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     setOf(Location(Down, RightSide), Location(Right, LeftSide)),
     setOf(Location(Down, LeftSide), Location(Right, RightSide))
 ) {
-    override fun hasEmblem(): Boolean = true
+    override fun hasEmblem(direction: Direction): Boolean = true
     override fun exploreCastle(direction: Direction): Directions = setOf(Up, Left)
     override fun exploreRoad(direction: Direction) = emptySet<Direction>()
 }
@@ -157,7 +148,7 @@ object TileP : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
 }
 
 object TileQ : Tile {
-    override fun hasEmblem(): Boolean = true
+    override fun hasEmblem(direction: Direction): Boolean = true
 
     override fun exploreGreenFields(location: Location): Locations = setOf(Location(Down))
 
@@ -183,7 +174,7 @@ object TileS : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreCastle(direction: Direction): Directions = setOf(Up, Left, Right)
 
     override fun exploreRoad(direction: Direction): Directions = setOf(Down)
-    override fun hasEmblem(): Boolean = true
+    override fun hasEmblem(direction: Direction): Boolean = true
 }
 
 object TileT : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
@@ -221,10 +212,7 @@ object TileW : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     setOf(Location(Right, RightSide), Location(Down, LeftSide))
 ) {
     override fun exploreCastle(direction: Direction): Directions = emptySet()
-    override fun exploreRoad(direction: Direction): Directions = when (direction) {
-        Left, Right, Down -> setOf(direction)
-        else -> emptySet()
-    }
+    override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Right, Down)
 }
 
 object TileX : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(

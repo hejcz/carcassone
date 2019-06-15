@@ -7,13 +7,6 @@ object TileEF : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     setOf(Location(Right, LeftSide)),
     setOf(Location(Down), Location(Right, RightSide))
 ) {
-    override fun exploreCastle(direction: Direction): Directions = when (direction) {
-        in setOf(Left, Up) -> setOf(Left, Up)
-        else -> emptySet()
-    }
-
-    override fun exploreRoad(direction: Direction): Directions = when (direction) {
-        Right -> setOf(Right)
-        else -> emptySet()
-    }
+    override fun exploreCastle(direction: Direction): Directions = direction.allIfOneOf(Left, Up)
+    override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Right)
 }

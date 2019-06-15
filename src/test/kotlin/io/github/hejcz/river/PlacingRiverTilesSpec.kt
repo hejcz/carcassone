@@ -12,7 +12,6 @@ import org.spekframework.spek2.style.specification.describe
 
 object PlacingRiverTilesSpec : Spek({
 
-    // TODO fix tests names
     describe("River tile") {
 
         fun singlePlayer(vararg tiles: Tile) =

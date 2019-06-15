@@ -11,7 +11,6 @@ import org.spekframework.spek2.style.specification.describe
 
 object SinglePieceInObjectSpec : Spek({
 
-    // TODO fix tests names
     describe("Putting handlers in taken object") {
 
         fun singlePlayer(vararg tiles: Tile) =
