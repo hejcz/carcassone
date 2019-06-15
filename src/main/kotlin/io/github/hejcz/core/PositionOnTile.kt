@@ -45,9 +45,8 @@ object Center : Direction() {
 }
 
 data class Position(val x: Int, val y: Int) {
-    fun surrounding(): Set<Position> = Position.adjacent.map { it(x, y) }.toSet()
-    fun relativeDirectionTo(other: Position) =
-        Position.relativePosition(Pair(x - other.x, y - other.y))
+    fun surrounding(): Set<Position> = adjacent.map { it(x, y) }.toSet()
+    fun relativeDirectionTo(other: Position) = relativePosition(Pair(x - other.x, y - other.y))
 
     companion object {
         private fun relativePosition(diff: Pair<Int, Int>) = when (diff) {
