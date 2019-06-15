@@ -4,13 +4,13 @@ import io.github.hejcz.basic.*
 import io.github.hejcz.core.*
 import io.github.hejcz.helpers.*
 
-class RewardIncompleteCastle(private val castleScoring: CastleScoring) : EndRule {
+class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
 
     override fun apply(state: State) = state.filterPieces { it is Knight }
         .map { testCastle(state, it.position, (it.role as Knight).direction) }
         .distinctBy { it.elements }
         .flatMap { castle ->
-            when (val score = castleScoring.score(state, castle)) {
+            when (val score = scoring.score(state, castle)) {
                 0 -> emptyList()
                 else -> {
                     val (winners, _) = WinnerSelector.find(castle.pieces)

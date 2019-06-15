@@ -36,17 +36,13 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         if (!road.completed) {
             return emptyList()
         }
-        val processedRoad =
-            ProcessedRoad(road.tilesCount, state.currentPlayerId(), 1)
         // if road is finished and player could put piece then this is the only one piece on this road
         val returnedPieces = returnPieces(state, road)
-        return setOf(PlayerScored(processedRoad.playerId, score(processedRoad), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
+        return setOf(PlayerScored(state.currentPlayerId(), scoring.score(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
 
     private fun returnPieces(state: State, road: Road) =
         state.returnPieces(road.pieces.map { it.toPieceWithOwner() })
-
-    private fun score(road: ProcessedRoad) = road.tilesCount
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Road {
         val road = RoadExplorer(state, PositionedDirection(startingPosition, startingDirection))

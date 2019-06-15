@@ -43,18 +43,14 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         if (!castle.completed) {
             return emptyList()
         }
-        val processedCastle =
-            ProcessedCastle(castle.completed, castle.tilesCount, state.currentPlayerId(), 1, castle.emblems)
-        val score = score(processedCastle)
+        val score = castleScoring.score(state, castle)
         val returnedPieces = returnPieces(state, castle)
         // if castle is finished and player could put piece then this is the only one piece on castle
-        return setOf(PlayerScored(processedCastle.playerId, score, returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
+        return setOf(PlayerScored(state.currentPlayerId(), score, returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
 
     private fun returnPieces(state: State, castle: Castle) =
         state.returnPieces(castle.pieces.map { it.toPieceWithOwner() })
-
-    private fun score(processedCastle: ProcessedCastle) = (processedCastle.tilesCount + processedCastle.emblems) * 2
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Castle {
         val castle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
