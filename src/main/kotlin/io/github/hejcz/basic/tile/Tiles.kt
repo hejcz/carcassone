@@ -68,7 +68,7 @@ object TileH : Tile {
 object TileHWithGarden : Tile by TileWithGarden(TileH)
 
 object TileI : Tile {
-    override fun exploreGreenFields(location: Location): Locations = setOf(Location(Left), Location(Down))
+    override fun exploreGreenFields(location: Location): Locations = setOf(Location(Right), Location(Down))
     override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Up, Left)
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }

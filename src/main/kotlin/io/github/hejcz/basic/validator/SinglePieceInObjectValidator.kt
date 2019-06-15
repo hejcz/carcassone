@@ -39,8 +39,7 @@ object SinglePieceInObjectValidator : CommandValidator {
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     is Peasant -> {
-                        val pieceAlreadyPresentOnObject = GreenFieldExplorer(state, state.recentPosition, role.location)
-                            .explore()
+                        val pieceAlreadyPresentOnObject = TailRecGreenFieldExplorer.explore(state, state.recentPosition, role.location)
                             .any { part ->
                                 state.players.any { player ->
                                     player.isPieceOn(

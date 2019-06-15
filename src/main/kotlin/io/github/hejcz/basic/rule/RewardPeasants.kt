@@ -11,7 +11,7 @@ object RewardPeasants : EndRule {
             .map { (playerId, piece) ->
                 Pair(
                     playerId,
-                    GreenFieldExplorer(state, piece.position, (piece.role as Peasant).location).explore()
+                    TailRecGreenFieldExplorer.explore(state, piece.position, (piece.role as Peasant).location)
                 )
             }
             .groupBy { (_, fieldParts) -> fieldParts }
@@ -36,10 +36,11 @@ object RewardPeasants : EndRule {
 
     private fun reachableCastles(position: Position, location: Location) =
         setOf(PositionedDirection(position, location.direction)) +
-            if (location.side == null)
-                setOf(
-                    PositionedDirection(position, location.direction.left()),
-                    PositionedDirection(position, location.direction.right())
-                )
-            else emptySet()
+                when {
+                    location.side == null -> setOf(
+                        PositionedDirection(position, location.direction.left()),
+                        PositionedDirection(position, location.direction.right())
+                    )
+                    else -> emptySet()
+                }
 }
