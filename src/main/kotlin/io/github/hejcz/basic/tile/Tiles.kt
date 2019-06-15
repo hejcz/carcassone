@@ -25,7 +25,7 @@ object TileC : Tile {
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileD : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileD : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Right, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Right, RightSide), Location(Down))
 ) {
@@ -42,7 +42,7 @@ object TileE : Tile {
 
 object TileEWithGarden : Tile by TileWithGarden(TileE)
 
-object TileF : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileF : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Up)),
     setOf(Location(Down))
 ) {
@@ -51,7 +51,7 @@ object TileF : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun hasEmblem(direction: Direction): Boolean = true
 }
 
-object TileG : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileG : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Up)),
     setOf(Location(Down))
 ) {
@@ -75,7 +75,7 @@ object TileI : Tile {
 
 object TileIWithGarden : Tile by TileWithGarden(TileI)
 
-object TileJ : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileJ : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left), Location(Right, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide))
 ) {
@@ -83,7 +83,7 @@ object TileJ : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = setOf(Down, Right)
 }
 
-object TileK : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileK : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Right), Location(Down, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide))
 ) {
@@ -91,7 +91,7 @@ object TileK : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = setOf(Down, Left)
 }
 
-object TileL : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileL : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Right, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide))
@@ -117,7 +117,7 @@ object TileN : Tile {
 
 object TileNWithGarden : Tile by TileWithGarden(TileN)
 
-object TileO : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileO : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Down, RightSide), Location(Right, LeftSide)),
     setOf(Location(Down, LeftSide), Location(Right, RightSide))
 ) {
@@ -126,7 +126,7 @@ object TileO : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileP : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileP : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Down, RightSide), Location(Right, LeftSide)),
     setOf(Location(Down, LeftSide), Location(Right, RightSide))
 ) {
@@ -149,7 +149,7 @@ object TileR : Tile {
 
 object TileRWithGarden : Tile by TileWithGarden(TileR)
 
-object TileS : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileS : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Down, RightSide)),
     setOf(Location(Down, LeftSide))
 ) {
@@ -158,7 +158,7 @@ object TileS : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun hasEmblem(direction: Direction): Boolean = true
 }
 
-object TileT : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileT : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Down, RightSide)),
     setOf(Location(Down, LeftSide))
 ) {
@@ -166,7 +166,7 @@ object TileT : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIf(Down)
 }
 
-object TileU : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileU : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left), Location(Up, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right), Location(Up, RightSide), Location(Down, LeftSide))
 ) {
@@ -176,7 +176,7 @@ object TileU : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
 
 object TileUWithGarden : Tile by TileWithGarden(TileU)
 
-object TileV : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileV : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Left, RightSide), Location(Down, LeftSide), Location(Up), Location(Right))
 ) {
@@ -186,7 +186,7 @@ object TileV : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
 
 object TileVWithGarden : Tile by TileWithGarden(TileV)
 
-object TileW : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileW : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Right, LeftSide), Location(Up)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide))
@@ -195,7 +195,7 @@ object TileW : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Right, Down)
 }
 
-object TileX : Tile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileX : Tile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Up, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),

@@ -3,7 +3,7 @@ package io.github.hejcz.river.tiles
 import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
-object TileBB6F10 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F10 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right, LeftSide), Location(Left), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide))
 ) {
@@ -13,7 +13,7 @@ object TileBB6F10 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorabl
     override fun hasGarden(): Boolean = true
 }
 
-object TileBB6F11 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F11 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Up, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),
@@ -40,7 +40,7 @@ object TileBB6F1 : RiverTile {
         setOf(Location(Up), Location(Down, RightSide), Location(Down, LeftSide), Location(Left), Location(Right))
 }
 
-object TileBB6F2 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F2 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),
@@ -51,7 +51,7 @@ object TileBB6F2 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun exploreRoad(direction: Direction): Directions = direction.sameIf(Down)
 }
 
-object TileBB6F3 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F3 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Right, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Right, RightSide))
 ) {
@@ -61,7 +61,7 @@ object TileBB6F3 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileBB6F4 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F4 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Right, LeftSide), Location(Up)),
     setOf(Location(Left, LeftSide), Location(Right, RightSide), Location(Down))
 ) {
@@ -70,7 +70,7 @@ object TileBB6F4 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileBB6F5 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F5 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Down, LeftSide)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide))
 ) {
@@ -79,7 +79,7 @@ object TileBB6F5 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileBB6F6 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F6 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up, LeftSide), Location(Down, RightSide), Location(Left)),
     setOf(Location(Up, RightSide), Location(Down, LeftSide), Location(Right))
 ) {
@@ -88,7 +88,7 @@ object TileBB6F6 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileBB6F7 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F7 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up, LeftSide), Location(Left, RightSide)),
     setOf(Location(Up, RightSide), Location(Down), Location(Left, LeftSide), Location(Right))
 ) {
@@ -97,7 +97,7 @@ object TileBB6F7 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileBB6F8 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F8 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Left, RightSide), Location(Right, LeftSide)),
     setOf(Location(Left, LeftSide)),
     setOf(Location(Right, RightSide))
@@ -108,7 +108,7 @@ object TileBB6F8 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable
     override fun hasCloister(): Boolean = true
 }
 
-object TileBB6F9 : RiverTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileBB6F9 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up, LeftSide), Location(Left, RightSide)),
     setOf(Location(Up, RightSide), Location(Right, LeftSide), Location(Left, LeftSide), Location(Down, RightSide)),
     setOf(Location(Right, RightSide), Location(Down, LeftSide))

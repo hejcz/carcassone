@@ -3,7 +3,7 @@ package io.github.hejcz.inn.tiles
 import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
 
-object TileEA : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEA : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right), Location(Down, LeftSide), Location(Left, RightSide)),
     setOf(Location(Down, RightSide), Location(Left, LeftSide))
 ) {
@@ -12,7 +12,7 @@ object TileEA : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = direction.allIfOneOf(Left, Down)
 }
 
-object TileEB : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEB : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right, LeftSide), Location(Left, RightSide)),
     setOf(Location(Down), Location(Right, RightSide), Location(Left, LeftSide))
 ) {
@@ -22,7 +22,7 @@ object TileEB : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun hasGarden(): Boolean = true
 }
 
-object TileEC : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEC : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right, LeftSide), Location(Left, RightSide)),
     setOf(Location(Down, RightSide), Location(Left, LeftSide)),
     setOf(Location(Down, LeftSide), Location(Right, RightSide))
@@ -32,7 +32,7 @@ object TileEC : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Down, Right)
 }
 
-object TileED : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileED : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right, LeftSide), Location(Left, RightSide)),
     setOf(Location(Down), Location(Right, RightSide), Location(Left, LeftSide))
 ) {
@@ -41,7 +41,7 @@ object TileED : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun hasCloister(): Boolean = true
 }
 
-object TileEE : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEE : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up, LeftSide), Location(Left, RightSide)),
     setOf(Location(Down, LeftSide), Location(Right, RightSide)),
     setOf(Location(Up, RightSide), Location(Right, LeftSide), Location(Down, RightSide), Location(Left, LeftSide))
@@ -50,7 +50,7 @@ object TileEE : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
-object TileEF : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEF : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right, LeftSide)),
     setOf(Location(Down), Location(Right, RightSide))
 ) {
@@ -58,7 +58,7 @@ object TileEF : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIf(Right)
 }
 
-object TileEG : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEG : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up)),
     setOf(Location(Down), Location(Right))
 ) {
@@ -73,7 +73,7 @@ object TileEH : InnTile {
     override fun hasGarden(): Boolean = true
 }
 
-object TileEI : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEI : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide)),
     setOf(Location(Left, LeftSide)),
     setOf(Location(Right, RightSide)),
@@ -84,7 +84,7 @@ object TileEI : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Right)
 }
 
-object TileEJ : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEJ : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left), Location(Down, RightSide)),
     setOf(Location(Right), Location(Down, LeftSide))
 ) {
@@ -100,7 +100,7 @@ object TileEK : InnTile {
     override fun hasCathedral(): Boolean = true
 }
 
-object TileEL : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEL : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),
     setOf(Location(Right, LeftSide), Location(Down, RightSide))
 ) {
@@ -111,7 +111,7 @@ object TileEL : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
 }
 
 
-object TileEM : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEM : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Down, LeftSide), Location(Right)),
     setOf(Location(Left, LeftSide), Location(Down, RightSide))
 ) {
@@ -121,7 +121,7 @@ object TileEM : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
 }
 
 
-object TileEN : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEN : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right), Location(Down, LeftSide)),
     setOf(Location(Down, RightSide))
 ) {
@@ -131,7 +131,7 @@ object TileEN : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
 }
 
 
-object TileEO : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEO : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Down))
 ) {
     override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Up, Left, Right)
@@ -139,7 +139,7 @@ object TileEO : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
 }
 
 
-object TileEP : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEP : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Down))
 ) {
     override fun exploreCastle(direction: Direction): Directions = when (direction) {
@@ -152,7 +152,7 @@ object TileEP : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
 }
 
 
-object TileEQ : InnTile, GreenFieldExplorable by RegionGreenFieldExplorable(
+object TileEQ : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up, LeftSide)),
     setOf(Location(Down, LeftSide)),
     setOf(Location(Up, RightSide)),

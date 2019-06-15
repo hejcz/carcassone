@@ -2,7 +2,7 @@ package io.github.hejcz.basic.tile
 
 import io.github.hejcz.core.*
 
-interface Tile : GreenFieldExplorable {
+interface Tile : TileWithGreenFields {
     fun exploreCastle(direction: Direction): Directions
     fun exploreRoad(direction: Direction): Directions
     fun hasGarden(): Boolean = false

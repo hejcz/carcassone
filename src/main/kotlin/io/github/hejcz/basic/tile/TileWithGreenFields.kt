@@ -2,6 +2,6 @@ package io.github.hejcz.basic.tile
 
 import io.github.hejcz.core.*
 
-interface GreenFieldExplorable {
+interface TileWithGreenFields {
     fun exploreGreenFields(location: Location): Locations
 }
