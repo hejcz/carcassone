@@ -1,5 +1,7 @@
 package io.github.hejcz.core
 
+import io.github.hejcz.core.tile.*
+
 typealias Directions = Collection<Direction>
 
 sealed class Direction {
@@ -51,6 +53,7 @@ data class Position(val x: Int, val y: Int) {
     fun surrounding(): Set<Position> = adjacent.map { it(x, y) }.toSet()
     fun relativeDirectionTo(other: Position) = relativePosition(Pair(x - other.x, y - other.y))
     fun moveIn(direction: Direction): Position = direction.move(this)
+    fun isSurrounded(state: State): Boolean = surrounding().all { state.tileAt(it) !is NoTile }
 
     companion object {
         private fun relativePosition(diff: Pair<Int, Int>) = when (diff) {

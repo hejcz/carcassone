@@ -5,14 +5,8 @@ import io.github.hejcz.core.*
 object RewardPeasants : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
-        return state.players.flatMap { player -> player.piecesOnBoard().map { piece -> Pair(player.id, piece) } }
-            .filter { (_, piece) -> piece.role is Peasant }
-            .map { (playerId, piece) ->
-                Pair(
-                    playerId,
-                    GreenFieldsExplorer.explore(state, piece.position, (piece.role as Peasant).location)
-                )
-            }
+        return state.all<Peasant>()
+            .map { (playerId, piece) -> playerId to GreenFieldsExplorer.explore(state, piece.position, (piece.role as Peasant).location) }
             .groupBy { (_, fieldParts) -> fieldParts }
             .values
             .flatMap { fieldParts ->

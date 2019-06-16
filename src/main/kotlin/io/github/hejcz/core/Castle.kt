@@ -1,15 +1,16 @@
 package io.github.hejcz.core
 
-open class Castle(
+import io.github.hejcz.inn.tiles.*
+
+data class Castle(
     val completed: Boolean,
     val parts: Set<PositionedDirection>,
     private val state: State? = null
 ) {
     val pieces by lazy {
         parts.flatMap { part ->
-            state!!.players.map { player -> Pair(player.id, player.pieceOn(part.position, Knight(part.direction))) }
-                .filter { (_, knight) -> knight != null }
-                .map { (id, knight) -> FoundPiece(id, knight!!, part.position, part.direction) }
+            state!!.findPieceAsSet(part.position, Knight(part.direction))
+                .map { (id, knight) -> FoundPiece(id, knight, part.position, part.direction) }
         }.toSet()
     }
 
@@ -34,5 +35,8 @@ open class Castle(
     fun countEmblemsAndTiles() = emblems + tilesCount
 
     fun piecesOf(playerId: Long) = pieces.filter { piece -> piece.playerId == playerId }.map { it.pieceOnBoard }.toSet()
+
+    fun hasCathedral(state: State) =
+        this.pieces.asSequence().map { state.tileAt(it.position) }.any { it is InnTile && it.hasCathedral() }
 }
 

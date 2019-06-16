@@ -14,7 +14,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         listOf(Up, Right, Down, Left)
             .map { explore(state, position, it) }
             .filter { it.completed }
-            .distinctBy { it.pieces }
+            .distinct()
             .filter { it.pieces.isNotEmpty() }
             .flatMap { generateEvents(it, state) }
 

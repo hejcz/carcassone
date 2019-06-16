@@ -9,10 +9,6 @@ class RulesSetup {
 
     private var endRules = BASIC_END_RULES
 
-    fun add(rule: Rule) {
-        rules = rules + rule
-    }
-
     fun add(vararg newRules: Rule) {
         rules = rules + newRules
     }

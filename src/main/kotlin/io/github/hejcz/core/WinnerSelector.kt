@@ -4,6 +4,9 @@ inline class Winners(val ids: Collection<Long> = emptySet())
 
 inline class Losers(val ids: Collection<Long> = emptySet())
 
+/**
+ * Determines winner or winners on some game object - castle, road etc.
+ */
 object WinnerSelector {
 
     fun find(pieces: Collection<PieceOnObject>): Pair<Winners, Losers> = when {

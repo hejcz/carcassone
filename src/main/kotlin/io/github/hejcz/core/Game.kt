@@ -14,7 +14,7 @@ class Game(players: Collection<Player>, gameSetup: GameSetup) {
     init {
         val tiles = gameSetup.tiles()
         val board = Board(mapOf(Position(0, 0) to tiles.next()))
-        state = State(board, players.map { playerWithPieces(it, gameSetup) }, tiles)
+        state = State(players.mapTo(mutableSetOf()) { playerWithPieces(it, gameSetup) }, tiles, board)
         validators = gameSetup.validators()
         rules = gameSetup.rules()
         endRules = gameSetup.endRules()

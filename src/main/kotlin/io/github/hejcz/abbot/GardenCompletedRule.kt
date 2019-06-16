@@ -15,12 +15,10 @@ object GardenCompletedRule : Rule {
         position.surrounding()
             .filter { state.tileAt(it).hasGarden() && it.isSurrounded(state) }
             .mapNotNull { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
-            .map { (player, pieceOnBoard) -> PlayerScored(player.id, 9, setOf(pieceOnBoard)) }
+            .map { (playerId, pieceOnBoard) -> PlayerScored(playerId, 9, setOf(pieceOnBoard)) }
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
-        state.players
-            .mapNotNull { player -> player.pieceOn(completedCloisterPosition, Abbot)?.let { Pair(player, it) } }
-            .firstOrNull()
+        state.findPiece(completedCloisterPosition, Abbot)
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> = when {
         role is Abbot && state.recentPosition.isSurrounded(state) ->
@@ -28,5 +26,4 @@ object GardenCompletedRule : Rule {
         else -> emptySet()
     }
 
-    private fun Position.isSurrounded(state: State): Boolean = this.surrounding().all { state.tileAt(it) !is NoTile }
 }

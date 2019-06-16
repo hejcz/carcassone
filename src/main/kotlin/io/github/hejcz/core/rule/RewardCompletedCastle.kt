@@ -14,7 +14,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         state.castlesDirections(state.recentPosition)
             .asSequence()
             .map { explore(state, state.recentPosition, it) }
-            .distinctBy { it.parts }
+            .distinct()
             .filter { it.completed }
             .onEach { state.addCompletedCastle(CompletedCastle(it.parts)) }
             .filter { it.pieces.isNotEmpty() }
@@ -28,10 +28,6 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         return winners.ids.map { id -> PlayerScored(id, score, castle.piecesOf(id)) } +
             losers.ids.map { id -> OccupiedAreaCompleted(id, castle.piecesOf(id)) }
     }
-
-    private fun State.castlesDirections(position: Position) = listOf(Up, Right, Down, Left)
-        .flatMap { this.tileAt(position).exploreCastle(it) }
-        .distinct()
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> {
         if (role !is Knight) {

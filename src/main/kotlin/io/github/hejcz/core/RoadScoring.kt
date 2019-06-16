@@ -12,9 +12,3 @@ val scoreRoadWithInn = { state: State, road: Road ->
         else -> 1
     }
 }
-
-// Inn extension
-private fun Road.hasInn(state: State) = this.pieces.any {
-    val tile = state.tileAt(it.position)
-    tile is InnTile && tile.isInnOnRoad(it.direction)
-}

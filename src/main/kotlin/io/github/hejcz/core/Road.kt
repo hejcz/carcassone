@@ -1,5 +1,7 @@
 package io.github.hejcz.core
 
+import io.github.hejcz.inn.tiles.*
+
 data class Road(
     val completed: Boolean,
     private val parts: Set<PositionedDirection>,
@@ -12,9 +14,8 @@ data class Road(
 
     val pieces by lazy {
         parts.flatMap { road ->
-            state!!.players.map { player -> Pair(player.id, player.pieceOn(road.position, Brigand(road.direction))) }
-                .filter { (_, brigand) -> brigand != null }
-                .map { (id, brigand) -> FoundPiece(id, brigand!!, road.position, road.direction) }
+            state!!.findPieceAsSet(road.position, Brigand(road.direction))
+                .map { (id, brigand) -> FoundPiece(id, brigand, road.position, road.direction) }
         }.toSet()
     }
 
@@ -26,6 +27,11 @@ data class Road(
 
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
         OccupiedAreaCompleted(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
+
+    fun hasInn(state: State) = this.pieces.any {
+        val tile = state.tileAt(it.position)
+        tile is InnTile && tile.isInnOnRoad(it.direction)
+    }
 
     companion object {
         fun from(state: State, parts: Set<PositionedDirection>, isCompleted: Boolean) =
