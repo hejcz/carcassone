@@ -25,7 +25,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 
     private fun generateEvents(castle: Castle, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(castle.pieces)
-        val score = castleScoring.score(state, castle)
+        val score = castleScoring(state, castle)
         returnPieces(state, castle)
         return winners.ids.map { id -> PlayerScored(id, score, castle.piecesOf(id)) } +
             losers.ids.map { id -> OccupiedAreaCompleted(id, castle.piecesOf(id)) }
@@ -43,7 +43,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         if (!castle.completed) {
             return emptyList()
         }
-        val score = castleScoring.score(state, castle)
+        val score = castleScoring(state, castle)
         val returnedPieces = returnPieces(state, castle)
         // if castle is finished and player could put piece then this is the only one piece on castle
         return setOf(PlayerScored(state.currentPlayerId(), score, returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))

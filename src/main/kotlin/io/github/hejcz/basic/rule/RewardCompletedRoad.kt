@@ -22,7 +22,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     private fun generateEvents(road: Road, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(road.pieces)
-        val score = scoring.score(state, road)
+        val score = scoring(state, road)
         returnPieces(state, road)
         return winners.ids.map { id -> road.createPlayerScoredEvent(id, score) } +
                 losers.ids.map { id -> road.createOccupiedAreaCompletedEvent(id) }
@@ -38,7 +38,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         }
         // if road is finished and player could put piece then this is the only one piece on this road
         val returnedPieces = returnPieces(state, road)
-        return setOf(PlayerScored(state.currentPlayerId(), scoring.score(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
+        return setOf(PlayerScored(state.currentPlayerId(), scoring(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
 
     private fun returnPieces(state: State, road: Road) =

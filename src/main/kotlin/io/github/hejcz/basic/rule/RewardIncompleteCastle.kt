@@ -10,7 +10,7 @@ class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
         .map { testCastle(state, it.position, (it.role as Knight).direction) }
         .distinctBy { it.parts }
         .flatMap { castle ->
-            when (val score = scoring.score(state, castle)) {
+            when (val score = scoring(state, castle)) {
                 0 -> emptyList()
                 else -> {
                     val (winners, _) = WinnerSelector.find(castle.pieces)

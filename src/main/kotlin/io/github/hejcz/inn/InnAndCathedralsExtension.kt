@@ -6,10 +6,10 @@ import io.github.hejcz.setup.*
 
 object InnAndCathedralsExtension : Extension {
     override fun modify(rulesSetup: RulesSetup) {
-        rulesSetup.replace(RewardCompletedCastle::class, RewardCompletedCastle(CompletedCastleWithCathedralScoring))
-        rulesSetup.replace(RewardIncompleteCastle::class, RewardIncompleteCastle(IncompleteCastleWithCathedralScoring))
-        rulesSetup.replace(RewardCompletedRoad::class, RewardCompletedRoad(InnRoadScoring))
-        rulesSetup.replace(RewardIncompleteRoad::class, RewardIncompleteRoad(InnRoadScoring))
+        rulesSetup.replace(RewardCompletedCastle::class, RewardCompletedCastle(scoreCompletedCastleWithCathedral))
+        rulesSetup.replace(RewardIncompleteCastle::class, RewardIncompleteCastle(scoreIncompleteCastleWithCathedral))
+        rulesSetup.replace(RewardCompletedRoad::class, RewardCompletedRoad(scoreRoadWithInn))
+        rulesSetup.replace(RewardIncompleteRoad::class, RewardIncompleteRoad(scoreRoadWithInn))
     }
 
     override fun modify(piecesSetup: PiecesSetup) = piecesSetup.add(BigPiece)

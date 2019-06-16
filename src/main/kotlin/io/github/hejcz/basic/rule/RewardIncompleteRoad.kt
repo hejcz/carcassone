@@ -12,7 +12,7 @@ class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
             .distinct()
             .flatMap { road: Road ->
                 val (winners, _) = WinnerSelector.find(road.pieces)
-                val score = scoring.score(state, road)
+                val score = scoring(state, road)
                 when (score) {
                     0 -> emptyList()
                     else -> winners.ids.map { playerId -> road.createPlayerScoredEventWithoutPieces(playerId, score) }

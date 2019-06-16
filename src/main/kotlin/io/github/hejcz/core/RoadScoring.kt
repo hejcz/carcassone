@@ -3,18 +3,12 @@ package io.github.hejcz.core
 import io.github.hejcz.helpers.*
 import io.github.hejcz.inn.tiles.*
 
-interface RoadScoring {
-    fun score(state: State, road: Road): Int
-}
+typealias RoadScoring = (State, Road) -> Int
 
-// Core game
-object BasicRoadScoring : RoadScoring {
-    override fun score(state: State, road: Road): Int = road.tilesCount
-}
+val scoreRoad = { _: State, road: Road -> road.tilesCount }
 
-// Inn extension
-object InnRoadScoring : RoadScoring {
-    override fun score(state: State, road: Road): Int = road.tilesCount * when {
+val scoreRoadWithInn = { state: State, road: Road ->
+    road.tilesCount * when {
         road.hasInn(state) -> if (road.completed) 2 else 0
         else -> 1
     }
