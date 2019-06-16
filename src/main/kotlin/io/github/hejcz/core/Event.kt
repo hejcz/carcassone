@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-sealed class GameEvent
+open class GameEvent
 
 data class OccupiedAreaCompleted(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
 

@@ -17,12 +17,12 @@ object CompletedCloisterDetectionSpec : Spek({
         fun singlePlayer(vararg tiles: Tile) = Game(
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) = Game(
             Players.twoPlayers(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         it("should detect completed cloister") {
             val game = singlePlayer(TileD, TileD, TileB, TileB, TileB, TileB, TileB, TileB)

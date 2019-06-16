@@ -16,7 +16,7 @@ object IncompleteCastleEndGameRewardSpec : Spek({
         fun singlePlayer(vararg tiles: Tile) = Game(
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         it("should give reward for incomplete castle") {
             val game = singlePlayer(TileG)

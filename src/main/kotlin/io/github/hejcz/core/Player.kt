@@ -1,7 +1,7 @@
 package io.github.hejcz.core
 
 data class Player(val id: Long, val order: Int, val initialPieces: List<Piece> = emptyList()) {
-    private val unavailablePieces: MutableSet<PieceOnBoard> = mutableSetOf()
+    private val unavailablePieces: MutableList<PieceOnBoard> = mutableListOf()
     private val availablePieces: MutableList<Piece> = initialPieces.toMutableList()
 
     fun putPiece(position: Position, piece: Piece, role: Role) {
@@ -25,5 +25,10 @@ data class Player(val id: Long, val order: Int, val initialPieces: List<Piece> =
     fun returnPieces(returnedPieces: Collection<PieceOnBoard>) {
         availablePieces.addAll(returnedPieces.map { it.piece })
         unavailablePieces.removeAll(returnedPieces)
+    }
+
+    fun removePiece(position: Position, piece: Piece, role: Role) {
+        availablePieces.add(piece)
+        unavailablePieces.remove(PieceOnBoard(position, piece, role))
     }
 }

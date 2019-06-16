@@ -18,7 +18,7 @@ object MappleAvailabilityValidatorSpec : Spek({
         fun playerWithTwoPieces() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, SmallPiece))
 
         fun game(player: Player, vararg tiles: Tile) =
-            Game(setOf(player), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(setOf(player), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("should not allow to put piece player does not have available") {
             val game = game(playerWithSinglePiece(), TileD, TileD)

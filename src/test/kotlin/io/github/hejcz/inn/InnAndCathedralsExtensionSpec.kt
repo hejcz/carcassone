@@ -13,7 +13,7 @@ object InnAndCathedralsExtensionSpec : Spek({
     fun singlePlayer(vararg tiles: Tile) = Game(
         setOf(Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, BigPiece))),
         InnAndCathedralsTestGameSetup(TestBasicRemainingTiles(*tiles))
-    )
+    ).apply { dispatch(Begin) }
 
     fun multiPlayer(vararg tiles: Tile) = Game(
         setOf(
@@ -21,7 +21,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             Player(id = 2, order = 2, initialPieces = listOf(SmallPiece, SmallPiece, SmallPiece, BigPiece))
         ),
         InnAndCathedralsTestGameSetup(TestBasicRemainingTiles(*tiles))
-    )
+    ).apply { dispatch(Begin) }
 
     describe("should score 2 points per castle and emblem in finished castle with cathedral") {
         it("castle with emblem and without cathedral") {

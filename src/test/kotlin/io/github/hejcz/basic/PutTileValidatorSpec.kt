@@ -15,13 +15,25 @@ object PutTileValidatorSpec : Spek({
     describe("Putting tile in invalid places") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("roads validation") {
             val game = singlePlayer(TileA)
             game.dispatch(PutTile(Position(1, 0), NoRotation)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("roads validation") {
+            val game = singlePlayer(TileA)
             game.dispatch(PutTile(Position(1, 0), Rotation180)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("roads validation") {
+            val game = singlePlayer(TileA)
             game.dispatch(PutTile(Position(1, 0), Rotation270)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("roads validation") {
+            val game = singlePlayer(TileA)
             game.dispatch(PutTile(Position(1, 0), Rotation90)).shouldContainSelectPieceOnly()
         }
 

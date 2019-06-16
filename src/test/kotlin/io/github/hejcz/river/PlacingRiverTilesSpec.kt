@@ -16,6 +16,7 @@ object PlacingRiverTilesSpec : Spek({
 
         fun singlePlayer(vararg tiles: Tile) =
             Game(Players.singlePlayer(), RiverTestGameSetup(TestRiverRemainingTiles(*tiles)))
+                .apply { dispatch(Begin) }
 
         it("Placing river tile") {
             val game = singlePlayer(TileBB6F6)
@@ -25,7 +26,15 @@ object PlacingRiverTilesSpec : Spek({
         it("Placing river tile in invalid place") {
             val game = singlePlayer(TileD)
             game.dispatch(PutTile(Position(1, 0), NoRotation)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("Placing river tile in invalid place") {
+            val game = singlePlayer(TileD)
             game.dispatch(PutTile(Position(-1, 0), Rotation90)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("Placing river tile in invalid place") {
+            val game = singlePlayer(TileD)
             game.dispatch(PutTile(Position(0, 1), Rotation180)) shouldContain TilePlacedInInvalidPlace
         }
 
@@ -41,8 +50,12 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Connecting river tiles invalid") {
             val game = singlePlayer(TileBB6F2)
-            game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldContain TilePlacedInInvalidPlace
             game.dispatch(PutTile(Position(0, -1), Rotation180)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("Connecting river tiles invalid") {
+            val game = singlePlayer(TileBB6F2)
+            game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldContain TilePlacedInInvalidPlace
         }
 
         it("Two consecutive river tiles can't turn in same direction") {
@@ -64,7 +77,15 @@ object PlacingRiverTilesSpec : Spek({
         it("River must be connected with previous river - it can't be adjacent by field e.g.") {
             val game = singlePlayer(TileBB6F7)
             game.dispatch(PutTile(Position(0, 1), NoRotation)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("River must be connected with previous river - it can't be adjacent by field e.g.") {
+            val game = singlePlayer(TileBB6F7)
             game.dispatch(PutTile(Position(-1, 0), NoRotation)) shouldContain TilePlacedInInvalidPlace
+        }
+
+        it("River must be connected with previous river - it can't be adjacent by field e.g.") {
+            val game = singlePlayer(TileBB6F7)
             game.dispatch(PutTile(Position(1, 0), Rotation90)) shouldContain TilePlacedInInvalidPlace
         }
 

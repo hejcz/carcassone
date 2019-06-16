@@ -15,12 +15,12 @@ object CompletedCastleDetectionSpec : Spek({
         fun singlePlayer(vararg tiles: Tile) = Game(
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) = Game(
             Players.twoPlayers(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         it("should not detect incomplete castle with knight") {
             val game = singlePlayer(TileD, TileB)

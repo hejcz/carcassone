@@ -14,10 +14,10 @@ object SinglePieceInObjectSpec : Spek({
     describe("Putting handlers in taken object") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) =
-            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("knights") {
             val game = singlePlayer(TileF, TileF)
