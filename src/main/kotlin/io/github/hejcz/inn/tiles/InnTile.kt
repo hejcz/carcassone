@@ -1,7 +1,7 @@
 package io.github.hejcz.inn.tiles
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 
 interface InnTile : Tile {
     fun isInnOnRoad(direction: Direction): Boolean = false

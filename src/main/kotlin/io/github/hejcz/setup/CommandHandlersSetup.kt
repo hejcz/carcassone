@@ -1,7 +1,7 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.handler.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.handler.*
 
 class CommandHandlersSetup {
     private var handlers = BASIC_HANDLERS

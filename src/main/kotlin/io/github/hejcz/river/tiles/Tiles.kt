@@ -1,7 +1,7 @@
 package io.github.hejcz.river.tiles
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 
 object TileBB6F10 : RiverTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right, LeftSide), Location(Left), Location(Down, RightSide)),

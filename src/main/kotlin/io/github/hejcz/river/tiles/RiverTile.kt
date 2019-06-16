@@ -1,7 +1,7 @@
 package io.github.hejcz.river.tiles
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 
 interface RiverTile : Tile {
     fun exploreRiver(): Directions

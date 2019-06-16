@@ -1,7 +1,7 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 
 object AbbotPickedUp : Rule {
 

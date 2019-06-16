@@ -1,7 +1,7 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.RemainingTiles
+import io.github.hejcz.core.tile.*
 import io.github.hejcz.river.tiles.*
 
 class TestBasicRemainingTiles(private val tiles: List<Tile>) : RemainingTiles {

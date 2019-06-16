@@ -1,7 +1,7 @@
 package io.github.hejcz.river
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
 import io.github.hejcz.river.tiles.*
 import io.github.hejcz.setup.TilesSetup

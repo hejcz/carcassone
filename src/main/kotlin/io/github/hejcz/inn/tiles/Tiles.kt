@@ -1,7 +1,7 @@
 package io.github.hejcz.inn.tiles
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 
 object TileEA : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right), Location(Down, LeftSide), Location(Left, RightSide)),

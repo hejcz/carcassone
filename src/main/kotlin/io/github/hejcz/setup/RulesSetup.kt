@@ -1,7 +1,7 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.rule.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.rule.*
 import kotlin.reflect.*
 
 class RulesSetup {

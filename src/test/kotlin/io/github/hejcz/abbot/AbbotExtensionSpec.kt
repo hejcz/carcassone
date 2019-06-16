@@ -1,7 +1,7 @@
 package io.github.hejcz.abbot
 
-import io.github.hejcz.basic.tile.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.AbbotTestGameSetup
 import io.github.hejcz.helper.TestBasicRemainingTiles
 import io.github.hejcz.helper.shouldContainPlaceTileOnly

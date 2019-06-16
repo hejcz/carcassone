@@ -1,7 +1,7 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.basic.validator.*
 import io.github.hejcz.core.*
+import io.github.hejcz.core.validator.*
 
 class ValidatorsSetup {
 

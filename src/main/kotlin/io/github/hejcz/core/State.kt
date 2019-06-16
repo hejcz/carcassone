@@ -1,7 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.basic.tile.*
-import io.github.hejcz.helpers.*
+import io.github.hejcz.core.tile.*
 
 class State(
     var board: Board,
@@ -61,4 +60,7 @@ class State(
         }
         return pieces
     }
+
+    fun filterPieces(test: (Role) -> Boolean): List<PieceOnBoard> =
+        players.flatMap { player -> player.piecesOnBoard().filter { piece -> test(piece.role) } }
 }
