@@ -16,9 +16,9 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         state.castlesDirections(state.recentPosition)
             .asSequence()
             .map { explore(state, state.recentPosition, it) }
-            .distinctBy { it.elements }
+            .distinctBy { it.parts }
             .filter { it.completed }
-            .onEach { state.addCompletedCastle(CompletedCastle(it.elements)) }
+            .onEach { state.addCompletedCastle(CompletedCastle(it.parts)) }
             .filter { it.pieces.isNotEmpty() }
             .toList()
             .flatMap { generateEvents(it, state) }
@@ -53,8 +53,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         state.returnPieces(castle.pieces.map { it.toPieceWithOwner() })
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Castle {
-        val castle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
-        castle.explore()
-        return Castle.from(state, castle)
+        val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)
+        return Castle.from(state, positionsToDirections, isCompleted)
     }
 }

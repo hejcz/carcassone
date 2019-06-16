@@ -8,7 +8,7 @@ class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
 
     override fun apply(state: State) = state.filterPieces { it is Knight }
         .map { testCastle(state, it.position, (it.role as Knight).direction) }
-        .distinctBy { it.elements }
+        .distinctBy { it.parts }
         .flatMap { castle ->
             when (val score = scoring.score(state, castle)) {
                 0 -> emptyList()
@@ -23,8 +23,7 @@ class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
         if (startingDirection !in state.tileAt(startingPosition).exploreCastle(startingDirection)) {
             return Castle.empty()
         }
-        val castle = CastleExplorer(state, PositionedDirection(startingPosition, startingDirection))
-        castle.explore()
-        return Castle.from(state, castle)
+        val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)
+        return Castle.from(state, positionsToDirections, isCompleted)
     }
 }

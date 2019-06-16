@@ -9,10 +9,9 @@ object SinglePieceInObjectValidator : CommandValidator {
             is PutPiece -> {
                 when (val role = command.role) {
                     is Knight -> {
-                        val explorer =
-                            CastleExplorer(state, PositionedDirection(state.recentPosition, role.direction))
-                        explorer.explore()
-                        val pieceAlreadyPresentOnObject = explorer.parts()
+                        val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, state.recentPosition, role.direction)
+                        val explorer = Castle.from(state, positionsToDirections, isCompleted)
+                        val pieceAlreadyPresentOnObject = explorer.parts
                             .any { part ->
                                 state.players.any { player ->
                                     player.isPieceOn(
@@ -24,22 +23,20 @@ object SinglePieceInObjectValidator : CommandValidator {
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     is Brigand -> {
-                        val explorer =
-                            RoadExplorer(state, PositionedDirection(state.recentPosition, role.direction))
-                        explorer.explore()
-                        val pieceAlreadyPresentOnObject = explorer.parts()
-                            .any { part ->
-                                state.players.any { player ->
-                                    player.isPieceOn(
-                                        part.position,
-                                        Brigand(part.direction)
-                                    )
-                                }
+                        val (parts, _) =
+                            RoadsExplorer.explore(state, state.recentPosition, role.direction)
+                        val pieceAlreadyPresentOnObject = parts.any { part ->
+                            state.players.any { player ->
+                                player.isPieceOn(
+                                    part.position,
+                                    Brigand(part.direction)
+                                )
                             }
+                        }
                         return if (pieceAlreadyPresentOnObject) setOf(PiecePlacedInInvalidPlace) else emptySet()
                     }
                     is Peasant -> {
-                        val pieceAlreadyPresentOnObject = TailRecGreenFieldExplorer.explore(state, state.recentPosition, role.location)
+                        val pieceAlreadyPresentOnObject = GreenFieldsExplorer.explore(state, state.recentPosition, role.location)
                             .any { part ->
                                 state.players.any { player ->
                                     player.isPieceOn(

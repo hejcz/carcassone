@@ -11,7 +11,7 @@ object RewardPeasants : EndRule {
             .map { (playerId, piece) ->
                 Pair(
                     playerId,
-                    TailRecGreenFieldExplorer.explore(state, piece.position, (piece.role as Peasant).location)
+                    GreenFieldsExplorer.explore(state, piece.position, (piece.role as Peasant).location)
                 )
             }
             .groupBy { (_, fieldParts) -> fieldParts }

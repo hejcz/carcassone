@@ -24,8 +24,7 @@ class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
         if (startingDirection !in state.tileAt(startingPosition).exploreRoad(startingDirection)) {
             return Road.empty()
         }
-        val road = RoadExplorer(state, PositionedDirection(startingPosition, startingDirection))
-        road.explore()
-        return Road.from(state, road)
+        val (parts, isCompleted) = RoadsExplorer.explore(state, startingPosition, startingDirection)
+        return Road.from(state, parts, isCompleted)
     }
 }
