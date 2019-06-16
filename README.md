@@ -5,13 +5,14 @@ Right now the game supports:
 - Inns and cathedrals extension
 - River extension
 - Abbot extension
+
 It validates moves, rewards players regarding rules introduced in core and extensions and informs players what to do next.
 
 ## Example setup
 ```kotlin
 fun main() {
     val game = Game(
-        listOf(Player(10289, 1), Player(776, 2), Player(12, 3), Player(817, 4)),
+        listOf(Player(id = 10289, order = 1), Player(id = 776, order = 2), Player(id = 12, order = 3)),
         GameSetup(AbbotExtension, InnAndCathedralsExtension, RiverExtension)
     )
     game.dispatch(Begin) // returns PlaceTile event with name of drawn tile

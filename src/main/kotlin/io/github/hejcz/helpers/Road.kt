@@ -36,4 +36,3 @@ data class Road(
         fun empty(): Road = Road(false, emptySet())
     }
 }
-
