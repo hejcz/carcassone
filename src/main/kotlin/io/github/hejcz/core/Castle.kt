@@ -2,14 +2,10 @@ package io.github.hejcz.core
 
 import io.github.hejcz.inn.tiles.*
 
-data class Castle(
-    val completed: Boolean,
-    val parts: Set<PositionedDirection>,
-    private val state: State? = null
-) {
+data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, private val state: State) {
     val pieces by lazy {
         parts.flatMap { part ->
-            state!!.findPieceAsSet(part.position, Knight(part.direction))
+            state.findPieceAsSet(part.position, Knight(part.direction))
                 .map { (id, knight) -> FoundPiece(id, knight, part.position, part.direction) }
         }.toSet()
     }
@@ -21,15 +17,13 @@ data class Castle(
     private val emblems by lazy {
         parts
             .groupBy { (position, _) -> position } // without grouping emblem would be counted multiple times
-            .map { (_, v) -> v.any { (position, direction) -> state!!.tileAt(position).hasEmblem(direction) } }
+            .map { (_, v) -> v.any { (position, direction) -> state.tileAt(position).hasEmblem(direction) } }
             .count { it }
     }
 
     companion object {
         fun from(state: State, parts: Set<PositionedDirection>, isCompleted: Boolean) =
             Castle(isCompleted, parts, state)
-
-        fun empty(): Castle = Castle(false, emptySet())
     }
 
     fun countEmblemsAndTiles() = emblems + tilesCount

@@ -15,16 +15,14 @@ object RewardCompletedCloister : Rule {
 
     private fun afterTilePlaced(position: Position, state: State): Collection<GameEvent> =
         position.surrounding()
-            .asSequence()
             .filter { state.tileAt(it).hasCloister() }
             .filter { isSurrounded(state, it) }
-            .mapNotNull { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
+            .flatMap { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
             .onEach { (playerId, pieceOnBoard) -> state.returnPieces(setOf(OwnedPiece(pieceOnBoard, playerId))) }
             .map { (playerId, pieceOnBoard) -> PlayerScored(playerId, COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)) }
-            .toList()
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
-        state.findPiece(completedCloisterPosition, Monk)
+        state.findPieces(completedCloisterPosition, Monk)
 
     private fun afterPiecePlaced(state: State, piece: Piece, role: Role): Collection<GameEvent> =
         when (role) {

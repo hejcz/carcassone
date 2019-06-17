@@ -5,7 +5,7 @@ import io.github.hejcz.core.*
 class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
 
     override fun apply(state: State) = state.allKnights()
-        .map { (_, piece) -> testCastle(state, piece.position, (piece.role as Knight).direction) }
+        .mapNotNull { (_, piece) -> testCastle(state, piece.position, (piece.role as Knight).direction) }
         .distinct()
         .flatMap { castle ->
             when (val score = scoring(state, castle)) {
@@ -17,9 +17,9 @@ class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
             }
         }
 
-    private fun testCastle(state: State, startingPosition: Position, startingDirection: Direction): Castle {
+    private fun testCastle(state: State, startingPosition: Position, startingDirection: Direction): Castle? {
         if (startingDirection !in state.tileAt(startingPosition).exploreCastle(startingDirection)) {
-            return Castle.empty()
+            return null
         }
         val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)
         return Castle.from(state, positionsToDirections, isCompleted)

@@ -2,11 +2,7 @@ package io.github.hejcz.core
 
 import io.github.hejcz.inn.tiles.*
 
-data class Road(
-    val completed: Boolean,
-    private val parts: Set<PositionedDirection>,
-    private val state: State? = null
-) {
+data class Road(val completed: Boolean, private val parts: Set<PositionedDirection>, private val state: State) {
 
     val tilesCount by lazy {
         parts.map { it.position }.distinct().count()
@@ -14,7 +10,7 @@ data class Road(
 
     val pieces by lazy {
         parts.flatMap { road ->
-            state!!.findPieceAsSet(road.position, Brigand(road.direction))
+            state.findPieceAsSet(road.position, Brigand(road.direction))
                 .map { (id, brigand) -> FoundPiece(id, brigand, road.position, road.direction) }
         }.toSet()
     }
@@ -36,7 +32,5 @@ data class Road(
     companion object {
         fun from(state: State, parts: Set<PositionedDirection>, isCompleted: Boolean) =
             Road(isCompleted, parts, state)
-
-        fun empty(): Road = Road(false, emptySet())
     }
 }

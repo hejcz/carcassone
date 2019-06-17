@@ -2,9 +2,6 @@ package io.github.hejcz.corncircles
 
 import io.github.hejcz.core.*
 
-// TODO order of command is not enforced anywhere so 2 consecutive PutTile will work
-
-// TODO this code is almost copy of each other
 object AddPieceValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> =
         (command as? AddPiece)?.let { validate(state, it) } ?: emptySet()
@@ -12,12 +9,15 @@ object AddPieceValidator : CommandValidator {
     private fun validate(state: State, command: AddPiece): Collection<GameEvent> = when (val tile = state.recentTile) {
         is CornCircleTile -> when {
             !tile.cornCircleEffect().matches(command.role) -> setOf(PiecePlacedInInvalidPlace)
-            else -> state.findPiece(command.position, command.role)
-                ?.let { if (state.currentPlayerId() == it.first) emptySet() else setOf(PiecePlacedInInvalidPlace) }
-                ?: setOf(PiecePlacedInInvalidPlace)
+            playerDoesNotHaveAnyPieceThere(state, command) -> setOf(PiecePlacedInInvalidPlace)
+            else -> emptySet()
         }
         else -> emptySet()
     }
+
+    private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPiece) =
+        state.findPieces(command.position, command.role)
+            .none { state.currentPlayerId() == it.first }
 }
 
 object RemovePieceValidator : CommandValidator {
@@ -27,11 +27,13 @@ object RemovePieceValidator : CommandValidator {
     private fun validate(state: State, command: RemovePiece): Collection<GameEvent> = when (val tile = state.recentTile) {
         is CornCircleTile -> when {
             !tile.cornCircleEffect().matches(command.role) -> setOf(PiecePlacedInInvalidPlace)
-            // TODO wont work because findPiece return first piece and there might be more than 1 so piece equality not always works
-            else -> state.findPiece(command.position, command.role)
-                ?.let { if (state.currentPlayerId() == it.first && it.second.piece == command.piece) emptySet() else setOf(PiecePlacedInInvalidPlace) }
-                ?: setOf(PiecePlacedInInvalidPlace)
+            playerDoesNotHaveSuchPieceThere(state, command) -> setOf(PiecePlacedInInvalidPlace)
+            else -> emptySet()
         }
         else -> emptySet()
     }
+
+    private fun playerDoesNotHaveSuchPieceThere(state: State, command: RemovePiece) =
+        state.findPieces(command.position, command.role)
+            .none { state.currentPlayerId() == it.first && it.second.piece == command.piece }
 }

@@ -66,7 +66,7 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
 
     fun currentTileName() = currentTile.name()
 
-    fun anyPlayerHasPiece(position: Position, role: Role) = piecesOnBoard.pieceOn(position, role) != null
+    fun anyPlayerHasPiece(position: Position, role: Role) = piecesOnBoard.piecesOn(position, role).isNotEmpty()
 
     fun allKnights(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allKnights()
 
@@ -78,10 +78,9 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
 
     fun allPeasants(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allPeasants()
 
-    fun findPiece(position: Position, role: Role): Pair<Long, PieceOnBoard>? = piecesOnBoard.pieceOn(position, role)
+    fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.piecesOn(position, role)
 
-    fun findPieceAsSet(position: Position, role: Role): Set<Pair<Long, PieceOnBoard>> =
-        findPiece(position, role)?.let { setOf(it) } ?: emptySet()
+    fun findPieceAsSet(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = findPieces(position, role)
 
     fun allPlayersIdsStartingWithCurrent(): List<Long> {
         val sorted = players.values.sortedBy { it.order }

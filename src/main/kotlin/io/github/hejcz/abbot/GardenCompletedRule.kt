@@ -1,7 +1,6 @@
 package io.github.hejcz.abbot
 
 import io.github.hejcz.core.*
-import io.github.hejcz.core.tile.*
 
 object GardenCompletedRule : Rule {
 
@@ -14,11 +13,11 @@ object GardenCompletedRule : Rule {
     private fun afterTilePlaced(position: Position, state: State): Collection<GameEvent> =
         position.surrounding()
             .filter { state.tileAt(it).hasGarden() && it.isSurrounded(state) }
-            .mapNotNull { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
+            .flatMap { gardenPosition -> pieceWithOwner(state, gardenPosition) }
             .map { (playerId, pieceOnBoard) -> PlayerScored(playerId, 9, setOf(pieceOnBoard)) }
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
-        state.findPiece(completedCloisterPosition, Abbot)
+        state.findPieces(completedCloisterPosition, Abbot)
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> = when {
         role is Abbot && state.recentPosition.isSurrounded(state) ->

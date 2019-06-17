@@ -24,8 +24,8 @@ class PiecesOnBoard {
         }
     }
 
-    fun pieceOn(position: Position, role: Role): Pair<Long, PieceOnBoard>? = run(role) {
-        pieceOn(this, position, role)
+    fun piecesOn(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = run(role) {
+        piecesOn(this, position, role)
     }
 
     private fun <T> run(role: Role, action: MutableList<Pair<Long, PieceOnBoard>>.() -> T): T {
@@ -48,7 +48,7 @@ class PiecesOnBoard {
 
     fun allPeasants(): List<Pair<Long, PieceOnBoard>> = peasants.toList()
 
-    private fun pieceOn(list: List<Pair<Long, PieceOnBoard>>, position: Position, role: Role) =
-        list.find { it.second.position == position && it.second.role == role }
+    private fun piecesOn(list: List<Pair<Long, PieceOnBoard>>, position: Position, role: Role) =
+        list.filter { it.second.position == position && it.second.role == role }
 
 }

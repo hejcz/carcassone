@@ -6,7 +6,7 @@ class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.allBrigands()
-            .map { (_, piece) -> explore(state, piece.position, (piece.role as Brigand).direction) }
+            .mapNotNull { (_, piece) -> explore(state, piece.position, (piece.role as Brigand).direction) }
             .distinct()
             .flatMap { road: Road ->
                 val (winners, _) = WinnerSelector.find(road.pieces)
@@ -17,9 +17,9 @@ class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
             }
     }
 
-    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Road {
+    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Road? {
         if (startingDirection !in state.tileAt(startingPosition).exploreRoad(startingDirection)) {
-            return Road.empty()
+            return null
         }
         val (parts, isCompleted) = RoadsExplorer.explore(state, startingPosition, startingDirection)
         return Road.from(state, parts, isCompleted)
