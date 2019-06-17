@@ -1,34 +1,40 @@
 package io.github.hejcz.core
 
+import java.lang.RuntimeException
+
 data class Player(val id: Long, val order: Int, val initialPieces: List<Piece> = emptyList()) {
-    private val unavailablePieces: MutableList<PieceOnBoard> = mutableListOf()
-    private val availablePieces: MutableList<Piece> = initialPieces.toMutableList()
 
-    fun putPiece(position: Position, piece: Piece, role: Role) {
-        unavailablePieces.add(PieceOnBoard(position, piece, role))
-        availablePieces.remove(piece)
-    }
+    private val pools by lazy { initialPieces.groupBy { it }.mapValues { PiecePool(it.value.count()) } }
 
-    fun isAvailable(piece: Piece) = piece in availablePieces
+    fun isAvailable(piece: Piece) = pools[piece]?.isAvailable() ?: false
 
-    fun pieceOn(position: Position, role: Role): PieceOnBoard? =
-        unavailablePieces.firstOrNull { position == it.position && role == it.role }
+    fun lockPiece(piece: Piece) = pools[piece]?.lock() ?: throw RuntimeException("Piece not available")
 
-    fun piecesOn(position: Position): Collection<PieceOnBoard> =
-        unavailablePieces.filter { position == it.position }
+    fun unlockPiece(piece: Piece) = pools[piece]?.unlock() ?: throw RuntimeException("Piece not available")
 
-    fun isPieceOn(position: Position, role: Role) =
-        unavailablePieces.any { position == it.position && role == it.role }
+    companion object {
 
-    fun piecesOnBoard(): Set<PieceOnBoard> = unavailablePieces.toSet()
+        class PiecePool(private val limit: Int) {
+            private var currentAmount = limit
 
-    fun returnPieces(returnedPieces: Collection<PieceOnBoard>) {
-        availablePieces.addAll(returnedPieces.map { it.piece })
-        unavailablePieces.removeAll(returnedPieces)
-    }
+            fun lock() {
+                if (currentAmount == 0) {
+                    throw RuntimeException("Missing piece can't be locked")
+                } else {
+                    currentAmount--
+                }
+            }
 
-    fun removePiece(position: Position, piece: Piece, role: Role) {
-        availablePieces.add(piece)
-        unavailablePieces.remove(PieceOnBoard(position, piece, role))
+            fun unlock() {
+                if (currentAmount == limit) {
+                    throw RuntimeException("Piece can't be unlocked above limit")
+                } else {
+                    currentAmount++
+                }
+            }
+
+            fun isAvailable(): Boolean = currentAmount > 0
+        }
+
     }
 }

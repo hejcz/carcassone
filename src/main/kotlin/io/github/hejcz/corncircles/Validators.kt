@@ -13,7 +13,7 @@ object AddPieceValidator : CommandValidator {
         is CornCircleTile -> when {
             !tile.cornCircleEffect().matches(command.role) -> setOf(PiecePlacedInInvalidPlace)
             else -> state.findPiece(command.position, command.role)
-                ?.let { if (state.currentPlayer.id == it.first) emptySet() else setOf(PiecePlacedInInvalidPlace) }
+                ?.let { if (state.currentPlayerId() == it.first) emptySet() else setOf(PiecePlacedInInvalidPlace) }
                 ?: setOf(PiecePlacedInInvalidPlace)
         }
         else -> emptySet()
@@ -29,7 +29,7 @@ object RemovePieceValidator : CommandValidator {
             !tile.cornCircleEffect().matches(command.role) -> setOf(PiecePlacedInInvalidPlace)
             // TODO wont work because findPiece return first piece and there might be more than 1 so piece equality not always works
             else -> state.findPiece(command.position, command.role)
-                ?.let { if (state.currentPlayer.id == it.first && it.second.piece == command.piece) emptySet() else setOf(PiecePlacedInInvalidPlace) }
+                ?.let { if (state.currentPlayerId() == it.first && it.second.piece == command.piece) emptySet() else setOf(PiecePlacedInInvalidPlace) }
                 ?: setOf(PiecePlacedInInvalidPlace)
         }
         else -> emptySet()

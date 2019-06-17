@@ -1,6 +1,7 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
+import io.github.hejcz.core.tile.*
 
 class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 
@@ -11,7 +12,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
     }
 
     private fun afterTilePlaced(state: State): Collection<GameEvent> =
-        state.castlesDirections(state.recentPosition)
+        castlesDirections(state.tileAt(state.recentPosition))
             .asSequence()
             .map { explore(state, state.recentPosition, it) }
             .distinct()
@@ -20,6 +21,10 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
             .filter { it.pieces.isNotEmpty() }
             .toList()
             .flatMap { generateEvents(it, state) }
+
+    private fun castlesDirections(tile: Tile) = listOf(Up, Right, Down, Left)
+        .flatMap { tile.exploreCastle(it) }
+        .distinct()
 
     private fun generateEvents(castle: Castle, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(castle.pieces)

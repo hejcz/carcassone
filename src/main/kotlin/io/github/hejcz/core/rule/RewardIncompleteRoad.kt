@@ -5,7 +5,7 @@ import io.github.hejcz.core.*
 class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
-        return state.all(Brigand::class)
+        return state.allBrigands()
             .map { (_, piece) -> explore(state, piece.position, (piece.role as Brigand).direction) }
             .distinct()
             .flatMap { road: Road ->

@@ -1,26 +1,17 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
-import kotlin.reflect.*
 
-class PiecesOnBoard {
-    val knights: List<PieceOnBoard> = mutableListOf()
-    val brigands: List<PieceOnBoard> = mutableListOf()
-    val abbots: List<PieceOnBoard> = mutableListOf()
-    val monks: List<PieceOnBoard> = mutableListOf()
-    val peasants: List<PieceOnBoard> = mutableListOf()
-}
+class State(players: Set<Player>, private var remainingTiles: RemainingTiles, private var board: Board) {
 
-class State(
-    private val players: Set<Player>,
-    private var remainingTiles: RemainingTiles,
-    private var board: Board
-) {
+    private val players: Map<Long, Player> = players.map { it.id to it }.toMap()
+
+    private val piecesOnBoard = PiecesOnBoard()
+
     private var queue: PlayersQueue = PlayersQueue(players)
 
     // player who should make a command
-    var currentPlayer: Player = queue.next()
-        private set
+    private var currentPlayer: Player = queue.next()
 
     // next tile to place on board
     var currentTile: Tile = remainingTiles.next()
@@ -46,13 +37,19 @@ class State(
     }
 
     fun addPiece(piece: Piece, role: Role) =
-        currentPlayer.putPiece(recentPosition, piece, role)
+        piecesOnBoard.put(currentPlayer, recentPosition, piece, role)
 
     fun addPiece(position: Position, piece: Piece, role: Role) =
-        currentPlayer.putPiece(position, piece, role)
+        piecesOnBoard.put(currentPlayer, position, piece, role)
 
     fun removePiece(position: Position, piece: Piece, role: Role) =
-        currentPlayer.removePiece(position, piece, role)
+        piecesOnBoard.remove(currentPlayer, position, piece, role)
+
+    fun returnPieces(pieces: Collection<OwnedPiece>): Collection<OwnedPiece> =
+        pieces.onEach {
+            val (piece, id) = it
+            piecesOnBoard.remove(players.getValue(id), piece.position, piece.piece, piece.role)
+        }
 
     fun tileAt(position: Position): Tile = board.tiles[position] ?: NoTile
 
@@ -69,35 +66,32 @@ class State(
 
     fun currentTileName() = currentTile.name()
 
-    fun returnPieces(pieces: Collection<OwnedPiece>): Collection<OwnedPiece> =
-        pieces.onEach { piece ->
-            players.find { it.id == piece.playerId }!!.returnPieces(setOf(piece.pieceOnBoard))
-        }
+    fun anyPlayerHasPiece(position: Position, role: Role) = piecesOnBoard.pieceOn(position, role) != null
 
-    fun anyPlayerHasPiece(position: Position, role: Role) = players.any { player -> player.isPieceOn(position, role) }
+    fun allKnights(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allKnights()
 
-    fun <T : Role> all(clazz: KClass<T>): List<Pair<Long, PieceOnBoard>> =
-        players.flatMap { player -> player.piecesOnBoard().map { piece -> Pair(player.id, piece) } }
-            .filter { (_, piece) -> clazz.isInstance(piece.role) }
+    fun allBrigands(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allBrigands()
 
-    fun findPiece(position: Position, role: Role): Pair<Long, PieceOnBoard>? =
-        players.mapNotNull { player -> player.pieceOn(position, role)?.let { Pair(player.id, it) } }
-            .firstOrNull()
+    fun allMonks(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allMonks()
+
+    fun allAbbots(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allAbbots()
+
+    fun allPeasants(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allPeasants()
+
+    fun findPiece(position: Position, role: Role): Pair<Long, PieceOnBoard>? = piecesOnBoard.pieceOn(position, role)
 
     fun findPieceAsSet(position: Position, role: Role): Set<Pair<Long, PieceOnBoard>> =
         findPiece(position, role)?.let { setOf(it) } ?: emptySet()
 
-    fun castlesDirections(position: Position) = listOf(Up, Right, Down, Left)
-        .flatMap { this.tileAt(position).exploreCastle(it) }
-        .distinct()
-
     fun allPlayersIdsStartingWithCurrent(): List<Long> {
-        val sorted = players.sortedBy { it.order }
+        val sorted = players.values.sortedBy { it.order }
         return when {
             sorted[0] == currentPlayer -> sorted.map { it.id }
             else -> sorted.subList(currentPlayer.order - 1, sorted.size).map { it.id } +
                     sorted.subList(0, currentPlayer.order - 1).map { it.id }
         }
     }
+
+    fun isAvailableForCurrentPlayer(piece: Piece) = currentPlayer.isAvailable(piece)
 
 }

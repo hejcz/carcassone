@@ -5,7 +5,7 @@ import io.github.hejcz.core.tile.*
 
 object RewardIncompleteCloister : EndRule {
     override fun apply(state: State): Collection<GameEvent> =
-        state.all(Monk::class).map { (playerId, piece) -> PlayerScored(playerId, score(state, piece.position), emptySet()) }
+        state.allMonks().map { (playerId, piece) -> PlayerScored(playerId, score(state, piece.position), emptySet()) }
 
     private fun score(state: State, cloisterPosition: Position): Int =
         1 + cloisterPosition.surrounding().count { state.tileAt(it) !is NoTile }

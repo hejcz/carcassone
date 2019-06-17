@@ -11,5 +11,5 @@ object PieceAvailabilityValidator : CommandValidator {
     }
 
     private fun isAvailable(state: State, piece: Piece) =
-        if (state.currentPlayer.isAvailable(piece)) emptySet() else setOf(NoMappleAvailable(piece))
+        if (state.isAvailableForCurrentPlayer(piece)) emptySet() else setOf(NoMappleAvailable(piece))
 }
