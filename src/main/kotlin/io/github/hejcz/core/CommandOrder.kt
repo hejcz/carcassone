@@ -1,7 +1,6 @@
-package io.github.hejcz
+package io.github.hejcz.core
 
 import io.github.hejcz.abbot.*
-import io.github.hejcz.core.*
 import io.github.hejcz.corncircles.*
 
 class EventsQueue {

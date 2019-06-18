@@ -1,6 +1,5 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.setup.*
 
