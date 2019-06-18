@@ -5,9 +5,9 @@ import io.github.hejcz.inn.tiles.*
 data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, private val state: State) {
     val pieces by lazy {
         parts.flatMap { part ->
-            state.findPieceAsSet(part.position, Knight(part.direction))
+            state.findPieces(part.position, Knight(part.direction))
                 .map { (id, knight) -> FoundPiece(id, knight, part.position, part.direction) }
-        }.toSet()
+        }
     }
 
     private val tilesCount by lazy {
@@ -28,7 +28,7 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
 
     fun countEmblemsAndTiles() = emblems + tilesCount
 
-    fun piecesOf(playerId: Long) = pieces.filter { piece -> piece.playerId == playerId }.map { it.pieceOnBoard }.toSet()
+    fun piecesOf(playerId: Long) = pieces.filter { piece -> piece.playerId == playerId }.map { it.pieceOnBoard }
 
     fun hasCathedral(state: State) =
         this.pieces.asSequence().map { state.tileAt(it.position) }.any { it is InnTile && it.hasCathedral() }

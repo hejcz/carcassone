@@ -25,7 +25,7 @@ object IncompleteRoadEndGameRewardSpec : Spek({
         it("should detect simple incomplete road") {
             val game = singlePlayer(TileK)
             game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left))) shouldContain PlayerScored(1, 2, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Brigand(Left))) containsEvent PlayerScored(1, 2, emptySet())
         }
 
         it("should not be triggered if there are still some tiles in the deck") {
@@ -39,7 +39,7 @@ object IncompleteRoadEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(1, -1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain PlayerScored(1, 3, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) containsEvent PlayerScored(1, 3, emptySet())
         }
 
         it("should reward multiple players if they share road with equal number of mapples") {
@@ -52,8 +52,8 @@ object IncompleteRoadEndGameRewardSpec : Spek({
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(2, -1), Rotation90))
             val events = game.dispatch(SkipPiece)
-            events shouldContain PlayerScored(1, 5, emptySet())
-            events shouldContain PlayerScored(2, 5, emptySet())
+            events containsEvent PlayerScored(1, 5, emptySet())
+            events containsEvent PlayerScored(2, 5, emptySet())
         }
 
         it("should reward single player if he has advantage of mapples over his opponent") {
@@ -72,8 +72,8 @@ object IncompleteRoadEndGameRewardSpec : Spek({
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
             val events = game.dispatch(SkipPiece)
-            events shouldContain PlayerScored(2, 7, emptySet())
-            events shouldNotContain PlayerScored(1, 7, emptySet())
+            events containsEvent PlayerScored(2, 7, emptySet())
+            events doesNotContainEvent PlayerScored(1, 7, emptySet())
         }
     }
 })

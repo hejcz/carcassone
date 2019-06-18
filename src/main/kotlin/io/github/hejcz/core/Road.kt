@@ -10,19 +10,19 @@ data class Road(val completed: Boolean, private val parts: Set<PositionedDirecti
 
     val pieces by lazy {
         parts.flatMap { road ->
-            state.findPieceAsSet(road.position, Brigand(road.direction))
+            state.findPieces(road.position, Brigand(road.direction))
                 .map { (id, brigand) -> FoundPiece(id, brigand, road.position, road.direction) }
-        }.toSet()
+        }
     }
 
     fun createPlayerScoredEvent(playerId: Long, score: Int) =
-        PlayerScored(playerId, score, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
+        PlayerScored(playerId, score, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard })
 
     fun createPlayerScoredEventWithoutPieces(playerId: Long, score: Int) =
         PlayerScored(playerId, score, emptySet())
 
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
-        PlayerDidNotScore(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
+        PlayerDidNotScore(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard })
 
     fun hasInn(state: State) = this.pieces.any {
         val tile = state.tileAt(it.position)

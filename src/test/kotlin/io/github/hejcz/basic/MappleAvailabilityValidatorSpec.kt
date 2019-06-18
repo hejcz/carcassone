@@ -2,9 +2,7 @@ package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.TestBasicRemainingTiles
-import io.github.hejcz.helper.TestGameSetup
-import io.github.hejcz.helper.shouldContainPlaceTileOnly
+import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -35,7 +33,7 @@ object MappleAvailabilityValidatorSpec : Spek({
             game.dispatch(PutTile(Position(1, 1), Rotation180))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left))) shouldContain PlayerScored(1, 3, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Brigand(Left))) containsEvent PlayerScored(1, 3, emptySet())
         }
 
         it("should restore all handlers player placed on object") {

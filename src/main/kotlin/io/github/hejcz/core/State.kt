@@ -84,8 +84,6 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
 
     fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.piecesOn(position, role)
 
-    fun findPieceAsSet(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = findPieces(position, role)
-
     fun allPlayersIdsStartingWithCurrent(): List<Long> {
         val sorted = players.values.sortedBy { it.order }
         return when {

@@ -32,13 +32,13 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(-1, 1), Rotation90)) containsEvent PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle without emblem and without cathedral") {
             val game = singlePlayer(TileD, TileD)
             game.dispatch(PutTile(Position(0, 1), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
     }
 
@@ -52,7 +52,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 15, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(-1, 1), Rotation90)) containsEvent PlayerScored(1, 15, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("bigger castle with cathedral") {
@@ -65,7 +65,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(2, 1), Rotation270))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 1), Rotation90)) shouldContain PlayerScored(1, 18, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(-1, 1), Rotation90)) containsEvent PlayerScored(1, 18, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle with two cathedral is treated the same as with single cathedral") {
@@ -82,7 +82,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 24, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(-1, 2), Rotation90)) containsEvent PlayerScored(1, 24, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle with cathedral and emblem") {
@@ -99,7 +99,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 27, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(-1, 2), Rotation90)) containsEvent PlayerScored(1, 27, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("castle with cathedral and multiple emblem") {
@@ -118,7 +118,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 2), Rotation90)) shouldContain PlayerScored(1, 33, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(-1, 2), Rotation90)) containsEvent PlayerScored(1, 33, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
     }
 
@@ -156,7 +156,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, 1), Rotation270))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece) shouldContain PlayerScored(1, 5, emptySet())
+            game.dispatch(SkipPiece) containsEvent PlayerScored(1, 5, emptySet())
         }
 
         it("bigger castle without cathedral") {
@@ -168,7 +168,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
-            game.dispatch(SkipPiece) shouldContain PlayerScored(1, 7, emptySet())
+            game.dispatch(SkipPiece) containsEvent PlayerScored(1, 7, emptySet())
         }
     }
 
@@ -195,9 +195,9 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
-            events shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(1, 0), BigPiece, Knight(Up))))
-            events shouldNotContain PlayerScored(2, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
-            events shouldContain PlayerDidNotScore(2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            events containsEvent PlayerScored(1, 12, setOf(PieceOnBoard(Position(1, 0), BigPiece, Knight(Up))))
+            events doesNotContainEvent PlayerScored(2, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            events containsEvent PlayerDidNotScore(2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("draws with 2 small pieces") {
@@ -211,8 +211,8 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, 1), Rotation180))
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(-1, 1), Rotation90))
-            events shouldContain PlayerScored(1, 16, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)), PieceOnBoard(Position(-1, 0), SmallPiece, Knight(Up))))
-            events shouldContain PlayerScored(2, 16, setOf(PieceOnBoard(Position(0, 1), BigPiece, Knight(Down))))
+            events containsEvent PlayerScored(1, 16, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)), PieceOnBoard(Position(-1, 0), SmallPiece, Knight(Up))))
+            events containsEvent PlayerScored(2, 16, setOf(PieceOnBoard(Position(0, 1), BigPiece, Knight(Down))))
         }
     }
 
@@ -223,7 +223,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
             val events = game.dispatch(PutTile(Position(-1, 0), NoRotation))
-            events shouldContain PlayerScored(1, 6, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+            events containsEvent PlayerScored(1, 6, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
         }
     }
 
@@ -234,7 +234,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
             val events = game.dispatch(PutTile(Position(-1, 0), NoRotation))
-            events shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+            events containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
         }
     }
 
@@ -254,7 +254,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             val game = singlePlayer(TileW)
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             val events = game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            events shouldContain PlayerScored(1, 2, emptySet())
+            events containsEvent PlayerScored(1, 2, emptySet())
         }
     }
 
@@ -283,13 +283,13 @@ object InnAndCathedralsExtensionSpec : Spek({
             val game = singlePlayer(TileEP, TileEJ)
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Right)))
-            game.dispatch(PutTile(Position(1, 1), Rotation270)) shouldContain PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Right))))
+            game.dispatch(PutTile(Position(1, 1), Rotation270)) containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Right))))
         }
 
         it("may exists on 1 out of 2 castles on a single tile - castle without emblem") {
             val game = singlePlayer(TileEP)
             game.dispatch(PutTile(Position(0, 1), Rotation270))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
     }
