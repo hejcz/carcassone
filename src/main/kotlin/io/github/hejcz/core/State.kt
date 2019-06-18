@@ -1,6 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
+import io.github.hejcz.corncircles.*
 
 class State(players: Set<Player>, private var remainingTiles: RemainingTiles, private var board: Board) {
 
@@ -78,6 +79,9 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
 
     fun allPeasants(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allPeasants()
 
+    fun currentPlayerPieces(cornSymbol: CornSymbol): List<Pair<Long, PieceOnBoard>> =
+        piecesOnBoard.playerPieces(currentPlayer, cornSymbol)
+
     fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.piecesOn(position, role)
 
     fun findPieceAsSet(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = findPieces(position, role)
@@ -92,5 +96,11 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
     }
 
     fun isAvailableForCurrentPlayer(piece: Piece) = currentPlayer.isAvailable(piece)
+
+    fun previousPlayerId(): Long {
+        val order = currentPlayer.order - 1
+        val normalizedOrder = if (order == 0) players.count() else order
+        return players.values.first { it.order == normalizedOrder }.id
+    }
 
 }

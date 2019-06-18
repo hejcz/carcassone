@@ -1,6 +1,5 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.*
 import io.github.hejcz.core.*
 import io.github.hejcz.core.validator.*
 
@@ -21,7 +20,7 @@ class ValidatorsSetup {
 
     companion object {
         private fun defaultValidators(): Set<CommandValidator> = setOf(
-            ExpectedCommandValidator(), TilePlacementValidator, PiecePlacementValidator, SinglePieceInObjectValidator, PieceAvailabilityValidator
+            TilePlacementValidator, PiecePlacementValidator, SinglePieceInObjectValidator, PieceAvailabilityValidator
         )
     }
 }

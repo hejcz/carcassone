@@ -1,9 +1,12 @@
 package io.github.hejcz.core
 
+import io.github.hejcz.*
+import io.github.hejcz.core.tile.*
 import io.github.hejcz.setup.*
 
 class Game(players: Collection<Player>, gameSetup: GameSetup) {
 
+    private val eventsQueue = EventsQueue()
     val state: State
     val rules: Collection<Rule>
     val endRules: Collection<EndRule>
@@ -27,12 +30,21 @@ class Game(players: Collection<Player>, gameSetup: GameSetup) {
     }
 
     fun dispatch(command: Command): Collection<GameEvent> {
-        val errors = validate(command)
+        val errors = validate(command) + eventsQueue.validate(state, command)
         return when {
             errors.isNotEmpty() -> errors
-            else -> handlers.firstOrNull { it.isApplicableTo(command) }?.handle(this, command) ?: setOf(InvalidCommand)
+            else -> {
+                val events = handlers.first { it.isApplicableTo(command) }.handle(this, command) +
+                        if (isEndOfTheGame()) endRules.flatMap { it.apply(state) } else setOf(eventsQueue.event(state))
+                if (eventsQueue.isPutTileNext() && command != Begin) {
+                    state.changeActivePlayer()
+                }
+                events
+            }
         }
     }
+
+    private fun isEndOfTheGame() = eventsQueue.isPutTileNext() && state.currentTile is NoTile
 
     private fun validate(command: Command) =
         validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet()

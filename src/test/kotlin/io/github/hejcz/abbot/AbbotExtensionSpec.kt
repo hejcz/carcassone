@@ -60,26 +60,26 @@ object AbbotExtensionSpec : Spek({
         it("should not be able to use Abbot as a knight") {
             val game = singlePlayer(TileG, TileB)
             game.dispatch(PutTile(Position(0, 1), Rotation90)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(AbbotPiece, Knight(Down))) shouldContain PieceMayNotBeUsedInARole(AbbotPiece, Knight(Down))
+            game.dispatch(PutPiece(AbbotPiece, Knight(Down))) shouldContain PieceMayNotBeUsedInRole(AbbotPiece, Knight(Down))
         }
 
         it("should not be able to use Abbot as a brigand") {
             val game = singlePlayer(TileD, TileB)
             game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(AbbotPiece, Brigand(Left))) shouldContain PieceMayNotBeUsedInARole(AbbotPiece, Brigand(Left))
+            game.dispatch(PutPiece(AbbotPiece, Brigand(Left))) shouldContain PieceMayNotBeUsedInRole(AbbotPiece, Brigand(Left))
         }
 
         it("should not be able to use Abbot as a peasant") {
             val game = singlePlayer(TileB, TileD)
             game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
             game.dispatch(PutPiece(AbbotPiece, Peasant(Location(Down)))) shouldContain
-                PieceMayNotBeUsedInARole(AbbotPiece, Peasant(Location(Down)))
+                PieceMayNotBeUsedInRole(AbbotPiece, Peasant(Location(Down)))
         }
 
         it("should not be able to use Small piece as an Abbot") {
             val game = singlePlayer(TileEWithGarden, TileD)
             game.dispatch(PutTile(Position(0, -1), Rotation180)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(SmallPiece, Abbot)) shouldContain PieceMayNotBeUsedInARole(SmallPiece, Abbot)
+            game.dispatch(PutPiece(SmallPiece, Abbot)) shouldContain PieceMayNotBeUsedInRole(SmallPiece, Abbot)
         }
 
         it("should be able to retrieve Abbot after finished cloister") {

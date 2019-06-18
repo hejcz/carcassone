@@ -7,6 +7,6 @@ object PutTileHandler : CommandHandler {
     override fun handle(game: Game, command: Command): Collection<GameEvent> {
         val putTileCommand = command as PutTile
         game.state.addTile(putTileCommand.position, putTileCommand.rotation)
-        return game.rules.flatMap { it.afterCommand(putTileCommand, game.state) } + setOf(SelectPiece)
+        return game.rules.flatMap { it.afterCommand(putTileCommand, game.state) }
     }
 }

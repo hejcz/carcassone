@@ -1,5 +1,7 @@
 package io.github.hejcz.core
 
+import io.github.hejcz.corncircles.*
+
 class PiecesOnBoard {
 
     private val knights: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
@@ -50,5 +52,11 @@ class PiecesOnBoard {
 
     private fun piecesOn(list: List<Pair<Long, PieceOnBoard>>, position: Position, role: Role) =
         list.filter { it.second.position == position && it.second.role == role }
+
+    fun playerPieces(player: Player, symbol: CornSymbol): List<Pair<Long, PieceOnBoard>> = when (symbol) {
+        CornSymbol.KNIGHT -> knights.filter { it.first == player.id }
+        CornSymbol.BRIGAND -> brigands.filter { it.first == player.id }
+        CornSymbol.PEASANT -> peasants.filter { it.first == player.id }
+    }
 
 }

@@ -5,6 +5,7 @@ import io.github.hejcz.setup.*
 object CornCirclesExtension : Extension {
 
     override fun modify(validatorsSetup: ValidatorsSetup) {
+        validatorsSetup.add(AvoidCornCircleActionValidator)
         validatorsSetup.add(AddPieceValidator)
         validatorsSetup.add(RemovePieceValidator)
     }
@@ -13,6 +14,7 @@ object CornCirclesExtension : Extension {
         commandHandlersSetup.add(AddPieceHandler)
         commandHandlersSetup.add(RemovePieceHandler)
         commandHandlersSetup.add(ChooseCornCircleActionHandler)
+        commandHandlersSetup.add(AvoidCornCircleActionHandler)
     }
 
     override fun modify(deck: TilesSetup) {

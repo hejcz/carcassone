@@ -22,7 +22,7 @@ data class Road(val completed: Boolean, private val parts: Set<PositionedDirecti
         PlayerScored(playerId, score, emptySet())
 
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
-        OccupiedAreaCompleted(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
+        PlayerDidNotScore(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard }.toSet())
 
     fun hasInn(state: State) = this.pieces.any {
         val tile = state.tileAt(it.position)

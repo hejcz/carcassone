@@ -197,7 +197,7 @@ object InnAndCathedralsExtensionSpec : Spek({
             val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
             events shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(1, 0), BigPiece, Knight(Up))))
             events shouldNotContain PlayerScored(2, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
-            events shouldContain OccupiedAreaCompleted(2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            events shouldContain PlayerDidNotScore(2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("draws with 2 small pieces") {

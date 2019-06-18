@@ -8,6 +8,6 @@ object PutPieceHandler : CommandHandler {
         val putPieceCommand = command as PutPiece
         game.state.addPiece(putPieceCommand.piece, putPieceCommand.role)
         val events = game.rules.flatMap { it.afterCommand(putPieceCommand, game.state) }
-        return endTurn(game, events)
+        return events
     }
 }

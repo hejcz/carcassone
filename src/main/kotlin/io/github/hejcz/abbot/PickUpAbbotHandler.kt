@@ -9,6 +9,6 @@ object PickUpAbbotHandler : CommandHandler {
     private fun handle(game: Game, command: PickUpAbbot): Collection<GameEvent> {
         val events = game.rules.flatMap { it.afterCommand(command, game.state) }
         game.state.returnPieces(setOf(OwnedPiece(PieceOnBoard(command.position, AbbotPiece, Abbot), game.state.currentPlayerId())))
-        return endTurn(game, events)
+        return events
     }
 }

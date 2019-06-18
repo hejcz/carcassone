@@ -134,7 +134,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
             events shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
-            events shouldContain OccupiedAreaCompleted(2, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            events shouldContain PlayerDidNotScore(2, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
         }
 
         it("should detect that multiple castles were finished with single tile") {
