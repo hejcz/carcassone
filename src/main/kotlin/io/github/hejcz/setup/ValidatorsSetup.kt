@@ -5,7 +5,7 @@ import io.github.hejcz.core.validator.*
 
 class ValidatorsSetup {
 
-    private var validators = defaultValidators
+    private var validators = defaultValidators()
 
     fun withExtensions(vararg extension: Extension): ValidatorsSetup {
         extension.forEach { it.modify(this) }
@@ -19,7 +19,7 @@ class ValidatorsSetup {
     fun validators(): List<CommandValidator> = validators.toList()
 
     companion object {
-        private val defaultValidators: Set<CommandValidator> = setOf(
+        private fun defaultValidators(): Set<CommandValidator> = setOf(
             TilePlacementValidator, PiecePlacementValidator, SinglePieceInObjectValidator, PieceAvailabilityValidator
         )
     }

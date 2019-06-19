@@ -2,9 +2,7 @@ package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.Players
-import io.github.hejcz.helper.TestBasicRemainingTiles
-import io.github.hejcz.helper.TestGameSetup
+import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotContain
@@ -16,15 +14,15 @@ object PlainEndGameRewardSpec : Spek({
     describe("Green field") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) =
-            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("should be scored") {
             val game = singlePlayer(TileE)
             game.dispatch(PutTile(Position(0, 1), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Left)))) shouldContain PlayerScored(1, 3, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Left)))) containsEvent PlayerScored(1, 3, emptySet())
         }
 
         it("Simple case without scoring") {
@@ -38,7 +36,7 @@ object PlainEndGameRewardSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation270))
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right))))
             game.dispatch(PutTile(Position(-1, 1), Rotation90))
-            game.dispatch(SkipPiece) shouldContain PlayerScored(1, 6, emptySet())
+            game.dispatch(SkipPiece) containsEvent PlayerScored(1, 6, emptySet())
         }
 
         it("Wrong side of road") {
@@ -50,7 +48,7 @@ object PlainEndGameRewardSpec : Spek({
         it("Right side of road") {
             val game = singlePlayer(TileJ)
             game.dispatch(PutTile(Position(0, 1), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Up, RightSide)))) shouldContain PlayerScored(1, 3, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Up, RightSide)))) containsEvent PlayerScored(1, 3, emptySet())
         }
 
         it("Multiple players disconnected green fields") {
@@ -59,8 +57,8 @@ object PlainEndGameRewardSpec : Spek({
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right))))
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             val events = game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right))))
-            events shouldContain PlayerScored(1, 3, emptySet())
-            events shouldContain PlayerScored(2, 3, emptySet())
+            events containsEvent PlayerScored(1, 3, emptySet())
+            events containsEvent PlayerScored(2, 3, emptySet())
         }
 
         it("Multiple players dominance of one") {
@@ -77,8 +75,8 @@ object PlainEndGameRewardSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(1, 3), Rotation270))
             val events = game.dispatch(SkipPiece)
-            events shouldNotContain PlayerScored(2, 3, emptySet())
-            events shouldContain PlayerScored(1, 3, emptySet())
+            events doesNotContainEvent PlayerScored(2, 3, emptySet())
+            events containsEvent PlayerScored(1, 3, emptySet())
         }
     }
 })

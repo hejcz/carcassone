@@ -15,7 +15,7 @@ object TilePlacementValidator : CommandValidator {
                     )
                 }
             }
-            if (isValid) emptySet() else setOf(TilePlacedInInvalidPlace)
+            if (isValid) emptySet() else setOf(InvalidTileLocation)
         }
         else -> emptySet()
     }

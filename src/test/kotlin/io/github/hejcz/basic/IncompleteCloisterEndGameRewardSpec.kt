@@ -16,69 +16,69 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
         fun singlePlayer(vararg tiles: Tile) = Game(
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) = Game(
             Players.twoPlayers(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         it("should detect cloister with 7/8 surrounding tiles") {
             val game = singlePlayer(TileD, TileD, TileB, TileB, TileB, TileB, TileB)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(1, 0), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 0), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, 0), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(1, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(0, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(PutPiece(SmallPiece, Monk))
-            game.dispatch(PutTile(Position(-1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, -2), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(SkipPiece) shouldContain PlayerScored(1, 8, emptySet())
+            game.dispatch(PutTile(Position(0, -2), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
+            game.dispatch(SkipPiece) containsEvent PlayerScored(1, 8, emptySet())
         }
 
         it("should detect cloister with 6/8 surrounding tiles") {
             val game = singlePlayer(TileD, TileD, TileB, TileB, TileB, TileB)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(1, 0), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 0), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, 0), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(1, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(0, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(PutPiece(SmallPiece, Monk))
-            game.dispatch(PutTile(Position(-1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(SkipPiece) shouldContain PlayerScored(1, 7, emptySet())
+            game.dispatch(PutTile(Position(0, -2), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
+            game.dispatch(SkipPiece) containsEvent PlayerScored(1, 7, emptySet())
         }
 
         it("should detect cloister with 1/8 surrounding tiles") {
             val game = singlePlayer(TileB)
-            game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(PutPiece(SmallPiece, Monk)) shouldContain PlayerScored(1, 2, emptySet())
+            game.dispatch(PutTile(Position(0, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Monk)) containsEvent PlayerScored(1, 2, emptySet())
         }
 
         it("should detect cloister added as a last tile") {
             val game = singlePlayer(TileD, TileD, TileB, TileB, TileB, TileB, TileB)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(1, 0), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 0), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, 0), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(1, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(-1, -2), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -2), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
+            game.dispatch(PutTile(Position(0, -2), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -1), NoRotation)) shouldNotContain PlayerScored(1, 9, emptySet())
-            game.dispatch(PutPiece(SmallPiece, Monk)) shouldContain PlayerScored(1, 8, emptySet())
+            game.dispatch(PutTile(Position(0, -1), NoRotation)) doesNotContainEvent PlayerScored(1, 9, emptySet())
+            game.dispatch(PutPiece(SmallPiece, Monk)) containsEvent PlayerScored(1, 8, emptySet())
         }
 
         it("should detect two incomplete cloisters of different players with 7/8 and 6/8 tiles surrounding tiles respectively") {
@@ -101,8 +101,8 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             game.dispatch(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPieceOnly()
             val events = game.dispatch(SkipPiece)
-            events shouldContain PlayerScored(1, 7, emptySet())
-            events shouldContain PlayerScored(2, 8, emptySet())
+            events containsEvent PlayerScored(1, 7, emptySet())
+            events containsEvent PlayerScored(2, 8, emptySet())
         }
 
         it("should detect two incomplete cloisters of the same player") {

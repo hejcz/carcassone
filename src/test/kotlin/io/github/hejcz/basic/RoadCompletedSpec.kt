@@ -12,13 +12,13 @@ object RoadCompletedSpec : Spek({
     describe("Road completed rule") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("Simple road example") {
             val game = singlePlayer(TileS, TileS)
             game.dispatch(PutTile(Position(1, 0), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(-1, 0), Rotation270)) shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+            game.dispatch(PutTile(Position(-1, 0), Rotation270)) containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
         }
 
         it("Simple road example with piece placed after tile") {
@@ -26,7 +26,7 @@ object RoadCompletedSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), Rotation90))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, 0), Rotation270)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(SmallPiece, Brigand(Right))) shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
+            game.dispatch(PutPiece(SmallPiece, Brigand(Right))) containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
         }
 
         it("Simple road 3") {
@@ -35,7 +35,7 @@ object RoadCompletedSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(1, -1), Rotation180)) shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+            game.dispatch(PutTile(Position(1, -1), Rotation180)) containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
         }
 
         it("should detect single event on road loop") {
@@ -48,7 +48,7 @@ object RoadCompletedSpec : Spek({
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(1, -1), Rotation180))
             events.size shouldEqual 2
-            events shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down))))
+            events containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down))))
             events shouldContain SelectPiece
         }
 
@@ -62,7 +62,7 @@ object RoadCompletedSpec : Spek({
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(1, 0), NoRotation))
             events.size shouldEqual 2
-            events shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
+            events containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
             events shouldContain SelectPiece
         }
 
@@ -82,8 +82,8 @@ object RoadCompletedSpec : Spek({
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(0, -1), NoRotation))
             events.size shouldEqual 3
-            events shouldContain PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left))))
-            events shouldContain PlayerScored(1, 7, setOf(PieceOnBoard(Position(-1, -1), SmallPiece, Brigand(Left)), PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Left))))
+            events containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left))))
+            events containsEvent PlayerScored(1, 7, setOf(PieceOnBoard(Position(-1, -1), SmallPiece, Brigand(Left)), PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Left))))
             events shouldContain SelectPiece
         }
     }

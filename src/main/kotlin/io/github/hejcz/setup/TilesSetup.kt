@@ -18,6 +18,10 @@ class TilesSetup {
         return this
     }
 
+    fun addAndShuffle(vararg tiles: Tile) {
+        deck = (deck + tiles).shuffled()
+    }
+
     companion object {
         private val basicDeck: List<Tile> = listOf(
             2 * TileA,

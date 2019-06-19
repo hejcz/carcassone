@@ -5,7 +5,7 @@ import io.github.hejcz.core.*
 object RewardPeasants : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
-        return state.all<Peasant>()
+        return state.allPeasants()
             .map { (playerId, piece) -> playerId to GreenFieldsExplorer.explore(state, piece.position, (piece.role as Peasant).location) }
             .groupBy { (_, fieldParts) -> fieldParts }
             .values

@@ -15,12 +15,12 @@ object CompletedCastleDetectionSpec : Spek({
         fun singlePlayer(vararg tiles: Tile) = Game(
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) = Game(
             Players.twoPlayers(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        )
+        ).apply { dispatch(Begin) }
 
         it("should not detect incomplete castle with knight") {
             val game = singlePlayer(TileD, TileB)
@@ -37,7 +37,7 @@ object CompletedCastleDetectionSpec : Spek({
         it("should detect XS completed castle") {
             val game = singlePlayer(TileD)
             game.dispatch(PutTile(Position(0, 1), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("should detect S completed castle") {
@@ -45,7 +45,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 2), SmallPiece, Knight(Down))))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) containsEvent PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 2), SmallPiece, Knight(Down))))
         }
 
         it("should not detect S incomplete castle") {
@@ -63,7 +63,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(1, 1), Rotation270))
-            game.dispatch(PutPiece(SmallPiece, Knight(Left))) shouldContain PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 1), SmallPiece, Knight(Left))))
+            game.dispatch(PutPiece(SmallPiece, Knight(Left))) containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 1), SmallPiece, Knight(Left))))
         }
 
         it("should detect mapples placed before castle completion") {
@@ -72,7 +72,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             game.dispatch(PutTile(Position(0, 2), Rotation180))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 1), Rotation270)) shouldContain PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(1, 1), Rotation270)) containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("should return all mapples placed on completed castle") {
@@ -83,7 +83,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(1, 2), Rotation180))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(1, 1), Rotation270)) shouldContain PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(1, 1), Rotation270)) containsEvent PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
         }
 
         it("should not give any reward if no handlers were on completed castle") {
@@ -104,7 +104,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             game.dispatch(PutTile(Position(0, 2), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 2), Rotation270)) shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            game.dispatch(PutTile(Position(1, 2), Rotation270)) containsEvent PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
         }
 
         it("should reward many players if they have the same amount of handlers in a castle") {
@@ -118,8 +118,8 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutTile(Position(1, 2), Rotation180))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
-            events shouldContain PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
-            events shouldContain PlayerScored(2, 10, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            events containsEvent PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            events containsEvent PlayerScored(2, 10, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
         }
 
         it("should reward only one player if he has advantage of handlers in castle") {
@@ -133,8 +133,8 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutTile(Position(1, 2), Rotation180))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
-            events shouldContain PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
-            events shouldContain OccupiedAreaCompleted(2, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            events containsEvent PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
+            events containsEvent PlayerDidNotScore(2, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
         }
 
         it("should detect that multiple castles were finished with single tile") {
@@ -144,8 +144,8 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Knight(Up)))
             val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
-            events shouldContain PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
-            events shouldContain PlayerScored(2, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
+            events containsEvent PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            events containsEvent PlayerScored(2, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
         }
 
         it("should return single score event if the same castle is on multiple tiles directions") {
@@ -156,7 +156,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
             events.size shouldEqual 2
-            events shouldContain PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
+            events containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
             events shouldContain SelectPiece
         }
     }

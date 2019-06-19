@@ -14,17 +14,17 @@ object SinglePieceInObjectSpec : Spek({
     describe("Putting handlers in taken object") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) =
-            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)))
+            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("knights") {
             val game = singlePlayer(TileF, TileF)
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain InvalidPieceLocation
         }
 
         it("knights two players") {
@@ -32,7 +32,7 @@ object SinglePieceInObjectSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain InvalidPieceLocation
         }
 
         it("brigands") {
@@ -40,7 +40,7 @@ object SinglePieceInObjectSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Right)))
             game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain InvalidPieceLocation
         }
 
         it("brigands two players") {
@@ -48,7 +48,7 @@ object SinglePieceInObjectSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Brigand(Right)))
             game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain InvalidPieceLocation
         }
 
         it("peasants") {
@@ -56,7 +56,7 @@ object SinglePieceInObjectSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right, LeftSide))))
             game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain InvalidPieceLocation
         }
 
         it("peasants two players") {
@@ -64,7 +64,7 @@ object SinglePieceInObjectSpec : Spek({
             game.dispatch(PutTile(Position(1, 0), NoRotation))
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right, LeftSide))))
             game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain PiecePlacedInInvalidPlace
+            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain InvalidPieceLocation
         }
     }
 })

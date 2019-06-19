@@ -2,6 +2,7 @@ package io.github.hejcz.helper
 
 import io.github.hejcz.abbot.AbbotExtension
 import io.github.hejcz.core.RemainingTiles
+import io.github.hejcz.corncircles.*
 import io.github.hejcz.inn.InnAndCathedralsExtension
 import io.github.hejcz.river.RiverExtension
 import io.github.hejcz.setup.Extension
@@ -23,3 +24,6 @@ class AbbotTestGameSetup(remainingTiles: RemainingTiles) :
 
 class InnAndCathedralsTestGameSetup(remainingTiles: RemainingTiles) :
     TestGameSetup(remainingTiles, listOf(InnAndCathedralsExtension))
+
+class CornCirclesGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(CornCirclesExtension))
