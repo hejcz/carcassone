@@ -96,6 +96,113 @@ object CornCirclesSpec : Spek({
             events.size shouldEqual 1
         }
 
+        it("can't choose corn action until corn tile is drawn") {
+            val game = innAndCornTwoPlayersGame(TileD)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE)).shouldContain(UnexpectedCommand)
+        }
+
+        it("can avoid placing mapple when player has no piece in role specified on tile") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE))
+            game.dispatch(AvoidCornCircleAction).shouldContain(PieceCanNotBeSkipped)
+        }
+
+        it("can't avoid placing mapple when player has no piece in role specified on tile") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(SkipPiece)
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE))
+            game.dispatch(AvoidCornCircleAction).shouldContain(AddPiece(2))
+        }
+
+        it("can avoid placing mapple when player has no piece in role specified on tile") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.REMOVE_PIECE))
+            game.dispatch(AvoidCornCircleAction).shouldContain(PieceCanNotBeSkipped)
+        }
+
+        it("can't avoid placing mapple when player has no piece in role specified on tile") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(SkipPiece)
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.REMOVE_PIECE))
+            game.dispatch(AvoidCornCircleAction).shouldContain(RemovePiece(2))
+        }
+
+        it("must add piece where it is already deployed") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE))
+            game.dispatch(AddPieceCommand(Position(1, 0), SmallPiece, Knight(Up))).shouldContain(AddPiece(2))
+        }
+
+        it("must not add piece where it is not deployed") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE))
+            game.dispatch(AddPieceCommand(Position(0, 1), SmallPiece, Knight(Down))).shouldContain(InvalidPieceLocation)
+        }
+
+        it("must not add piece when player does not have such mapple available") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(BigPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE))
+            // player has only 1 big mapple
+            game.dispatch(AddPieceCommand(Position(1, 0), BigPiece, Knight(Up))).shouldContain(NoMappleAvailable(BigPiece))
+        }
+
+        it("must remove piece from place where it is already deployed") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.REMOVE_PIECE))
+            game.dispatch(RemovePieceCommand(Position(1, 0), SmallPiece, Knight(Up))).shouldContain(RemovePiece(2))
+        }
+
+        it("must not remove piece from place where it is not deployed") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.REMOVE_PIECE))
+            game.dispatch(RemovePieceCommand(Position(0, 1), SmallPiece, Knight(Down))).shouldContain(InvalidPieceLocation)
+        }
+
+        it("must not remove piece that is not in his pool e.g. it is already on board") {
+            val game = innAndCornTwoPlayersGame(TileD, Korn6)
+            game.dispatch(PutTile(Position(1, 0), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
+            game.dispatch(PutTile(Position(0, 1), NoRotation))
+            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
+            game.dispatch(ChooseCornCircleActionCommand(CornCircleAction.REMOVE_PIECE))
+            game.dispatch(RemovePieceCommand(Position(1, 0), BigPiece, Knight(Up))).shouldContain(InvalidPieceLocation)
+        }
+
     }
 
 })
