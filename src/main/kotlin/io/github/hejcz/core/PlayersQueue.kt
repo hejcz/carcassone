@@ -1,9 +1,18 @@
 package io.github.hejcz.core
 
+import java.lang.RuntimeException
+
+interface IPlayersQueue {
+    fun next(): IPlayersQueue
+    fun current(): IPlayer
+}
+
 /**
  * Cycles over passed players infinitely.
  */
-class PlayersQueue(players: Collection<Player>) {
+class PlayersQueue(players: Collection<Player>) : IPlayersQueue {
+    private var current: Player? = null
+
     private val iterator = sequence {
         val orderedPlayers = players.sortedBy { it.order }
         var i = 0
@@ -13,5 +22,10 @@ class PlayersQueue(players: Collection<Player>) {
         }
     }.iterator()
 
-    fun next() = iterator.next()
+    override fun next(): PlayersQueue {
+        current = iterator.next()
+        return this
+    }
+
+    override fun current(): IPlayer = current ?: throw RuntimeException("queue not executed yet")
 }

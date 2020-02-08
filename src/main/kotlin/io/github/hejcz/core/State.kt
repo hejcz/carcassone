@@ -11,9 +11,6 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
 
     private var queue: PlayersQueue = PlayersQueue(players)
 
-    // player who should make a command
-    private var currentPlayer: Player = queue.next()
-
     // next tile to place on board
     var currentTile: Tile = remainingTiles.next()
         private set
@@ -29,6 +26,10 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
     // collection of completed castles
     private val completedCastles = mutableMapOf<PositionedDirection, CompletedCastle>()
 
+    init {
+        queue = queue.next()
+    }
+
     fun addTile(position: Position, rotation: Rotation) {
         val tile = currentTile.rotate(rotation)
         board = board.withTile(tile, position)
@@ -38,13 +39,13 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
     }
 
     fun addPiece(piece: Piece, role: Role) =
-        piecesOnBoard.put(currentPlayer, recentPosition, piece, role)
+        piecesOnBoard.put(queue.current(), recentPosition, piece, role)
 
     fun addPiece(position: Position, piece: Piece, role: Role) =
-        piecesOnBoard.put(currentPlayer, position, piece, role)
+        piecesOnBoard.put(queue.current(), position, piece, role)
 
     fun removePiece(position: Position, piece: Piece, role: Role) =
-        piecesOnBoard.remove(currentPlayer, position, piece, role)
+        piecesOnBoard.remove(queue.current(), position, piece, role)
 
     fun returnPieces(pieces: Collection<OwnedPiece>): Collection<OwnedPiece> =
         pieces.onEach {
@@ -54,10 +55,10 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
 
     fun tileAt(position: Position): Tile = board.tiles[position] ?: NoTile
 
-    fun currentPlayerId(): Long = currentPlayer.id
+    fun currentPlayerId(): Long = queue.current().id
 
     fun changeActivePlayer() {
-        currentPlayer = queue.next()
+        queue.next()
     }
 
     fun addCompletedCastle(completedCastle: CompletedCastle) =
@@ -80,23 +81,23 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
     fun allPeasants(): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.allPeasants()
 
     fun currentPlayerPieces(cornSymbol: CornSymbol): List<Pair<Long, PieceOnBoard>> =
-        piecesOnBoard.playerPieces(currentPlayer, cornSymbol)
+        piecesOnBoard.playerPieces(queue.current(), cornSymbol)
 
     fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.piecesOn(position, role)
 
     fun allPlayersIdsStartingWithCurrent(): List<Long> {
         val sorted = players.values.sortedBy { it.order }
         return when {
-            sorted[0] == currentPlayer -> sorted.map { it.id }
-            else -> sorted.subList(currentPlayer.order - 1, sorted.size).map { it.id } +
-                    sorted.subList(0, currentPlayer.order - 1).map { it.id }
+            sorted[0] == queue.current() -> sorted.map { it.id }
+            else -> sorted.subList(queue.current().order - 1, sorted.size).map { it.id } +
+                    sorted.subList(0, queue.current().order - 1).map { it.id }
         }
     }
 
-    fun isAvailableForCurrentPlayer(piece: Piece) = currentPlayer.isAvailable(piece)
+    fun isAvailableForCurrentPlayer(piece: Piece) = queue.current().isAvailable(piece)
 
     fun previousPlayerId(): Long {
-        val order = currentPlayer.order - 1
+        val order = queue.current().order - 1
         val normalizedOrder = if (order == 0) players.count() else order
         return players.values.first { it.order == normalizedOrder }.id
     }

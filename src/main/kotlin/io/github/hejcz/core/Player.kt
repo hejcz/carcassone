@@ -2,15 +2,21 @@ package io.github.hejcz.core
 
 import java.lang.RuntimeException
 
-data class Player(val id: Long, val order: Int, val initialPieces: List<Piece> = emptyList()) {
+data class Player(override val id: Long, override val order: Int, val initialPieces: List<Piece> = emptyList()) : IPlayer {
 
     private val pools by lazy { initialPieces.groupBy { it }.mapValues { PiecePool(it.value.count()) } }
 
-    fun isAvailable(piece: Piece) = pools[piece]?.isAvailable() ?: false
+    override fun isAvailable(piece: Piece) = pools[piece]?.isAvailable() ?: false
 
-    fun lockPiece(piece: Piece) = pools[piece]?.lock() ?: throw RuntimeException("Piece not available")
+    override fun lockPiece(piece: Piece): Player {
+        pools[piece]?.lock() ?: throw RuntimeException("Piece not available")
+        return this
+    }
 
-    fun unlockPiece(piece: Piece) = pools[piece]?.unlock() ?: throw RuntimeException("Piece not available")
+    override fun unlockPiece(piece: Piece): Player {
+        pools[piece]?.unlock() ?: throw RuntimeException("Piece not available")
+        return this
+    }
 
     companion object {
 

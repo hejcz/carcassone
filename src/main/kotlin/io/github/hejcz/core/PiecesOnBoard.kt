@@ -10,7 +10,7 @@ class PiecesOnBoard {
     private val monks: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
     private val peasants: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
 
-    fun put(player: Player, recentPosition: Position, piece: Piece, role: Role) {
+    fun put(player: IPlayer, recentPosition: Position, piece: Piece, role: Role) {
         run(role) {
             player.lockPiece(piece)
             val pieceOnBoard = player.id to PieceOnBoard(recentPosition, piece, role)
@@ -18,7 +18,7 @@ class PiecesOnBoard {
         }
     }
 
-    fun remove(player: Player, position: Position, piece: Piece, role: Role) {
+    fun remove(player: IPlayer, position: Position, piece: Piece, role: Role) {
         run(role) {
             player.unlockPiece(piece)
             val pieceOnBoard = player.id to PieceOnBoard(position, piece, role)
@@ -53,7 +53,7 @@ class PiecesOnBoard {
     private fun piecesOn(list: List<Pair<Long, PieceOnBoard>>, position: Position, role: Role) =
         list.filter { it.second.position == position && it.second.role == role }
 
-    fun playerPieces(player: Player, symbol: CornSymbol): List<Pair<Long, PieceOnBoard>> = when (symbol) {
+    fun playerPieces(player: IPlayer, symbol: CornSymbol): List<Pair<Long, PieceOnBoard>> = when (symbol) {
         CornSymbol.KNIGHT -> knights.filter { it.first == player.id }
         CornSymbol.BRIGAND -> brigands.filter { it.first == player.id }
         CornSymbol.PEASANT -> peasants.filter { it.first == player.id }
