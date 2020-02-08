@@ -28,7 +28,7 @@ interface IState {
     fun addPiece(piece: Piece, role: Role)
     fun addPiece(position: Position, piece: Piece, role: Role)
     fun removePiece(position: Position, piece: Piece, role: Role)
-    fun returnPieces(pieces: Collection<OwnedPiece>): Collection<OwnedPiece>
+    fun returnPieces(pieces: Collection<OwnedPiece>)
     fun changeActivePlayer()
     fun addCompletedCastle(completedCastle: CompletedCastle)
 }

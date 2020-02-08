@@ -50,11 +50,12 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
     override fun removePiece(position: Position, piece: Piece, role: Role) =
         piecesOnBoard.remove(queue.current(), position, piece, role)
 
-    override fun returnPieces(pieces: Collection<OwnedPiece>): Collection<OwnedPiece> =
+    override fun returnPieces(pieces: Collection<OwnedPiece>) {
         pieces.onEach {
             val (piece, id) = it
             piecesOnBoard.remove(players.getValue(id), piece.position, piece.piece, piece.role)
         }
+    }
 
     override fun tileAt(position: Position): Tile = board.tiles[position] ?: NoTile
 

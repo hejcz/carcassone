@@ -48,8 +48,11 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         return setOf(PlayerScored(state.currentPlayerId(), score, returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
 
-    private fun returnPieces(state: State, castle: Castle) =
-        state.returnPieces(castle.pieces.map { it.toPieceWithOwner() })
+    private fun returnPieces(state: State, castle: Castle): List<OwnedPiece> {
+        val pieces = castle.pieces.map { it.toPieceWithOwner() }
+        state.returnPieces(pieces)
+        return pieces
+    }
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Castle {
         val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)

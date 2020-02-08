@@ -39,8 +39,11 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         return setOf(PlayerScored(state.currentPlayerId(), scoring(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
     }
 
-    private fun returnPieces(state: State, road: Road) =
-        state.returnPieces(road.pieces.map { it.toPieceWithOwner() })
+    private fun returnPieces(state: State, road: Road): List<OwnedPiece> {
+        val pieces = road.pieces.map { it.toPieceWithOwner() }
+        state.returnPieces(pieces)
+        return pieces
+    }
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Road {
         val (parts, isCompleted) = RoadsExplorer.explore(state, startingPosition, startingDirection)
