@@ -14,10 +14,10 @@ object PlainEndGameRewardSpec : Spek({
     describe("Green field") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true).apply { dispatch(Begin) }
 
         fun multiPlayer(vararg tiles: Tile) =
-            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
+            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true).apply { dispatch(Begin) }
 
         it("should be scored") {
             val game = singlePlayer(TileE)

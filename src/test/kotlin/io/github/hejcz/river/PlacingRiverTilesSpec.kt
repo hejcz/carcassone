@@ -20,7 +20,7 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Placing river tile") {
             val game = singlePlayer(TileBB6F6)
-            game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPiece()
         }
 
         it("Placing river tile in invalid place") {
@@ -40,12 +40,12 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Connecting river tiles 1") {
             val game = singlePlayer(TileBB6F2)
-            game.dispatch(PutTile(Position(0, -1), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -1), Rotation90)).shouldContainSelectPiece()
         }
 
         it("Connecting river tiles 2") {
             val game = singlePlayer(TileBB6F2)
-            game.dispatch(PutTile(Position(0, -1), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -1), Rotation270)).shouldContainSelectPiece()
         }
 
         it("Connecting river tiles invalid") {
@@ -71,7 +71,7 @@ object PlacingRiverTilesSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(-1, -1), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-2, -1), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-2, -1), Rotation270)).shouldContainSelectPiece()
         }
 
         it("River must be connected with previous river - it can't be adjacent by field e.g.") {

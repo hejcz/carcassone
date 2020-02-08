@@ -4,7 +4,6 @@ import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -94,7 +93,7 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(SkipPiece)
             game.dispatch(PutTile(Position(1, 2), Rotation180))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 1), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 1), Rotation270)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
         }
 
@@ -155,7 +154,6 @@ object CompletedCastleDetectionSpec : Spek({
             game.dispatch(PutTile(Position(0, 1), Rotation90))
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
-            events.size shouldEqual 2
             events containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
             events shouldContain SelectPiece
         }

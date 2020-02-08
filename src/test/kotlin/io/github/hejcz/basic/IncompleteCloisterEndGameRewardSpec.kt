@@ -3,9 +3,7 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
-import org.amshove.kluent.shouldContain
 import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -83,23 +81,23 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
 
         it("should detect two incomplete cloisters of different players with 7/8 and 6/8 tiles surrounding tiles respectively") {
             val game = multiPlayer(TileD, TileW, TileV, TileE, TileE, TileB, TileB, TileH, TileK)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(-1, 0), Rotation180)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, 0), Rotation180)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 0), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, 0), Rotation90)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(-1, -1), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, -1), Rotation270)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, -1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPiece()
             val events = game.dispatch(SkipPiece)
             events containsEvent PlayerScored(1, 7, emptySet())
             events containsEvent PlayerScored(2, 8, emptySet())
@@ -107,25 +105,25 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
 
         it("should detect two incomplete cloisters of the same player") {
             val game = multiPlayer(TileD, TileW, TileV, TileE, TileB, TileE, TileB, TileH, TileH, TileK)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(-1, 0), Rotation180)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, 0), Rotation180)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 0), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, 0), Rotation90)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(-1, -1), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, -1), Rotation270)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, -1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, -2), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, -2), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, -2), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPiece()
             val events = game.dispatch(SkipPiece)
             events shouldEqual listOf(PlayerScored(1, 8, emptySet()), PlayerScored(1, 8, emptySet()))
         }

@@ -2,8 +2,8 @@ package io.github.hejcz.helper
 
 import io.github.hejcz.core.*
 
-fun <T> Collection<T>.shouldContainSelectPieceOnly() =
-    if (this.size != 1 || this.iterator().next() != SelectPiece) {
+fun Collection<GameEvent>.shouldContainSelectPiece() =
+    if (!this.contains(SelectPiece)) {
         throw AssertionError("Expected only SelectPiece event but was $this")
     } else {
         // ok

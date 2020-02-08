@@ -3,8 +3,6 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
-import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldNotContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -58,19 +56,19 @@ object IncompleteRoadEndGameRewardSpec : Spek({
 
         it("should reward single player if he has advantage of mapples over his opponent") {
             val game = multiPlayer(TileV, TileV, TileB, TileU, TileV, TileV, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 0), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, 0), Rotation270)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, 1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(3, 1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(3, 1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(3, 0), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(3, 0), Rotation90)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -1), Rotation180)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, -1), Rotation180)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPiece()
             val events = game.dispatch(SkipPiece)
             events containsEvent PlayerScored(2, 7, emptySet())
             events doesNotContainEvent PlayerScored(1, 7, emptySet())

@@ -176,15 +176,15 @@ object InnAndCathedralsExtensionSpec : Spek({
 
         it("single should be available") {
             val game = singlePlayer(TileD, TileD)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(BigPiece, Knight(Up))).shouldContainPlaceTileOnly()
         }
 
         it("can not be placed twice before recover") {
             val game = singlePlayer(TileD, TileD, TileD)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(BigPiece, Knight(Up))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(2, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(BigPiece, Knight(Up))) shouldContain NoMappleAvailable(BigPiece)
         }
 

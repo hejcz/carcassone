@@ -25,7 +25,7 @@ object RoadCompletedSpec : Spek({
             val game = singlePlayer(TileS, TileS)
             game.dispatch(PutTile(Position(1, 0), Rotation90))
             game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 0), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, 0), Rotation270)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Brigand(Right))) containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
         }
 

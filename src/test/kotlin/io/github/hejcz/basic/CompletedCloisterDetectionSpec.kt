@@ -111,7 +111,9 @@ object CompletedCloisterDetectionSpec : Spek({
             game.dispatch(PutTile(Position(0, -2), Rotation270))
             game.dispatch(SkipPiece)
             val events = game.dispatch(PutTile(Position(1, -2), Rotation90))
-            events shouldEqual listOf(PlayerScored(1, 9, setOf(PieceOnBoard(Position(0, -1), SmallPiece, Monk))), PlayerScored(1, 9, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Monk))), SelectPiece)
+            events shouldContain SelectPiece
+            events containsEvent PlayerScored(1, 9, setOf(PieceOnBoard(Position(0, -1), SmallPiece, Monk)))
+            events containsEvent PlayerScored(1, 9, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Monk)))
         }
     }
 })

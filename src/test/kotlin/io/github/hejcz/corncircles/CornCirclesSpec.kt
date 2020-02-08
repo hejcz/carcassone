@@ -26,34 +26,34 @@ object CornCirclesSpec : Spek({
         it("first example") {
             val game = threePlayerGame(TileL, TileQ, TileW, TileE, TileE, TileH, TileG, TileU, TileU, Korn6, TileU)
             // red
-            game.dispatch(PutTile(Position(-1, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Down, LeftSide)))).shouldContainPlaceTileOnly()
             // green
-            game.dispatch(PutTile(Position(-1, 1), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, 1), Rotation270)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Knight(Up))).shouldContainPlaceTileOnly()
             // blue
-            game.dispatch(PutTile(Position(-2, 0), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-2, 0), Rotation270)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             // red
-            game.dispatch(PutTile(Position(-3, 0), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-3, 0), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             // green
-            game.dispatch(PutTile(Position(-4, 0), Rotation270)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-4, 0), Rotation270)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             // blue
-            game.dispatch(PutTile(Position(-4, 1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-4, 1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Peasant(Location(Down)))).shouldContainPlaceTileOnly()
             // red
-            game.dispatch(PutTile(Position(-5, 1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-5, 1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(PutPiece(SmallPiece, Knight(Right))).shouldContainPlaceTileOnly()
             // green
-            game.dispatch(PutTile(Position(-1, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-1, -1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             // blue
-            game.dispatch(PutTile(Position(-2, -1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-2, -1), NoRotation)).shouldContainSelectPiece()
             game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
             // red - Korn1
-            game.dispatch(PutTile(Position(-3, 1), NoRotation)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(-3, 1), NoRotation)).shouldContainSelectPiece()
             val events = game.dispatch(PutPiece(SmallPiece, Knight(Down)))
             events.size.shouldBe(1)
             events.shouldContain(ChooseCornAction(1))

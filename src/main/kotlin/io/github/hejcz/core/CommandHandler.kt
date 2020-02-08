@@ -12,6 +12,9 @@ interface CommandHandler {
         val state2 = scoreEvents
             .mapNotNull { it as? PlayerDidNotScore }
             .fold(state1) { s, event -> s.returnPieces(event.returnedPieces.map { OwnedPiece(it, event.playerId) }) }
-        return GameChanges.noEvents(state2)
+        val state3 = scoreEvents
+            .mapNotNull { it as? CastleFinished }
+            .fold(state2) { s, event -> s.addCompletedCastle(event.castle) }
+        return GameChanges.noEvents(state3)
     }
 }

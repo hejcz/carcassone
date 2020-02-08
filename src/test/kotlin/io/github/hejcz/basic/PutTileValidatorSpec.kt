@@ -5,7 +5,7 @@ import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles
 import io.github.hejcz.helper.TestGameSetup
-import io.github.hejcz.helper.shouldContainSelectPieceOnly
+import io.github.hejcz.helper.shouldContainSelectPiece
 import org.amshove.kluent.shouldContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -34,7 +34,7 @@ object PutTileValidatorSpec : Spek({
 
         it("roads validation") {
             val game = singlePlayer(TileA)
-            game.dispatch(PutTile(Position(1, 0), Rotation90)).shouldContainSelectPieceOnly()
+            game.dispatch(PutTile(Position(1, 0), Rotation90)).shouldContainSelectPiece()
         }
 
         it("Connecting tiles with bounded object") {
