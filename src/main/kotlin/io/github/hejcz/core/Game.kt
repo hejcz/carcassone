@@ -54,7 +54,7 @@ class Game(players: Collection<Player>, gameSetup: GameSetup, private val verbos
         return events
     }
 
-    private fun isEndOfTheGame() = eventsQueue.isPutTileNext() && state.currentTile is NoTile
+    private fun isEndOfTheGame() = eventsQueue.isPutTileNext() && state.currentTile() is NoTile
 
     private fun validate(command: Command) =
         validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet()

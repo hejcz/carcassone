@@ -12,9 +12,9 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
     }
 
     private fun afterTilePlaced(state: State): Collection<GameEvent> =
-        castlesDirections(state.tileAt(state.recentPosition))
+        castlesDirections(state.tileAt(state.recentPosition()))
             .asSequence()
-            .map { explore(state, state.recentPosition, it) }
+            .map { explore(state, state.recentPosition(), it) }
             .distinct()
             .filter { it.completed }
             .onEach { state.addCompletedCastle(CompletedCastle(it.parts)) }
@@ -38,7 +38,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         if (role !is Knight) {
             return emptySet()
         }
-        val castle = explore(state, state.recentPosition, role.direction)
+        val castle = explore(state, state.recentPosition(), role.direction)
         if (!castle.completed) {
             return emptyList()
         }

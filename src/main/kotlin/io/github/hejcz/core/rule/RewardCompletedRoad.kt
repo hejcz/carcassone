@@ -5,7 +5,7 @@ import io.github.hejcz.core.*
 class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PutTile -> afterTilePlaced(state.recentPosition, state)
+        is PutTile -> afterTilePlaced(state.recentPosition(), state)
         is PutPiece -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
@@ -30,7 +30,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         if (role !is Brigand) {
             return emptySet()
         }
-        val road = explore(state, state.recentPosition, role.direction)
+        val road = explore(state, state.recentPosition(), role.direction)
         if (!road.completed) {
             return emptyList()
         }
