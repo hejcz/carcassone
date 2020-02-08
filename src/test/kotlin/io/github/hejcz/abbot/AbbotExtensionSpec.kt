@@ -13,7 +13,8 @@ object AbbotExtensionSpec : Spek({
 
         fun singlePlayer(vararg tiles: Tile) = Game(
             setOf(Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, AbbotPiece))),
-            AbbotTestGameSetup(TestBasicRemainingTiles(*tiles))
+            AbbotTestGameSetup(TestBasicRemainingTiles(*tiles)),
+            true
         ).apply { dispatch(Begin) }
 
         it("should not be able to place another small piece if only abbot is available") {

@@ -1,7 +1,5 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.inn.tiles.*
-
 typealias RoadScoring = (State, Road) -> Int
 
 val scoreRoad = { _: State, road: Road -> road.tilesCount }

@@ -133,24 +133,23 @@ object PlacingRiverTilesSpec : Spek({
 
         it("If river enabled source should be first") {
             val deck = TilesSetup().withExtensions(RiverExtension)
-            deck.remainingTiles().next() shouldEqual TileBB6F1
+            deck.remainingTiles()[0] shouldEqual TileBB6F1
         }
 
         it("Amount of tiles in basic deck") {
             val deck = TilesSetup()
-            deck.remainingTiles().size() shouldEqual 72
+            deck.remainingTiles().size shouldEqual 72
         }
 
         it("Amount of tiles in game with river extension") {
             val deck = TilesSetup().withExtensions(RiverExtension)
-            deck.remainingTiles().size() shouldEqual 84
+            deck.remainingTiles().size shouldEqual 84
         }
 
         it("If river enabled estuary should be last of river tiles") {
             val deck = TilesSetup().withExtensions(RiverExtension)
             val remainingTiles = deck.remainingTiles()
-            (1..11).forEach { _ -> remainingTiles.next() }
-            remainingTiles.next() shouldEqual TileBB6F12
+            remainingTiles.drop(11)[0] shouldEqual TileBB6F12
         }
     }
 })

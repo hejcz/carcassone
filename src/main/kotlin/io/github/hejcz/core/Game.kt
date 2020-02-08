@@ -15,8 +15,7 @@ class Game(players: Collection<Player>, gameSetup: GameSetup, private val verbos
 
     init {
         val tiles = gameSetup.tiles()
-        val board = Board(mapOf(Position(0, 0) to tiles.next()))
-        state = State(players.mapTo(mutableSetOf()) { playerWithPieces(it, gameSetup) }, tiles, board)
+        state = BasicState(players.mapTo(mutableSetOf()) { playerWithPieces(it, gameSetup) }, tiles)
     }
 
     private fun playerWithPieces(player: Player, gameSetup: GameSetup) = when {
