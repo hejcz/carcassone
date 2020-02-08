@@ -41,7 +41,6 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     private fun returnPieces(state: State, road: Road): List<OwnedPiece> {
         val pieces = road.pieces.map { it.toPieceWithOwner() }
-        state.returnPieces(pieces)
         return pieces
     }
 

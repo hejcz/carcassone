@@ -33,40 +33,51 @@ class State(players: Set<Player>, private var remainingTiles: RemainingTiles, pr
         queue = queue.next()
     }
 
-    override fun addTile(position: Position, rotation: Rotation) {
+    override fun addTile(position: Position, rotation: Rotation): State {
         val tile = currentTile.rotate(rotation)
         board = board.withTile(tile, position)
         recentPosition = position
         recentTile = tile
         currentTile = remainingTiles.next()
+        return this
     }
 
-    override fun addPiece(piece: Piece, role: Role) =
+    override fun addPiece(piece: Piece, role: Role): State {
         piecesOnBoard.put(queue.current(), recentPosition, piece, role)
+        return this
+    }
 
-    override fun addPiece(position: Position, piece: Piece, role: Role) =
+    override fun addPiece(position: Position, piece: Piece, role: Role): State {
         piecesOnBoard.put(queue.current(), position, piece, role)
+        return this
+    }
 
-    override fun removePiece(position: Position, piece: Piece, role: Role) =
+    override fun removePiece(position: Position, piece: Piece, role: Role): State {
         piecesOnBoard.remove(queue.current(), position, piece, role)
+        return this
+    }
 
-    override fun returnPieces(pieces: Collection<OwnedPiece>) {
+    override fun returnPieces(pieces: Collection<OwnedPiece>): State {
         pieces.onEach {
             val (piece, id) = it
             piecesOnBoard.remove(players.getValue(id), piece.position, piece.piece, piece.role)
         }
+        return this
     }
 
     override fun tileAt(position: Position): Tile = board.tiles[position] ?: NoTile
 
     override fun currentPlayerId(): Long = queue.current().id
 
-    override fun changeActivePlayer() {
+    override fun changeActivePlayer(): State {
         queue.next()
+        return this
     }
 
-    override fun addCompletedCastle(completedCastle: CompletedCastle) =
+    override fun addCompletedCastle(completedCastle: CompletedCastle): State {
         completedCastle.elements.forEach { completedCastles[it] = completedCastle }
+        return this
+    }
 
     override fun completedCastle(positionedDirection: PositionedDirection) = completedCastles[positionedDirection]
 

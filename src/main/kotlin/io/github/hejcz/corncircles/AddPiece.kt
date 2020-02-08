@@ -5,9 +5,17 @@ import io.github.hejcz.util.*
 
 data class AddPieceCommand(val position: Position, val piece: Piece, val role: Role) : Command
 
-val AddPieceHandler = eventHandlerNoEvents<AddPieceCommand> { game, command ->
-    game.state.addPiece(command.position, command.piece, command.role)
-    game.state.changeActivePlayer()
+val AddPieceHandler = object : CommandHandler {
+    override fun isApplicableTo(command: Command): Boolean = command is AddPieceCommand
+
+    override fun beforeScoring(state: State, command: Command): GameChanges =
+        (command as AddPieceCommand).let {
+            GameChanges.noEvents(
+                state.addPiece(command.position, command.piece, command.role)
+                    .changeActivePlayer()
+            )
+        }
+
 }
 
 val AddPieceValidator = commandValidator<AddPieceCommand> { state, command ->

@@ -4,9 +4,8 @@ import io.github.hejcz.core.*
 
 object PutPieceHandler : CommandHandler {
     override fun isApplicableTo(command: Command): Boolean = command is PutPiece
-    override fun handle(game: Game, command: Command): Collection<GameEvent> {
-        val putPieceCommand = command as PutPiece
-        game.state.addPiece(putPieceCommand.piece, putPieceCommand.role)
-        return game.runAllRules(command)
-    }
+
+    override fun beforeScoring(state: State, command: Command): GameChanges =
+        (command as PutPiece).let { GameChanges.noEvents(state.addPiece(command.piece, command.role)) }
+
 }

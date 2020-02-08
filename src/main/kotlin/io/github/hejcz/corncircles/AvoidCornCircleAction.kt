@@ -5,8 +5,16 @@ import io.github.hejcz.util.*
 
 object AvoidCornCircleAction : Command
 
-val AvoidCornCircleActionHandler = eventHandlerNoEvents<AvoidCornCircleAction> { game, _ ->
-    game.state.changeActivePlayer()
+val AvoidCornCircleActionHandler = object : CommandHandler {
+    override fun isApplicableTo(command: Command): Boolean = command is AvoidCornCircleAction
+
+    override fun beforeScoring(state: State, command: Command): GameChanges =
+        (command as AvoidCornCircleAction).let {
+            GameChanges.noEvents(
+                state.changeActivePlayer()
+            )
+        }
+
 }
 
 val AvoidCornCircleActionValidator = commandValidator<AvoidCornCircleAction> { state, _ ->

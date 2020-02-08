@@ -24,11 +24,11 @@ interface IState {
     fun isAvailableForCurrentPlayer(piece: Piece): Boolean
     fun previousPlayerId(): Long
     // mutators
-    fun addTile(position: Position, rotation: Rotation)
-    fun addPiece(piece: Piece, role: Role)
-    fun addPiece(position: Position, piece: Piece, role: Role)
-    fun removePiece(position: Position, piece: Piece, role: Role)
-    fun returnPieces(pieces: Collection<OwnedPiece>)
-    fun changeActivePlayer()
-    fun addCompletedCastle(completedCastle: CompletedCastle)
+    fun addTile(position: Position, rotation: Rotation): State
+    fun addPiece(piece: Piece, role: Role): State
+    fun addPiece(position: Position, piece: Piece, role: Role): State
+    fun removePiece(position: Position, piece: Piece, role: Role): State
+    fun returnPieces(pieces: Collection<OwnedPiece>): State
+    fun changeActivePlayer(): State
+    fun addCompletedCastle(completedCastle: CompletedCastle): State
 }

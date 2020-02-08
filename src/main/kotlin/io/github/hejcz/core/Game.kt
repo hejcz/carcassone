@@ -6,24 +6,18 @@ import io.github.hejcz.setup.*
 class Game(players: Collection<Player>, gameSetup: GameSetup, private val verbose: Boolean = false) {
 
     private val eventsQueue = EventsQueue()
-    val state: State
-    private val rules: Collection<Rule>
-    private val endRules: Collection<EndRule>
+    private val validators: Collection<CommandValidator> = gameSetup.validators()
+    private val rules: Collection<Rule> = gameSetup.rules()
+    private val endRules: Collection<EndRule> = gameSetup.endRules()
+    private val handlers: Collection<CommandHandler> = gameSetup.handlers()
 
-    private val validators: Collection<CommandValidator>
-    private val handlers: Collection<CommandHandler>
+    private var state: State
 
     init {
         val tiles = gameSetup.tiles()
         val board = Board(mapOf(Position(0, 0) to tiles.next()))
         state = State(players.mapTo(mutableSetOf()) { playerWithPieces(it, gameSetup) }, tiles, board)
-        validators = gameSetup.validators()
-        rules = gameSetup.rules()
-        endRules = gameSetup.endRules()
-        handlers = gameSetup.handlers()
     }
-
-    fun runAllRules(command: Command) = rules.flatMap { it.afterCommand(command, state) }
 
     private fun playerWithPieces(player: Player, gameSetup: GameSetup) = when {
         player.initialPieces.isNotEmpty() -> player
@@ -39,12 +33,29 @@ class Game(players: Collection<Player>, gameSetup: GameSetup, private val verbos
         val events = when {
             errors.isNotEmpty() -> errors
             else -> {
-                val events = handlers.first { it.isApplicableTo(command) }.handle(this, command) +
-                        if (isEndOfTheGame()) endRules.flatMap { it.apply(state) } else setOf(eventsQueue.event(state))
-                if (eventsQueue.isPutTileNext() && command != Begin) {
-                    state.changeActivePlayer()
+                val handler = handlers.firstOrNull { it.isApplicableTo(command) }
+                    ?: throw NoHandlerForCommand(command)
+
+                val (state1, events1) = handler.beforeScoring(state, command)
+                val scoreEvents = rules.flatMap { it.afterCommand(command, state1) }
+                val (state2, events2) = handler.afterScoring(state1, scoreEvents)
+
+                val endGameEvents: Collection<GameEvent> = when {
+                    isEndOfTheGame() -> endRules.flatMap { it.apply(state2) }
+                    else -> emptySet()
                 }
-                events
+
+                val expectationsEvents: Collection<GameEvent> = when {
+                    isEndOfTheGame() -> emptySet()
+                    else -> setOf(eventsQueue.event(state2))
+                }
+
+                state = when {
+                    eventsQueue.isPutTileNext() && command != Begin -> state2.changeActivePlayer()
+                    else -> state2
+                }
+
+                events1 + events2 + scoreEvents + endGameEvents + expectationsEvents
             }
         }
         if (verbose) {

@@ -50,7 +50,6 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 
     private fun returnPieces(state: State, castle: Castle): List<OwnedPiece> {
         val pieces = castle.pieces.map { it.toPieceWithOwner() }
-        state.returnPieces(pieces)
         return pieces
     }
 

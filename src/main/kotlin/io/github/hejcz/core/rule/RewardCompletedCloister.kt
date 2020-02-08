@@ -18,7 +18,6 @@ object RewardCompletedCloister : Rule {
             .filter { state.tileAt(it).hasCloister() }
             .filter { isSurrounded(state, it) }
             .flatMap { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
-            .onEach { (playerId, pieceOnBoard) -> state.returnPieces(setOf(OwnedPiece(pieceOnBoard, playerId))) }
             .map { (playerId, pieceOnBoard) -> PlayerScored(playerId, COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)) }
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
@@ -35,7 +34,6 @@ object RewardCompletedCloister : Rule {
 
     private fun playerScoredEvent(state: State, piece: Piece, role: Role): Set<PlayerScored> {
         val pieceOnBoard = PieceOnBoard(state.recentPosition(), piece, role)
-        state.returnPieces(setOf(OwnedPiece(pieceOnBoard, state.currentPlayerId())))
         return setOf(PlayerScored(state.currentPlayerId(), COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)))
     }
 
