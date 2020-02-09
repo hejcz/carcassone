@@ -33,7 +33,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         val (winners, losers) = WinnerSelector.find(castle.pieces)
         val score = castleScoring(state, castle)
         return winners.ids.map { id -> PlayerScored(id, score, castle.piecesOf(id)) } +
-                losers.ids.map { id -> PlayerDidNotScore(id, castle.piecesOf(id)) }
+            losers.ids.map { id -> PlayerDidNotScore(id, castle.piecesOf(id)) }
     }
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> {

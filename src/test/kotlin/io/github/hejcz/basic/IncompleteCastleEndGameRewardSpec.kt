@@ -40,11 +40,7 @@ object IncompleteCastleEndGameRewardSpec : Spek({
                 .then(PutTile(Position(0, 1), Rotation180))
                 .then(PutPiece(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        4,
-                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
         }
     }

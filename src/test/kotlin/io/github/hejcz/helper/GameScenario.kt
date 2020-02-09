@@ -40,38 +40,54 @@ class GameScenario(private val game: Game) {
     }
 
     private infix fun Game.containsEvent(expected: GameEvent) = when {
-        this.recentEvents().any { it == expected } ->
-        {} // ok
+        this.recentEvents().any { it == expected } -> {
+        } // ok
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
     private infix fun Game.containsEvent(expected: PlayerScored) = when {
-        this.recentEvents().any { it is PlayerScored && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(expected.returnedPieces) } ->
-        {} // ok
+        this.recentEvents().any {
+            it is PlayerScored && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(
+                expected.returnedPieces
+            )
+        } -> {
+        } // ok
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
     private infix fun Game.containsEvent(expected: PlayerDidNotScore) = when {
-        this.recentEvents().any { it is PlayerDidNotScore && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(expected.returnedPieces) } ->
-        {} // ok
+        this.recentEvents().any {
+            it is PlayerDidNotScore && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(
+                expected.returnedPieces
+            )
+        } -> {
+        } // ok
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
     private infix fun Game.doesNotContainEvent(expected: GameEvent) = when {
-        this.recentEvents().none { it == expected } ->
-        {} // ok
+        this.recentEvents().none { it == expected } -> {
+        } // ok
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
     private infix fun Game.doesNotContainEvent(expected: PlayerScored) = when {
-        this.recentEvents().none { it is PlayerScored && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(expected.returnedPieces) } ->
-        {} // ok
+        this.recentEvents().none {
+            it is PlayerScored && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(
+                expected.returnedPieces
+            )
+        } -> {
+        } // ok
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
     private infix fun Game.doesNotContainEvent(expected: PlayerDidNotScore) = when {
-        this.recentEvents().none { it is PlayerDidNotScore && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(expected.returnedPieces) } ->
-        {} // ok
+        this.recentEvents().none {
+            it is PlayerDidNotScore && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(
+                expected.returnedPieces
+            )
+        } -> {
+        } // ok
         else -> throw AssertionError("Expected event not found: $expected")
     }
 

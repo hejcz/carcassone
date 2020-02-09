@@ -10,18 +10,24 @@ data class Player(
 ) : IPlayer {
 
     constructor(id: Long, order: Int) :
-            this(id, order, emptyList())
+        this(id, order, emptyList())
 
     constructor(id: Long, order: Int, initialPieces: List<Piece>) :
-            this(id, order, initialPieces, initialPieces.groupBy { it }.mapValues { PiecePool(it.value.count()) })
+        this(id, order, initialPieces, initialPieces.groupBy { it }.mapValues { PiecePool(it.value.count()) })
 
     override fun isAvailable(piece: Piece) = pieces[piece]?.isAvailable() ?: false
 
     override fun lockPiece(piece: Piece): Player =
-        Player(id, order, initialPieces, pieces + (piece to (pieces[piece]?.lock() ?: throw RuntimeException("No such piece: $piece"))))
+        Player(
+            id, order, initialPieces,
+            pieces + (piece to (pieces[piece]?.lock() ?: throw RuntimeException("No such piece: $piece")))
+        )
 
     override fun unlockPiece(piece: Piece): Player =
-        Player(id, order, initialPieces, pieces + (piece to (pieces[piece]?.unlock() ?: throw RuntimeException("No such piece: $piece"))))
+        Player(
+            id, order, initialPieces,
+            pieces + (piece to (pieces[piece]?.unlock() ?: throw RuntimeException("No such piece: $piece")))
+        )
 
     companion object {
 

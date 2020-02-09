@@ -142,6 +142,7 @@ object TileEP : InnTile, TileWithGreenFields by GreenFields(
         Left -> setOf(Left)
         else -> emptySet()
     }
+
     override fun exploreRoad(direction: Direction): Directions = emptySet()
     override fun hasEmblem(direction: Direction): Boolean = direction == Up || direction == Right
 }

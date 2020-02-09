@@ -7,6 +7,7 @@ object TileA : Tile {
     override fun exploreCastle(direction: Direction): Directions = emptySet()
     override fun exploreGreenFields(location: Location): Locations =
         setOf(Location(Right), Location(Up), Location(Left), Location(Down, RightSide), Location(Down, LeftSide))
+
     override fun exploreRoad(direction: Direction): Directions = direction.sameIf(Down)
 }
 
@@ -15,6 +16,7 @@ object TileB : Tile {
     override fun exploreCastle(direction: Direction): Directions = emptySet()
     override fun exploreGreenFields(location: Location): Locations =
         setOf(Location(Right), Location(Up), Location(Left), Location(Down))
+
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
 
@@ -36,6 +38,7 @@ object TileD : Tile, TileWithGreenFields by GreenFields(
 object TileE : Tile {
     override fun exploreGreenFields(location: Location): Locations =
         setOf(Location(Left), Location(Down), Location(Right))
+
     override fun exploreCastle(direction: Direction): Directions = direction.sameIf(Up)
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }

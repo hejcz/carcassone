@@ -19,26 +19,18 @@ object RoadCompletedSpec : Spek({
                 .then(PutPiece(SmallPiece, Brigand(Left)))
                 .then(PutTile(Position(-1, 0), Rotation270))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        3,
-                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left)))
-                    )
+                    PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
         }
 
         it("Simple road example with piece placed after tile") {
             GameScenario(singlePlayer(TileS, TileS))
-                        .then(PutTile(Position(1, 0), Rotation90))
-                        .then(SkipPiece)
-                        .then(PutTile(Position(-1, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutTile(Position(1, 0), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(-1, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
                 .then(PutPiece(SmallPiece, Brigand(Right)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        3,
-                        setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right)))
-                    )
+                    PlayerScored(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
                 )
         }
 
@@ -50,11 +42,7 @@ object RoadCompletedSpec : Spek({
                 .then(PutPiece(SmallPiece, Brigand(Left)))
                 .then(PutTile(Position(1, -1), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        4,
-                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left)))
-                    )
+                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
         }
 
@@ -68,11 +56,7 @@ object RoadCompletedSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(1, -1), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        4,
-                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down)))
-                    )
+                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down))))
                 )
                 .thenReceivedEventShouldBe(SelectPiece)
         }
@@ -87,11 +71,7 @@ object RoadCompletedSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(1, 0), NoRotation))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        4,
-                        setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right)))
-                    )
+                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
                 )
                 .thenReceivedEventShouldBe(SelectPiece)
         }
@@ -112,17 +92,11 @@ object RoadCompletedSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(0, -1), NoRotation))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        3,
-                        setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left)))
-                    )
+                    PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left))))
                 )
                 .thenReceivedEventShouldBe(
                     PlayerScored(
-                        1,
-                        7,
-                        setOf(
+                        1, 7, setOf(
                             PieceOnBoard(Position(-1, -1), SmallPiece, Brigand(Left)),
                             PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Left))
                         )

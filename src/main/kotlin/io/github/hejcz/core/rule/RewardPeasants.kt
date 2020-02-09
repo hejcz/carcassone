@@ -6,7 +6,11 @@ object RewardPeasants : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.allPeasants()
-            .map { (playerId, piece) -> playerId to GreenFieldsExplorer.explore(state, piece.position, (piece.role as Peasant).location) }
+            .map { (playerId, piece) ->
+                playerId to GreenFieldsExplorer.explore(
+                    state, piece.position, (piece.role as Peasant).location
+                )
+            }
             .groupBy { (_, fieldParts) -> fieldParts }
             .values
             .flatMap { fieldParts ->
@@ -29,11 +33,11 @@ object RewardPeasants : EndRule {
 
     private fun reachableCastles(position: Position, location: Location) =
         setOf(PositionedDirection(position, location.direction)) +
-                when {
-                    location.side == null -> setOf(
-                        PositionedDirection(position, location.direction.left()),
-                        PositionedDirection(position, location.direction.right())
-                    )
-                    else -> emptySet()
-                }
+            when {
+                location.side == null -> setOf(
+                    PositionedDirection(position, location.direction.left()),
+                    PositionedDirection(position, location.direction.right())
+                )
+                else -> emptySet()
+            }
 }

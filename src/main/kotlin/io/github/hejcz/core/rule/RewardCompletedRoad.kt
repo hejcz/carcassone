@@ -23,7 +23,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         val score = scoring(state, road)
         returnPieces(road)
         return winners.ids.map { id -> road.createPlayerScoredEvent(id, score) } +
-                losers.ids.map { id -> road.createOccupiedAreaCompletedEvent(id) }
+            losers.ids.map { id -> road.createOccupiedAreaCompletedEvent(id) }
     }
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> {
@@ -36,7 +36,10 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         }
         // if road is finished and player could put piece then this is the only one piece on this road
         val returnedPieces = returnPieces(road)
-        return setOf(PlayerScored(state.currentPlayerId(), scoring(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard }))
+        return setOf(
+            PlayerScored(
+                state.currentPlayerId(), scoring(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard })
+        )
     }
 
     private fun returnPieces(road: Road): List<OwnedPiece> {

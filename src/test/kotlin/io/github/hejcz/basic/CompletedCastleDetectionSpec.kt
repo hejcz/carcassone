@@ -39,11 +39,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutTile(Position(0, 1), Rotation180))
                 .then(PutPiece(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        4,
-                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
         }
 
@@ -54,11 +50,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutTile(Position(0, 2), Rotation180))
                 .then(PutPiece(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        6,
-                        setOf(PieceOnBoard(Position(0, 2), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 2), SmallPiece, Knight(Down))))
                 )
         }
 
@@ -79,11 +71,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutTile(Position(1, 1), Rotation270))
                 .then(PutPiece(SmallPiece, Knight(Left)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        8,
-                        setOf(PieceOnBoard(Position(1, 1), SmallPiece, Knight(Left)))
-                    )
+                    PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 1), SmallPiece, Knight(Left))))
                 )
         }
 
@@ -95,11 +83,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        8,
-                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
         }
 
@@ -114,9 +98,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutTile(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(
                     PlayerScored(
-                        1,
-                        10,
-                        setOf(
+                        1, 10, setOf(
                             PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
                             PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))
                         )
@@ -126,13 +108,13 @@ object CompletedCastleDetectionSpec : Spek({
 
         it("should not give any reward if no handlers were on completed castle") {
             GameScenario(singlePlayer(TileR, TileD, TileD, TileN, TileD))
-                        .then(PutTile(Position(0, 1), Rotation90))
-                        .then(SkipPiece)
-                        .then(PutTile(Position(0, 2), Rotation180))
-                        .then(SkipPiece)
-                        .then(PutTile(Position(1, 2), Rotation180))
-                        .then(SkipPiece)
-                        .then(PutTile(Position(1, 1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
                 .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
@@ -144,11 +126,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(1, 2), Rotation270))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        12,
-                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
         }
 
@@ -164,18 +142,10 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutPiece(SmallPiece, Knight(Down)))
                 .then(PutTile(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        10,
-                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        2,
-                        10,
-                        setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(2, 10, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
                 )
         }
 
@@ -192,19 +162,14 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutTile(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(
                     PlayerScored(
-                        1,
-                        12,
-                        setOf(
+                        1, 12, setOf(
                             PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
                             PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))
                         )
                     )
                 )
                 .thenReceivedEventShouldBe(
-                    PlayerDidNotScore(
-                        2,
-                        setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down)))
-                    )
+                    PlayerDidNotScore(2, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
                 )
         }
 
@@ -216,18 +181,10 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutPiece(SmallPiece, Knight(Up)))
                 .then(PutTile(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        6,
-                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
-                    )
+                    PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        2,
-                        4,
-                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))
-                    )
+                    PlayerScored(2, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
                 )
         }
 
@@ -239,11 +196,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(1, 1), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
-                        1,
-                        8,
-                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))
-                    )
+                    PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
                 )
                 .thenReceivedEventShouldBe(SelectPiece)
         }

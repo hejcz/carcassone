@@ -33,7 +33,7 @@ object PutTileValidatorSpec : Spek({
 
         it("roads validation") {
             GameScenario(singlePlayer(TileA))
-                        .then(PutTile(Position(1, 0), Rotation90)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutTile(Position(1, 0), Rotation90)).thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("Connecting tiles with bounded object") {

@@ -13,7 +13,13 @@ object AbbotPickedUp : Rule {
     private fun afterAbbotPicked(state: State, position: Position): Collection<GameEvent> =
         state.findPieces(position, Abbot)
             .find { (playerId, _) -> playerId == state.currentPlayerId() }!!
-            .let { (playerId, piece) -> setOf(PlayerScored(playerId, score(state, piece.position), setOf(PieceOnBoard(position, AbbotPiece, Abbot)))) }
+            .let { (playerId, piece) ->
+                setOf(
+                    PlayerScored(
+                        playerId, score(state, piece.position), setOf(PieceOnBoard(position, AbbotPiece, Abbot))
+                    )
+                )
+            }
 
     private fun score(state: State, abbotPosition: Position): Int =
         1 + abbotPosition.surrounding().count { state.tileAt(it) !is NoTile }

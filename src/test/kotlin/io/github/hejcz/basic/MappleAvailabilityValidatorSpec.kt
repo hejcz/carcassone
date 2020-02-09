@@ -50,7 +50,8 @@ object MappleAvailabilityValidatorSpec : Spek({
                 .then(PutTile(Position(2, 1), Rotation90))
                 .then(PutPiece(SmallPiece, Brigand(Left))).thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(PutTile(Position(0, 1), Rotation90))
-                .then(PutPiece(SmallPiece, Peasant(Location(Right, RightSide)))).thenReceivedEventShouldBeOnlyPlaceTile()
+                .then(PutPiece(SmallPiece, Peasant(Location(Right, RightSide))))
+                .thenReceivedEventShouldBeOnlyPlaceTile()
         }
     }
 })

@@ -10,5 +10,6 @@ object AbbotExtension : Extension {
         rulesSetup.add(GardenCompletedRule, AbbotPickedUp)
         rulesSetup.add(RewardIncompleteGardens)
     }
+
     override fun modify(validatorsSetup: ValidatorsSetup) = validatorsSetup.add(PickUpAbbotValidator)
 }

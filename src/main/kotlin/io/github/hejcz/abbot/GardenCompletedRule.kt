@@ -21,7 +21,9 @@ object GardenCompletedRule : Rule {
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> = when {
         role is Abbot && state.recentPosition().isSurrounded(state) ->
-            setOf(PlayerScored(state.currentPlayerId(), 9, setOf(PieceOnBoard(state.recentPosition(), AbbotPiece, Abbot))))
+            setOf(
+                PlayerScored(state.currentPlayerId(), 9, setOf(PieceOnBoard(state.recentPosition(), AbbotPiece, Abbot)))
+            )
         else -> emptySet()
     }
 }

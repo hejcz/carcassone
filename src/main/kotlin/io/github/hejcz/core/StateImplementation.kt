@@ -117,14 +117,15 @@ private data class InnerState(
     override fun currentPlayerPieces(cornSymbol: CornSymbol): List<Pair<Long, PieceOnBoard>> =
         piecesOnBoard.playerPieces(currentPlayer(), cornSymbol)
 
-    override fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = piecesOnBoard.piecesOn(position, role)
+    override fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> =
+        piecesOnBoard.piecesOn(position, role)
 
     override fun allPlayersIdsStartingWithCurrent(): List<Long> {
         val sorted = players.values.sortedBy { it.order }
         return when {
             sorted[0] == currentPlayer() -> sorted.map { it.id }
             else -> sorted.subList(currentPlayer().order - 1, sorted.size).map { it.id } +
-                    sorted.subList(0, currentPlayer().order - 1).map { it.id }
+                sorted.subList(0, currentPlayer().order - 1).map { it.id }
         }
     }
 

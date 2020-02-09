@@ -32,17 +32,20 @@ interface Expectation {
 
 class BeginExpectation : Expectation {
     override fun now(command: Command) = command is Begin
-    override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = listOf(PutTileExpectation())
+    override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> =
+        listOf(PutTileExpectation())
+
     override fun toEvent(state: State): GameEvent = BeginEvent
 }
 
 class PutTileExpectation : Expectation {
     override fun now(command: Command): Boolean = command is PutTile
 
-    override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = when (state.currentTile()) {
-        is CornCircleTile -> listOf(PutPieceExpectation(), ChooseCornCircleActionExpectation())
-        else -> listOf(PutPieceExpectation())
-    }
+    override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> =
+        when (state.currentTile()) {
+            is CornCircleTile -> listOf(PutPieceExpectation(), ChooseCornCircleActionExpectation())
+            else -> listOf(PutPieceExpectation())
+        }
 
     override fun toEvent(state: State): GameEvent = PlaceTile(state.currentTileName(), state.currentPlayerId())
 }

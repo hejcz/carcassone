@@ -17,6 +17,7 @@ open class TestGameSetup(
     extensions: List<Extension>
 ) : GameSetup(*extensions.toTypedArray()) {
     constructor(remainingTiles: RemainingTiles) : this(remainingTiles, emptyList())
+
     override fun tiles(): List<Tile> = remainingTiles.tiles()
 }
 

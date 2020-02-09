@@ -27,35 +27,35 @@ object CornCirclesSpec : Spek({
 
         it("first example") {
             GameScenario(threePlayerGame(TileL, TileQ, TileW, TileE, TileE, TileH, TileG, TileU, TileU, Korn6, TileU))
-                        // red
-                        .then(PutTile(Position(-1, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(PutPiece(SmallPiece, Peasant(Location(Down, LeftSide)))).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // green
-                        .then(PutTile(Position(-1, 1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(PutPiece(SmallPiece, Knight(Up))).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // blue
-                        .then(PutTile(Position(-2, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // red
-                        .then(PutTile(Position(-3, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // green
-                        .then(PutTile(Position(-4, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // blue
-                        .then(PutTile(Position(-4, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(PutPiece(SmallPiece, Peasant(Location(Down)))).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // red
-                        .then(PutTile(Position(-5, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(PutPiece(SmallPiece, Knight(Right))).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // green
-                        .then(PutTile(Position(-1, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // blue
-                        .then(PutTile(Position(-2, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
-                        .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
-                        // red - Korn1
-                        .then(PutTile(Position(-3, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                // red
+                .then(PutTile(Position(-1, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutPiece(SmallPiece, Peasant(Location(Down, LeftSide)))).thenReceivedEventShouldBeOnlyPlaceTile()
+                // green
+                .then(PutTile(Position(-1, 1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutPiece(SmallPiece, Knight(Up))).thenReceivedEventShouldBeOnlyPlaceTile()
+                // blue
+                .then(PutTile(Position(-2, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
+                // red
+                .then(PutTile(Position(-3, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
+                // green
+                .then(PutTile(Position(-4, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
+                // blue
+                .then(PutTile(Position(-4, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutPiece(SmallPiece, Peasant(Location(Down)))).thenReceivedEventShouldBeOnlyPlaceTile()
+                // red
+                .then(PutTile(Position(-5, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutPiece(SmallPiece, Knight(Right))).thenReceivedEventShouldBeOnlyPlaceTile()
+                // green
+                .then(PutTile(Position(-1, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
+                // blue
+                .then(PutTile(Position(-2, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
+                // red - Korn1
+                .then(PutTile(Position(-3, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
                 .then(PutPiece(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(ChooseCornAction(1))
                 // action
@@ -65,7 +65,8 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(AddPiece(3))
                 .then(AvoidCornCircleAction)
                 .thenReceivedEventShouldBe(AddPiece(1))
-                .then(AddPieceCommand(Position(-3, 1), SmallPiece, Knight(Down))).thenReceivedEventShouldBeOnlyPlaceTile()
+                .then(AddPieceCommand(Position(-3, 1), SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("one player adds big and other one small piece to castle") {
@@ -85,16 +86,20 @@ object CornCirclesSpec : Spek({
                 .then(AddPieceCommand(Position(1, 0), BigPiece, Knight(Up)))
                 .then(PutTile(Position(1, 2), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(2, 12, listOf(
-                        PieceOnBoard(Position(1, 0), BigPiece, Knight(Up)),
-                        PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))
-                    ))
+                    PlayerScored(
+                        2, 12, listOf(
+                            PieceOnBoard(Position(1, 0), BigPiece, Knight(Up)),
+                            PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))
+                        )
+                    )
                 )
                 .thenReceivedEventShouldBe(
-                    PlayerDidNotScore(1, listOf(
-                        PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
-                        PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))
-                    ))
+                    PlayerDidNotScore(
+                        1, listOf(
+                            PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
+                            PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))
+                        )
+                    )
 
                 )
         }
@@ -186,7 +191,7 @@ object CornCirclesSpec : Spek({
                 .then(PutTile(Position(0, 1), NoRotation))
                 .then(PutPiece(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCommand(CornCircleAction.ADD_PIECE))
-            // player has only 1 big mapple
+                // player has only 1 big mapple
                 .then(AddPieceCommand(Position(1, 0), BigPiece, Knight(Up)))
                 .thenReceivedEventShouldBe(NoMappleAvailable(BigPiece))
         }

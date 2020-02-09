@@ -6,6 +6,7 @@ import io.github.hejcz.corncircles.CornSymbol
 interface State {
     // getters
     fun currentTile(): Tile
+
     fun recentPosition(): Position
     fun recentTile(): Tile
     fun tileAt(position: Position): Tile
@@ -25,6 +26,7 @@ interface State {
     fun previousPlayerId(): Long
     // mutators
     fun addTile(position: Position, rotation: Rotation): State
+
     fun addPiece(piece: Piece, role: Role): State
     fun addPiece(position: Position, piece: Piece, role: Role): State
     fun removePiece(position: Position, piece: Piece, role: Role): State
