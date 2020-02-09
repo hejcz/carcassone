@@ -3,7 +3,7 @@ package io.github.hejcz.corncircles
 import io.github.hejcz.core.*
 import io.github.hejcz.util.*
 
-data class RemovePieceCommand(val position: Position, val piece: Piece, val role: Role): Command
+data class RemovePieceCommand(val position: Position, val piece: Piece, val role: Role) : Command
 
 val RemovePieceHandler = object : CommandHandler {
     override fun isApplicableTo(command: Command): Boolean = command is RemovePieceCommand
@@ -15,7 +15,6 @@ val RemovePieceHandler = object : CommandHandler {
                     .changeActivePlayer()
             )
         }
-
 }
 
 val RemovePieceValidator = commandValidator<RemovePieceCommand> { state, command ->

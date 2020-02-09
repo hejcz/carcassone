@@ -20,5 +20,4 @@ object CornCirclesExtension : Extension {
     override fun modify(deck: TilesSetup) {
         deck.addAndShuffle(Korn1, Korn2, Korn3, Korn4, Korn5, Korn6)
     }
-
 }

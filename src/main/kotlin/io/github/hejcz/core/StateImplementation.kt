@@ -137,5 +137,4 @@ private data class InnerState(
     }
 
     private fun currentPlayer() = orderedPlayers[currentPlayerIndex]
-
 }

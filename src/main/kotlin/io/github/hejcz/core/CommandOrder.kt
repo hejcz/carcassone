@@ -22,7 +22,6 @@ class EventsQueue {
     fun event(state: State) = expectedCommands.first().toEvent(state)
 
     fun isPutTileNext(): Boolean = expectedCommands.first() is PutTileExpectation
-
 }
 
 interface Expectation {

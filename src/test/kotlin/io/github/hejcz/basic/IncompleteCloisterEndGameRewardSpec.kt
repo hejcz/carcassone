@@ -3,7 +3,6 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -43,7 +42,7 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(0, -2), NoRotation))
                 .thenShouldNotReceiveEvent(PlayerScored(1, 9, emptySet()))
-                .then(SkipPiece) .thenReceivedEventShouldBe( PlayerScored(1, 8, emptySet()))
+                .then(SkipPiece).thenReceivedEventShouldBe(PlayerScored(1, 8, emptySet()))
         }
 
         it("should detect cloister with 6/8 surrounding tiles") {
@@ -65,14 +64,14 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(0, -2), NoRotation))
                 .thenShouldNotReceiveEvent(PlayerScored(1, 9, emptySet()))
-                .then(SkipPiece) .thenReceivedEventShouldBe( PlayerScored(1, 7, emptySet()))
+                .then(SkipPiece).thenReceivedEventShouldBe(PlayerScored(1, 7, emptySet()))
         }
 
         it("should detect cloister with 1/8 surrounding tiles") {
             GameScenario(singlePlayer(TileB))
                 .then(PutTile(Position(0, -1), NoRotation))
                 .thenShouldNotReceiveEvent(PlayerScored(1, 9, emptySet()))
-                .then(PutPiece(SmallPiece, Monk)) .thenReceivedEventShouldBe( PlayerScored(1, 2, emptySet()))
+                .then(PutPiece(SmallPiece, Monk)).thenReceivedEventShouldBe(PlayerScored(1, 2, emptySet()))
         }
 
         it("should detect cloister added as a last tile") {
@@ -97,7 +96,7 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(0, -1), NoRotation))
                 .thenShouldNotReceiveEvent(PlayerScored(1, 9, emptySet()))
-                .then(PutPiece(SmallPiece, Monk)) .thenReceivedEventShouldBe( PlayerScored(1, 8, emptySet()))
+                .then(PutPiece(SmallPiece, Monk)).thenReceivedEventShouldBe(PlayerScored(1, 8, emptySet()))
         }
 
         it("should detect two incomplete cloisters of different players with 7/8 and 6/8 tiles surrounding tiles respectively") {
@@ -120,8 +119,8 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
                 .then(SkipPiece).shouldContainPlaceTileOnly()
                 .then(PutTile(Position(0, -2), Rotation270)).shouldContainSelectPiece()
                 .then(SkipPiece)
-            .thenReceivedEventShouldBe( PlayerScored(1, 7, emptySet()))
-             .thenReceivedEventShouldBe( PlayerScored(2, 8, emptySet()))
+                .thenReceivedEventShouldBe(PlayerScored(1, 7, emptySet()))
+                .thenReceivedEventShouldBe(PlayerScored(2, 8, emptySet()))
         }
 
         it("should detect two incomplete cloisters of the same player") {

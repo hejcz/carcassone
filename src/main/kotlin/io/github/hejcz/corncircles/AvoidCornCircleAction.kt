@@ -14,7 +14,6 @@ val AvoidCornCircleActionHandler = object : CommandHandler {
                 state.changeActivePlayer()
             )
         }
-
 }
 
 val AvoidCornCircleActionValidator = commandValidator<AvoidCornCircleAction> { state, _ ->

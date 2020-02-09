@@ -33,4 +33,3 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
     fun hasCathedral(state: State) =
         this.pieces.asSequence().map { state.tileAt(it.position) }.any { it is InnTile && it.hasCathedral() }
 }
-

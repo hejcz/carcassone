@@ -7,5 +7,4 @@ object PutTileHandler : CommandHandler {
 
     override fun beforeScoring(state: State, command: Command): GameChanges =
         (command as PutTile).let { GameChanges.noEvents(state.addTile(command.position, command.rotation)) }
-
 }

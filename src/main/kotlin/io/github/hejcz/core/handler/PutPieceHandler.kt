@@ -7,5 +7,4 @@ object PutPieceHandler : CommandHandler {
 
     override fun beforeScoring(state: State, command: Command): GameChanges =
         (command as PutPiece).let { GameChanges.noEvents(state.addPiece(command.piece, command.role)) }
-
 }

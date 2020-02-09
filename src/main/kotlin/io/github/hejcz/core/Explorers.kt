@@ -36,7 +36,6 @@ open class DirectionsExplorer(val explore: Tile.(Direction) -> Directions) {
                 }
             }
         }
-
 }
 
 typealias GreenFieldsParts = Set<Pair<Position, Location>>
@@ -64,5 +63,4 @@ object GreenFieldsExplorer {
                 }
             }
         }
-
 }

@@ -3,7 +3,9 @@ package io.github.hejcz.core
 import java.lang.RuntimeException
 
 data class Player(
-    override val id: Long, override val order: Int, override val initialPieces: List<Piece>,
+    override val id: Long,
+    override val order: Int,
+    override val initialPieces: List<Piece>,
     private val pieces: Map<Piece, PiecePool>
 ) : IPlayer {
 
@@ -41,6 +43,5 @@ data class Player(
 
             fun isAvailable(): Boolean = currentAmount > 0
         }
-
     }
 }

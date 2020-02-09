@@ -24,5 +24,4 @@ object GardenCompletedRule : Rule {
             setOf(PlayerScored(state.currentPlayerId(), 9, setOf(PieceOnBoard(state.recentPosition(), AbbotPiece, Abbot))))
         else -> emptySet()
     }
-
 }

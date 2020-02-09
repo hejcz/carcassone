@@ -223,7 +223,5 @@ object CornCirclesSpec : Spek({
                 .then(RemovePieceCommand(Position(1, 0), BigPiece, Knight(Up)))
                 .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
-
     }
-
 })

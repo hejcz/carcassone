@@ -15,7 +15,6 @@ val AddPieceHandler = object : CommandHandler {
                     .changeActivePlayer()
             )
         }
-
 }
 
 val AddPieceValidator = commandValidator<AddPieceCommand> { state, command ->

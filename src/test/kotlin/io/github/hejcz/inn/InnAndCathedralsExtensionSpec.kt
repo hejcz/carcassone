@@ -404,19 +404,15 @@ object InnAndCathedralsExtensionSpec : Spek({
                     )
                 )
         }
-
     }
 
     // TODO
     describe("no ordinary castle shapes") {
 
         it("should be handled correctly - EP") {
-
         }
 
         it("should be handled correctly - EG") {
-
         }
-
     }
 })

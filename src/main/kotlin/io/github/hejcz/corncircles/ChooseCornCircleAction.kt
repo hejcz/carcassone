@@ -6,7 +6,7 @@ enum class CornCircleAction {
     ADD_PIECE, REMOVE_PIECE
 }
 
-data class ChooseCornCircleActionCommand(val action: CornCircleAction): Command
+data class ChooseCornCircleActionCommand(val action: CornCircleAction) : Command
 
 val ChooseCornCircleActionHandler = object : CommandHandler {
     override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCommand
@@ -17,5 +17,4 @@ val ChooseCornCircleActionHandler = object : CommandHandler {
                 state.changeActivePlayer()
             )
         }
-
 }

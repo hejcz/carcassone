@@ -58,5 +58,4 @@ data class PiecesOnBoard(
         CornSymbol.BRIGAND -> brigands.filter { it.first == player.id }
         CornSymbol.PEASANT -> peasants.filter { it.first == player.id }
     }
-
 }

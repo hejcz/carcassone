@@ -3,7 +3,6 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
-import org.amshove.kluent.shouldContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
