@@ -10,7 +10,7 @@ object TilePlacementValidator : CommandValidator {
                 when (val tile = state.tileAt(direction.move(command.position))) {
                     is NoTile -> true
                     else -> tile.isValidNeighborFor(
-                        state.currentTile.rotate(command.rotation),
+                        state.currentTile().rotate(command.rotation),
                         direction.opposite()
                     )
                 }

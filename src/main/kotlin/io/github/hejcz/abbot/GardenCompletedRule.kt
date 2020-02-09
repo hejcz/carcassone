@@ -5,7 +5,7 @@ import io.github.hejcz.core.*
 object GardenCompletedRule : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PutTile -> afterTilePlaced(state.recentPosition, state)
+        is PutTile -> afterTilePlaced(state.recentPosition(), state)
         is PutPiece -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
@@ -20,9 +20,8 @@ object GardenCompletedRule : Rule {
         state.findPieces(completedCloisterPosition, Abbot)
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> = when {
-        role is Abbot && state.recentPosition.isSurrounded(state) ->
-            setOf(PlayerScored(state.currentPlayerId(), 9, setOf(PieceOnBoard(state.recentPosition, AbbotPiece, Abbot))))
+        role is Abbot && state.recentPosition().isSurrounded(state) ->
+            setOf(PlayerScored(state.currentPlayerId(), 9, setOf(PieceOnBoard(state.recentPosition(), AbbotPiece, Abbot))))
         else -> emptySet()
     }
-
 }

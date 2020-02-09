@@ -22,6 +22,8 @@ data class PlayerScored(val playerId: Long, val score: Int, val returnedPieces: 
 
 data class PlayerDidNotScore(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
 
+data class CastleFinished(val castle: CompletedCastle) : GameEvent()
+
 // errors
 
 object InvalidTileLocation : GameEvent()

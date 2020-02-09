@@ -92,7 +92,6 @@ object TileEJ : InnTile, TileWithGreenFields by GreenFields(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Left, Right)
 }
 
-
 object TileEK : InnTile {
     override fun exploreCastle(direction: Direction): Directions = setOf(Up, Down, Left, Right)
     override fun exploreGreenFields(location: Location): Locations = emptySet()
@@ -104,12 +103,11 @@ object TileEL : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),
     setOf(Location(Right, LeftSide), Location(Down, RightSide))
 ) {
-    override fun exploreCastle(direction: Direction): Directions = direction.allIfOneOf(Up, Left )
+    override fun exploreCastle(direction: Direction): Directions = direction.allIfOneOf(Up, Left)
     override fun exploreRoad(direction: Direction): Directions = direction.allIfOneOf(Right, Down)
     override fun hasEmblem(direction: Direction): Boolean = true
     override fun isInnOnRoad(direction: Direction): Boolean = direction == Right || direction == Down
 }
-
 
 object TileEM : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, RightSide), Location(Down, LeftSide), Location(Right)),
@@ -120,7 +118,6 @@ object TileEM : InnTile, TileWithGreenFields by GreenFields(
     override fun isInnOnRoad(direction: Direction): Boolean = direction == Down || direction == Left
 }
 
-
 object TileEN : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right), Location(Down, LeftSide)),
     setOf(Location(Down, RightSide))
@@ -130,14 +127,12 @@ object TileEN : InnTile, TileWithGreenFields by GreenFields(
     override fun isInnOnRoad(direction: Direction): Boolean = direction == Down
 }
 
-
 object TileEO : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Down))
 ) {
     override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Up, Left, Right)
     override fun exploreRoad(direction: Direction): Directions = emptySet()
 }
-
 
 object TileEP : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Down))
@@ -151,7 +146,6 @@ object TileEP : InnTile, TileWithGreenFields by GreenFields(
     override fun hasEmblem(direction: Direction): Boolean = direction == Up || direction == Right
 }
 
-
 object TileEQ : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up, LeftSide)),
     setOf(Location(Down, LeftSide)),
@@ -162,4 +156,3 @@ object TileEQ : InnTile, TileWithGreenFields by GreenFields(
     override fun exploreRoad(direction: Direction): Directions = direction.sameIfOneOf(Up, Down)
     override fun hasEmblem(direction: Direction): Boolean = true
 }
-

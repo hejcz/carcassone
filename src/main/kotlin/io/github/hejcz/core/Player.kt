@@ -2,39 +2,46 @@ package io.github.hejcz.core
 
 import java.lang.RuntimeException
 
-data class Player(val id: Long, val order: Int, val initialPieces: List<Piece> = emptyList()) {
+data class Player(
+    override val id: Long,
+    override val order: Int,
+    override val initialPieces: List<Piece>,
+    private val pieces: Map<Piece, PiecePool>
+) : IPlayer {
 
-    private val pools by lazy { initialPieces.groupBy { it }.mapValues { PiecePool(it.value.count()) } }
+    constructor(id: Long, order: Int) :
+            this(id, order, emptyList())
 
-    fun isAvailable(piece: Piece) = pools[piece]?.isAvailable() ?: false
+    constructor(id: Long, order: Int, initialPieces: List<Piece>) :
+            this(id, order, initialPieces, initialPieces.groupBy { it }.mapValues { PiecePool(it.value.count()) })
 
-    fun lockPiece(piece: Piece) = pools[piece]?.lock() ?: throw RuntimeException("Piece not available")
+    override fun isAvailable(piece: Piece) = pieces[piece]?.isAvailable() ?: false
 
-    fun unlockPiece(piece: Piece) = pools[piece]?.unlock() ?: throw RuntimeException("Piece not available")
+    override fun lockPiece(piece: Piece): Player =
+        Player(id, order, initialPieces, pieces + (piece to (pieces[piece]?.lock() ?: throw RuntimeException("No such piece: $piece"))))
+
+    override fun unlockPiece(piece: Piece): Player =
+        Player(id, order, initialPieces, pieces + (piece to (pieces[piece]?.unlock() ?: throw RuntimeException("No such piece: $piece"))))
 
     companion object {
 
-        class PiecePool(private val limit: Int) {
-            private var currentAmount = limit
+        class PiecePool(private val max: Int, private val currentAmount: Int) {
 
-            fun lock() {
-                if (currentAmount == 0) {
-                    throw RuntimeException("Missing piece can't be locked")
-                } else {
-                    currentAmount--
-                }
-            }
+            constructor(max: Int) : this(max, max)
 
-            fun unlock() {
-                if (currentAmount == limit) {
-                    throw RuntimeException("Piece can't be unlocked above limit")
-                } else {
-                    currentAmount++
+            fun lock(): PiecePool =
+                when (currentAmount) {
+                    0 -> throw RuntimeException("Missing piece can't be locked")
+                    else -> PiecePool(max, currentAmount - 1)
                 }
-            }
+
+            fun unlock(): PiecePool =
+                when (currentAmount) {
+                    max -> throw RuntimeException("Piece can't be unlocked above limit")
+                    else -> PiecePool(max, currentAmount + 1)
+                }
 
             fun isAvailable(): Boolean = currentAmount > 0
         }
-
     }
 }

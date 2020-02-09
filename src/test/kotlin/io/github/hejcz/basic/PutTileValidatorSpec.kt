@@ -2,11 +2,7 @@ package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.Players
-import io.github.hejcz.helper.TestBasicRemainingTiles
-import io.github.hejcz.helper.TestGameSetup
-import io.github.hejcz.helper.shouldContainSelectPieceOnly
-import org.amshove.kluent.shouldContain
+import io.github.hejcz.helper.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -18,30 +14,34 @@ object PutTileValidatorSpec : Spek({
             Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("roads validation") {
-            val game = singlePlayer(TileA)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)) shouldContain InvalidTileLocation
+            GameScenario(singlePlayer(TileA))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .thenReceivedEventShouldBe(InvalidTileLocation)
         }
 
         it("roads validation") {
-            val game = singlePlayer(TileA)
-            game.dispatch(PutTile(Position(1, 0), Rotation180)) shouldContain InvalidTileLocation
+            GameScenario(singlePlayer(TileA))
+                .then(PutTile(Position(1, 0), Rotation180))
+                .thenReceivedEventShouldBe(InvalidTileLocation)
         }
 
         it("roads validation") {
-            val game = singlePlayer(TileA)
-            game.dispatch(PutTile(Position(1, 0), Rotation270)) shouldContain InvalidTileLocation
+            GameScenario(singlePlayer(TileA))
+                .then(PutTile(Position(1, 0), Rotation270))
+                .thenReceivedEventShouldBe(InvalidTileLocation)
         }
 
         it("roads validation") {
-            val game = singlePlayer(TileA)
-            game.dispatch(PutTile(Position(1, 0), Rotation90)).shouldContainSelectPieceOnly()
+            GameScenario(singlePlayer(TileA))
+                .then(PutTile(Position(1, 0), Rotation90)).shouldContainSelectPiece()
         }
 
         it("Connecting tiles with bounded object") {
-            val game = singlePlayer(TileI, TileI)
-            game.dispatch(PutTile(Position(0, -1), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, -2), Rotation180)) shouldContain InvalidTileLocation
+            GameScenario(singlePlayer(TileI, TileI))
+                .then(PutTile(Position(0, -1), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, -2), Rotation180))
+                .thenReceivedEventShouldBe(InvalidTileLocation)
         }
     }
 })

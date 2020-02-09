@@ -3,8 +3,6 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
-import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldNotContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -23,57 +21,59 @@ object IncompleteRoadEndGameRewardSpec : Spek({
         ).apply { dispatch(Begin) }
 
         it("should detect simple incomplete road") {
-            val game = singlePlayer(TileK)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left))) containsEvent PlayerScored(1, 2, emptySet())
+            GameScenario(singlePlayer(TileK))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .thenReceivedEventShouldBe(PlayerScored(1, 2, emptySet()))
         }
 
         it("should not be triggered if there are still some tiles in the deck") {
-            val game = singlePlayer(TileK, TileA)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left))).shouldContainPlaceTileOnly()
+            GameScenario(singlePlayer(TileK, TileA))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Left))).shouldContainPlaceTileOnly()
         }
 
         it("should detect simple road made out of 3 tiles") {
-            val game = singlePlayer(TileK, TileL)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) containsEvent PlayerScored(1, 3, emptySet())
+            GameScenario(singlePlayer(TileK, TileL))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(1, -1), Rotation90))
+                .then(PutPiece(SmallPiece, Brigand(Down)))
+                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
         }
 
         it("should reward multiple players if they share road with equal number of mapples") {
-            val game = multiPlayer(TileK, TileU, TileJ, TileK)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -1), Rotation270))
-            game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, -1), Rotation90))
-            val events = game.dispatch(SkipPiece)
-            events containsEvent PlayerScored(1, 5, emptySet())
-            events containsEvent PlayerScored(2, 5, emptySet())
+            GameScenario(multiPlayer(TileK, TileU, TileJ, TileK))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(2, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(1, -1), Rotation270))
+                .then(SkipPiece).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(2, -1), Rotation90))
+                .then(SkipPiece)
+                .thenReceivedEventShouldBe(PlayerScored(1, 5, emptySet()))
+                .thenReceivedEventShouldBe(PlayerScored(2, 5, emptySet()))
         }
 
         it("should reward single player if he has advantage of mapples over his opponent") {
-            val game = multiPlayer(TileV, TileV, TileB, TileU, TileV, TileV, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 0), Rotation270)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, 1), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(3, 1), NoRotation)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(3, 0), Rotation90)).shouldContainSelectPieceOnly()
-            game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(1, -1), Rotation180)).shouldContainSelectPieceOnly()
-            game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
-            game.dispatch(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPieceOnly()
-            val events = game.dispatch(SkipPiece)
-            events containsEvent PlayerScored(2, 7, emptySet())
-            events doesNotContainEvent PlayerScored(1, 7, emptySet())
+            GameScenario(multiPlayer(TileV, TileV, TileB, TileU, TileV, TileV, TileV))
+                .then(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
+                .then(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(2, 0), Rotation270)).shouldContainSelectPiece()
+                .then(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(2, 1), NoRotation)).shouldContainSelectPiece()
+                .then(SkipPiece).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(3, 1), NoRotation)).shouldContainSelectPiece()
+                .then(PutPiece(SmallPiece, Brigand(Down))).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(3, 0), Rotation90)).shouldContainSelectPiece()
+                .then(SkipPiece).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(1, -1), Rotation180)).shouldContainSelectPiece()
+                .then(SkipPiece).shouldContainPlaceTileOnly()
+                .then(PutTile(Position(2, -1), Rotation90)).shouldContainSelectPiece()
+                .then(SkipPiece)
+                .thenReceivedEventShouldBe(PlayerScored(2, 7, emptySet()))
+                .thenShouldNotReceiveEvent(PlayerScored(1, 7, emptySet()))
         }
     }
 })

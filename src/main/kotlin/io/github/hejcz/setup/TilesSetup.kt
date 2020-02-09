@@ -1,13 +1,12 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 
 class TilesSetup {
 
     private var deck = basicDeck.shuffled()
 
-    fun remainingTiles(): RemainingTiles = RemainingTilesFromSequence(deck)
+    fun remainingTiles(): List<Tile> = deck
 
     fun addOnTop(topTiles: List<Tile>) {
         deck = topTiles + deck

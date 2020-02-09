@@ -15,76 +15,121 @@ object RoadCompletedSpec : Spek({
             Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("Simple road example") {
-            val game = singlePlayer(TileS, TileS)
-            game.dispatch(PutTile(Position(1, 0), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(-1, 0), Rotation270)) containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+            GameScenario(singlePlayer(TileS, TileS))
+                .then(PutTile(Position(1, 0), Rotation90))
+                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(PutTile(Position(-1, 0), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        3,
+                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left)))
+                    )
+                )
         }
 
         it("Simple road example with piece placed after tile") {
-            val game = singlePlayer(TileS, TileS)
-            game.dispatch(PutTile(Position(1, 0), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 0), Rotation270)).shouldContainSelectPieceOnly()
-            game.dispatch(PutPiece(SmallPiece, Brigand(Right))) containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
+            GameScenario(singlePlayer(TileS, TileS))
+                .then(PutTile(Position(1, 0), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(-1, 0), Rotation270)).shouldContainSelectPiece()
+                .then(PutPiece(SmallPiece, Brigand(Right)))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        3,
+                        setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right)))
+                    )
+                )
         }
 
         it("Simple road 3") {
-            val game = singlePlayer(TileS, TileV, TileS)
-            game.dispatch(PutTile(Position(-1, 0), Rotation270))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(1, -1), Rotation180)) containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+            GameScenario(singlePlayer(TileS, TileV, TileS))
+                .then(PutTile(Position(-1, 0), Rotation270))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(PutTile(Position(1, -1), Rotation180))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        4,
+                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left)))
+                    )
+                )
         }
 
         it("should detect single event on road loop") {
-            val game = singlePlayer(TileL, TileV, TileV, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down)))
-            game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(2, -1), Rotation90))
-            game.dispatch(SkipPiece)
-            val events = game.dispatch(PutTile(Position(1, -1), Rotation180))
-            events.size shouldEqual 2
-            events containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down))))
-            events shouldContain SelectPiece
+            GameScenario(singlePlayer(TileL, TileV, TileV, TileV))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down)))
+                .then(PutTile(Position(2, 0), NoRotation))
+                .then(SkipPiece)
+                .then(PutTile(Position(2, -1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, -1), Rotation180))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        4,
+                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down)))
+                    )
+                )
+                .thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("should detect single event when last tile has roads in many directions") {
-            val game = singlePlayer(TileR, TileT, TileT, TileV)
-            game.dispatch(PutTile(Position(0, -1), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-1, 0), Rotation270))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Right)))
-            game.dispatch(PutTile(Position(1, -1), Rotation180))
-            game.dispatch(SkipPiece)
-            val events = game.dispatch(PutTile(Position(1, 0), NoRotation))
-            events.size shouldEqual 2
-            events containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
-            events shouldContain SelectPiece
+            GameScenario(singlePlayer(TileR, TileT, TileT, TileV))
+                .then(PutTile(Position(0, -1), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(-1, 0), Rotation270))
+                .then(PutPiece(SmallPiece, Brigand(Right)))
+                .then(PutTile(Position(1, -1), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 0), NoRotation))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        4,
+                        setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right)))
+                    )
+                )
+                .thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("should detect multiple roads completed with different pieces count") {
-            val game = singlePlayer(TileL, TileV, TileU, TileU, TileV, TileV, TileW)
-            game.dispatch(PutTile(Position(1, 0), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, -1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(-1, 0), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(-1, -1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Left)))
-            game.dispatch(PutTile(Position(-2, 0), Rotation270))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(-2, -1), Rotation180))
-            game.dispatch(SkipPiece)
-            val events = game.dispatch(PutTile(Position(0, -1), NoRotation))
-            events.size shouldEqual 3
-            events containsEvent PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left))))
-            events containsEvent PlayerScored(1, 7, setOf(PieceOnBoard(Position(-1, -1), SmallPiece, Brigand(Left)), PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Left))))
-            events shouldContain SelectPiece
+            GameScenario(singlePlayer(TileL, TileV, TileU, TileU, TileV, TileV, TileW))
+                .then(PutTile(Position(1, 0), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, -1), Rotation90))
+                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(PutTile(Position(-1, 0), Rotation90))
+                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(PutTile(Position(-1, -1), Rotation90))
+                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(PutTile(Position(-2, 0), Rotation270))
+                .then(SkipPiece)
+                .then(PutTile(Position(-2, -1), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, -1), NoRotation))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        3,
+                        setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left)))
+                    )
+                )
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        7,
+                        setOf(
+                            PieceOnBoard(Position(-1, -1), SmallPiece, Brigand(Left)),
+                            PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Left))
+                        )
+                    )
+                )
+                .thenReceivedEventShouldBe(SelectPiece)
         }
     }
 })

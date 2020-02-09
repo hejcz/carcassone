@@ -22,7 +22,6 @@ class EventsQueue {
     fun event(state: State) = expectedCommands.first().toEvent(state)
 
     fun isPutTileNext(): Boolean = expectedCommands.first() is PutTileExpectation
-
 }
 
 interface Expectation {
@@ -40,7 +39,7 @@ class BeginExpectation : Expectation {
 class PutTileExpectation : Expectation {
     override fun now(command: Command): Boolean = command is PutTile
 
-    override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = when (state.currentTile) {
+    override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = when (state.currentTile()) {
         is CornCircleTile -> listOf(PutPieceExpectation(), ChooseCornCircleActionExpectation())
         else -> listOf(PutPieceExpectation())
     }

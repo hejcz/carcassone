@@ -2,61 +2,60 @@ package io.github.hejcz.core
 
 import io.github.hejcz.corncircles.*
 
-class PiecesOnBoard {
+data class PiecesOnBoard(
+    private val knights: List<Pair<Long, PieceOnBoard>> = emptyList(),
+    private val brigands: List<Pair<Long, PieceOnBoard>> = emptyList(),
+    private val abbots: List<Pair<Long, PieceOnBoard>> = emptyList(),
+    private val monks: List<Pair<Long, PieceOnBoard>> = emptyList(),
+    private val peasants: List<Pair<Long, PieceOnBoard>> = emptyList()
+) {
 
-    private val knights: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
-    private val brigands: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
-    private val abbots: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
-    private val monks: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
-    private val peasants: MutableList<Pair<Long, PieceOnBoard>> = mutableListOf()
-
-    fun put(player: Player, recentPosition: Position, piece: Piece, role: Role) {
-        run(role) {
-            player.lockPiece(piece)
-            val pieceOnBoard = player.id to PieceOnBoard(recentPosition, piece, role)
-            add(pieceOnBoard)
-        }
-    }
-
-    fun remove(player: Player, position: Position, piece: Piece, role: Role) {
-        run(role) {
-            player.unlockPiece(piece)
-            val pieceOnBoard = player.id to PieceOnBoard(position, piece, role)
-            remove(pieceOnBoard)
-        }
-    }
-
-    fun piecesOn(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = run(role) {
-        piecesOn(this, position, role)
-    }
-
-    private fun <T> run(role: Role, action: MutableList<Pair<Long, PieceOnBoard>>.() -> T): T {
+    fun put(player: IPlayer, recentPosition: Position, piece: Piece, role: Role): PiecesOnBoard {
+        val pieceOnBoard = player.id to PieceOnBoard(recentPosition, piece, role)
         return when (role) {
-            is Knight -> knights.action()
-            is Brigand -> brigands.action()
-            is Peasant -> peasants.action()
-            Monk -> monks.action()
-            Abbot -> abbots.action()
+            is Knight -> copy(knights = knights + pieceOnBoard)
+            is Brigand -> copy(brigands = brigands + pieceOnBoard)
+            is Peasant -> copy(peasants = peasants + pieceOnBoard)
+            Monk -> copy(monks = monks + pieceOnBoard)
+            Abbot -> copy(abbots = abbots + pieceOnBoard)
         }
     }
 
-    fun allKnights(): List<Pair<Long, PieceOnBoard>> = knights.toList()
+    fun remove(player: IPlayer, position: Position, piece: Piece, role: Role): PiecesOnBoard {
+        val pieceOnBoard = player.id to PieceOnBoard(position, piece, role)
+        return when (role) {
+            is Knight -> copy(knights = knights - pieceOnBoard)
+            is Brigand -> copy(brigands = brigands - pieceOnBoard)
+            is Peasant -> copy(peasants = peasants - pieceOnBoard)
+            Monk -> copy(monks = monks - pieceOnBoard)
+            Abbot -> copy(abbots = abbots - pieceOnBoard)
+        }
+    }
 
-    fun allBrigands(): List<Pair<Long, PieceOnBoard>> = brigands.toList()
+    fun piecesOn(position: Position, role: Role): List<Pair<Long, PieceOnBoard>> = when (role) {
+        is Knight -> piecesOn(knights, position, role)
+        is Brigand -> piecesOn(brigands, position, role)
+        is Peasant -> piecesOn(peasants, position, role)
+        Monk -> piecesOn(monks, position, role)
+        Abbot -> piecesOn(abbots, position, role)
+    }
 
-    fun allMonks(): List<Pair<Long, PieceOnBoard>> = monks.toList()
+    fun allKnights(): List<Pair<Long, PieceOnBoard>> = knights
 
-    fun allAbbots(): List<Pair<Long, PieceOnBoard>> = abbots.toList()
+    fun allBrigands(): List<Pair<Long, PieceOnBoard>> = brigands
 
-    fun allPeasants(): List<Pair<Long, PieceOnBoard>> = peasants.toList()
+    fun allMonks(): List<Pair<Long, PieceOnBoard>> = monks
+
+    fun allAbbots(): List<Pair<Long, PieceOnBoard>> = abbots
+
+    fun allPeasants(): List<Pair<Long, PieceOnBoard>> = peasants
 
     private fun piecesOn(list: List<Pair<Long, PieceOnBoard>>, position: Position, role: Role) =
         list.filter { it.second.position == position && it.second.role == role }
 
-    fun playerPieces(player: Player, symbol: CornSymbol): List<Pair<Long, PieceOnBoard>> = when (symbol) {
+    fun playerPieces(player: IPlayer, symbol: CornSymbol): List<Pair<Long, PieceOnBoard>> = when (symbol) {
         CornSymbol.KNIGHT -> knights.filter { it.first == player.id }
         CornSymbol.BRIGAND -> brigands.filter { it.first == player.id }
         CornSymbol.PEASANT -> peasants.filter { it.first == player.id }
     }
-
 }
