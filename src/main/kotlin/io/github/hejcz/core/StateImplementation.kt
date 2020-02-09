@@ -3,7 +3,7 @@ package io.github.hejcz.core
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.corncircles.*
 
-class BasicState(players: Set<Player>, remainingTiles: List<Tile>) :
+class BasicState(players: Collection<Player>, remainingTiles: List<Tile>) :
     State by InnerState(
         players.map { it.id to it }.toMap(),
         drop1IfNotEmpty(remainingTiles),

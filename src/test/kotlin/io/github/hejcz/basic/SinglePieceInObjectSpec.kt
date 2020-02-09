@@ -2,9 +2,7 @@ package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.Players
-import io.github.hejcz.helper.TestBasicRemainingTiles
-import io.github.hejcz.helper.TestGameSetup
+import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -20,51 +18,57 @@ object SinglePieceInObjectSpec : Spek({
             Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("knights") {
-            val game = singlePlayer(TileF, TileF)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain InvalidPieceLocation
+            GameScenario(singlePlayer(TileF, TileF))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("knights two players") {
-            val game = multiPlayer(TileF, TileF)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain InvalidPieceLocation
+            GameScenario(multiPlayer(TileF, TileF))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("brigands") {
-            val game = singlePlayer(TileD, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Right)))
-            game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain InvalidPieceLocation
+            GameScenario(singlePlayer(TileD, TileV))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Right)))
+                .then(PutTile(Position(2, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("brigands two players") {
-            val game = multiPlayer(TileD, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Right)))
-            game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain InvalidPieceLocation
+            GameScenario(multiPlayer(TileD, TileV))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Right)))
+                .then(PutTile(Position(2, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("peasants") {
-            val game = singlePlayer(TileD, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right, LeftSide))))
-            game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain InvalidPieceLocation
+            GameScenario(singlePlayer(TileD, TileV))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Right, LeftSide))))
+                .then(PutTile(Position(2, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Right))))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("peasants two players") {
-            val game = multiPlayer(TileD, TileV)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right, LeftSide))))
-            game.dispatch(PutTile(Position(2, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain InvalidPieceLocation
+            GameScenario(multiPlayer(TileD, TileV))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Right, LeftSide))))
+                .then(PutTile(Position(2, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Right))))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
     }
 })

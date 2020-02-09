@@ -22,140 +22,231 @@ object CompletedCastleDetectionSpec : Spek({
         ).apply { dispatch(Begin) }
 
         it("should not detect incomplete castle with knight") {
-            val game = singlePlayer(TileD, TileB)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Up))).shouldContainPlaceTileOnly()
+            GameScenario(singlePlayer(TileD, TileB))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Up)))
+                .shouldContainPlaceTileOnly()
         }
 
         it("should not detect incomplete castle without knight") {
-            val game = singlePlayer(TileD, TileB)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
+            GameScenario(singlePlayer(TileD, TileB))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(SkipPiece)
+                .shouldContainPlaceTileOnly()
         }
 
         it("should detect XS completed castle") {
-            val game = singlePlayer(TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) containsEvent PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            GameScenario(singlePlayer(TileD))
+                .then(PutTile(Position(0, 1), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        4,
+                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
+                    )
+                )
         }
 
         it("should detect S completed castle") {
-            val game = singlePlayer(TileG, TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) containsEvent PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 2), SmallPiece, Knight(Down))))
+            GameScenario(singlePlayer(TileG, TileD))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        6,
+                        setOf(PieceOnBoard(Position(0, 2), SmallPiece, Knight(Down)))
+                    )
+                )
         }
 
         it("should not detect S incomplete castle") {
-            val game = singlePlayer(TileR, TileD, TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))).shouldContainPlaceTileOnly()
+            GameScenario(singlePlayer(TileR, TileD, TileD))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down))).shouldContainPlaceTileOnly()
         }
 
         it("should detect M incomplete castle") {
-            val game = singlePlayer(TileR, TileD, TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 1), Rotation270))
-            game.dispatch(PutPiece(SmallPiece, Knight(Left))) containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 1), SmallPiece, Knight(Left))))
+            GameScenario(singlePlayer(TileR, TileD, TileD))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 1), Rotation270))
+                .then(PutPiece(SmallPiece, Knight(Left)))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        8,
+                        setOf(PieceOnBoard(Position(1, 1), SmallPiece, Knight(Left)))
+                    )
+                )
         }
 
         it("should detect mapples placed before castle completion") {
-            val game = singlePlayer(TileR, TileD, TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 1), Rotation270)) containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            GameScenario(singlePlayer(TileR, TileD, TileD))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 1), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        8,
+                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
+                    )
+                )
         }
 
         it("should return all mapples placed on completed castle") {
-            val game = singlePlayer(TileR, TileD, TileD, TileN)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(1, 1), Rotation270)) containsEvent PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            GameScenario(singlePlayer(TileR, TileD, TileD, TileN))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(1, 1), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        10,
+                        setOf(
+                            PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
+                            PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))
+                        )
+                    )
+                )
         }
 
         it("should not give any reward if no handlers were on completed castle") {
-            val game = singlePlayer(TileR, TileD, TileD, TileN, TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 1), Rotation270)).shouldContainSelectPiece()
-            game.dispatch(SkipPiece).shouldContainPlaceTileOnly()
+            GameScenario(singlePlayer(TileR, TileD, TileD, TileN, TileD))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 1), Rotation270)).shouldContainSelectPiece()
+                .then(SkipPiece).shouldContainPlaceTileOnly()
         }
 
         it("should modify score if emblems are available on castle") {
-            val game = singlePlayer(TileF, TileM, TileD)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 2), Rotation270)) containsEvent PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+            GameScenario(singlePlayer(TileF, TileM, TileD))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 2), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        12,
+                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
+                    )
+                )
         }
 
         it("should reward many players if they have the same amount of handlers in a castle") {
-            val game = multiPlayer(TileR, TileD, TileA, TileD, TileN)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 0), Rotation90))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
-            events containsEvent PlayerScored(1, 10, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
-            events containsEvent PlayerScored(2, 10, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            GameScenario(multiPlayer(TileR, TileD, TileA, TileD, TileN))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 0), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(1, 1), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        10,
+                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
+                    )
+                )
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        2,
+                        10,
+                        setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down)))
+                    )
+                )
         }
 
         it("should reward only one player if he has advantage of handlers in castle") {
-            val game = multiPlayer(TileR, TileD, TileD, TileD, TileR)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(0, 2), Rotation180))
-            game.dispatch(SkipPiece)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
-            game.dispatch(PutTile(Position(1, 2), Rotation180))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
-            events containsEvent PlayerScored(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)), PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
-            events containsEvent PlayerDidNotScore(2, setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down))))
+            GameScenario(multiPlayer(TileR, TileD, TileD, TileD, TileR))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(0, 2), Rotation180))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Up)))
+                .then(PutTile(Position(1, 2), Rotation180))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(1, 1), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        12,
+                        setOf(
+                            PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
+                            PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))
+                        )
+                    )
+                )
+                .thenReceivedEventShouldBe(
+                    PlayerDidNotScore(
+                        2,
+                        setOf(PieceOnBoard(Position(1, 2), SmallPiece, Knight(Down)))
+                    )
+                )
         }
 
         it("should detect that multiple castles were finished with single tile") {
-            val game = multiPlayer(TileN, TileD, TileI)
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down)))
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
-            val events = game.dispatch(PutTile(Position(1, 1), Rotation270))
-            events containsEvent PlayerScored(1, 6, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
-            events containsEvent PlayerScored(2, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
+            GameScenario(multiPlayer(TileN, TileD, TileI))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Up)))
+                .then(PutTile(Position(1, 1), Rotation270))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        6,
+                        setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)))
+                    )
+                )
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        2,
+                        4,
+                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))
+                    )
+                )
         }
 
         it("should return single score event if the same castle is on multiple tiles directions") {
-            val game = singlePlayer(TileD, TileN, TileN)
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Up)))
-            game.dispatch(PutTile(Position(0, 1), Rotation90))
-            game.dispatch(SkipPiece)
-            val events = game.dispatch(PutTile(Position(1, 1), Rotation180))
-            events containsEvent PlayerScored(1, 8, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))))
-            events shouldContain SelectPiece
+            GameScenario(singlePlayer(TileD, TileN, TileN))
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Up)))
+                .then(PutTile(Position(0, 1), Rotation90))
+                .then(SkipPiece)
+                .then(PutTile(Position(1, 1), Rotation180))
+                .thenReceivedEventShouldBe(
+                    PlayerScored(
+                        1,
+                        8,
+                        setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))
+                    )
+                )
+                .thenReceivedEventShouldBe(SelectPiece)
         }
     }
 })

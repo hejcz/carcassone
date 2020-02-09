@@ -2,9 +2,7 @@ package io.github.hejcz.basic
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.Players
-import io.github.hejcz.helper.TestBasicRemainingTiles
-import io.github.hejcz.helper.TestGameSetup
+import io.github.hejcz.helper.*
 import org.amshove.kluent.shouldContain
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -13,66 +11,77 @@ object PutPieceValidatorSpec : Spek({
 
     describe("Putting handlers in invalid places") {
 
-        fun game() = Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))).apply { dispatch(Begin) }
+        fun game() =
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))).apply { dispatch(Begin) }
 
         it("monk on tile without cloister") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Monk)) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Monk))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("knight on road") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Right))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Right)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("knight on road 2") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Left))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Left)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("knight on green field") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("knight on green field") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Knight(Down))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Knight(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("brigand in castle") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Up))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Up)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("brigand on green field") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Brigand(Down))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Brigand(Down)))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("peasant in castle") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Up)))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Up))))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("peasant on road") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Right)))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Right))))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
 
         it("peasant on road 2") {
-            val game = game()
-            game.dispatch(PutTile(Position(1, 0), NoRotation))
-            game.dispatch(PutPiece(SmallPiece, Peasant(Location(Left)))) shouldContain InvalidPieceLocation
+            GameScenario(game())
+                .then(PutTile(Position(1, 0), NoRotation))
+                .then(PutPiece(SmallPiece, Peasant(Location(Left))))
+                .thenReceivedEventShouldBe(InvalidPieceLocation)
         }
     }
 })
