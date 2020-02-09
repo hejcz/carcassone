@@ -228,15 +228,15 @@ object InnAndCathedralsExtensionSpec : Spek({
 
         it("single should be available") {
             GameScenario(singlePlayer(TileD, TileD))
-                .then(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
-                .then(PutPiece(BigPiece, Knight(Up))).shouldContainPlaceTileOnly()
+                        .then(PutTile(Position(1, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(PutPiece(BigPiece, Knight(Up))).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("can not be placed twice before recover") {
             GameScenario(singlePlayer(TileD, TileD, TileD))
-                .then(PutTile(Position(1, 0), NoRotation)).shouldContainSelectPiece()
-                .then(PutPiece(BigPiece, Knight(Up))).shouldContainPlaceTileOnly()
-                .then(PutTile(Position(2, 0), NoRotation)).shouldContainSelectPiece()
+                        .then(PutTile(Position(1, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                        .then(PutPiece(BigPiece, Knight(Up))).thenReceivedEventShouldBeOnlyPlaceTile()
+                        .then(PutTile(Position(2, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
                 .then(PutPiece(BigPiece, Knight(Up)))
                 .thenReceivedEventShouldBe(NoMappleAvailable(BigPiece))
         }

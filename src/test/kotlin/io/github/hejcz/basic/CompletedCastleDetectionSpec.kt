@@ -24,14 +24,14 @@ object CompletedCastleDetectionSpec : Spek({
             GameScenario(singlePlayer(TileD, TileB))
                 .then(PutTile(Position(1, 0), NoRotation))
                 .then(PutPiece(SmallPiece, Knight(Up)))
-                .shouldContainPlaceTileOnly()
+                .thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("should not detect incomplete castle without knight") {
             GameScenario(singlePlayer(TileD, TileB))
                 .then(PutTile(Position(1, 0), NoRotation))
                 .then(SkipPiece)
-                .shouldContainPlaceTileOnly()
+                .thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("should detect XS completed castle") {
@@ -67,7 +67,7 @@ object CompletedCastleDetectionSpec : Spek({
                 .then(PutTile(Position(0, 1), Rotation90))
                 .then(SkipPiece)
                 .then(PutTile(Position(0, 2), Rotation180))
-                .then(PutPiece(SmallPiece, Knight(Down))).shouldContainPlaceTileOnly()
+                .then(PutPiece(SmallPiece, Knight(Down))).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("should detect M incomplete castle") {
@@ -126,14 +126,14 @@ object CompletedCastleDetectionSpec : Spek({
 
         it("should not give any reward if no handlers were on completed castle") {
             GameScenario(singlePlayer(TileR, TileD, TileD, TileN, TileD))
-                .then(PutTile(Position(0, 1), Rotation90))
-                .then(SkipPiece)
-                .then(PutTile(Position(0, 2), Rotation180))
-                .then(SkipPiece)
-                .then(PutTile(Position(1, 2), Rotation180))
-                .then(SkipPiece)
-                .then(PutTile(Position(1, 1), Rotation270)).shouldContainSelectPiece()
-                .then(SkipPiece).shouldContainPlaceTileOnly()
+                        .then(PutTile(Position(0, 1), Rotation90))
+                        .then(SkipPiece)
+                        .then(PutTile(Position(0, 2), Rotation180))
+                        .then(SkipPiece)
+                        .then(PutTile(Position(1, 2), Rotation180))
+                        .then(SkipPiece)
+                        .then(PutTile(Position(1, 1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(SkipPiece).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("should modify score if emblems are available on castle") {

@@ -19,7 +19,7 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Placing river tile") {
             GameScenario(singlePlayer(TileBB6F6))
-                .then(PutTile(Position(0, -1), NoRotation)).shouldContainSelectPiece()
+                        .then(PutTile(Position(0, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("Placing river tile in invalid place") {
@@ -42,12 +42,12 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Connecting river tiles 1") {
             GameScenario(singlePlayer(TileBB6F2))
-                .then(PutTile(Position(0, -1), Rotation90)).shouldContainSelectPiece()
+                        .then(PutTile(Position(0, -1), Rotation90)).thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("Connecting river tiles 2") {
             GameScenario(singlePlayer(TileBB6F2))
-                .then(PutTile(Position(0, -1), Rotation270)).shouldContainSelectPiece()
+                        .then(PutTile(Position(0, -1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("Connecting river tiles invalid") {
@@ -72,11 +72,11 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Two consecutive river tiles can turn in same direction if are not consecutive") {
             GameScenario(singlePlayer(TileBB6F9, TileBB6F6, TileBB6F10))
-                .then(PutTile(Position(0, -1), Rotation180))
-                .then(SkipPiece)
-                .then(PutTile(Position(-1, -1), Rotation90))
-                .then(SkipPiece)
-                .then(PutTile(Position(-2, -1), Rotation270)).shouldContainSelectPiece()
+                        .then(PutTile(Position(0, -1), Rotation180))
+                        .then(SkipPiece)
+                        .then(PutTile(Position(-1, -1), Rotation90))
+                        .then(SkipPiece)
+                        .then(PutTile(Position(-2, -1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
         }
 
         it("River must be connected with previous river - it can't be adjacent by field e.g.") {
@@ -100,25 +100,25 @@ object PlacingRiverTilesSpec : Spek({
         it("Can place knight in castle on river tile") {
             GameScenario(singlePlayer(TileBB6F2, TileBB6F3))
                 .then(PutTile(Position(0, -1), Rotation90))
-                .then(PutPiece(SmallPiece, Knight(Right))).shouldContainPlaceTileOnly()
+                .then(PutPiece(SmallPiece, Knight(Right))).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("Can place brigand on a road on river tile") {
             GameScenario(singlePlayer(TileBB6F2, TileBB6F3))
                 .then(PutTile(Position(0, -1), Rotation90))
-                .then(PutPiece(SmallPiece, Brigand(Left))).shouldContainPlaceTileOnly()
+                .then(PutPiece(SmallPiece, Brigand(Left))).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("Can place peasant on a field on river tile") {
             GameScenario(singlePlayer(TileBB6F2, TileBB6F3))
                 .then(PutTile(Position(0, -1), Rotation90))
-                .then(PutPiece(SmallPiece, Peasant(Location(Left, RightSide)))).shouldContainPlaceTileOnly()
+                .then(PutPiece(SmallPiece, Peasant(Location(Left, RightSide)))).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("Can place monk on a field on river tile") {
             GameScenario(singlePlayer(TileBB6F8, TileBB6F3))
                 .then(PutTile(Position(0, -1), Rotation90))
-                .then(PutPiece(SmallPiece, Monk)).shouldContainPlaceTileOnly()
+                .then(PutPiece(SmallPiece, Monk)).thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
         it("Can't place a knight on river") {

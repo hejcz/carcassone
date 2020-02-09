@@ -3,7 +3,6 @@ package io.github.hejcz.basic
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.helper.*
-import org.amshove.kluent.*
 import org.spekframework.spek2.*
 import org.spekframework.spek2.style.specification.*
 
@@ -30,9 +29,9 @@ object RoadCompletedSpec : Spek({
 
         it("Simple road example with piece placed after tile") {
             GameScenario(singlePlayer(TileS, TileS))
-                .then(PutTile(Position(1, 0), Rotation90))
-                .then(SkipPiece)
-                .then(PutTile(Position(-1, 0), Rotation270)).shouldContainSelectPiece()
+                        .then(PutTile(Position(1, 0), Rotation90))
+                        .then(SkipPiece)
+                        .then(PutTile(Position(-1, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
                 .then(PutPiece(SmallPiece, Brigand(Right)))
                 .thenReceivedEventShouldBe(
                     PlayerScored(
