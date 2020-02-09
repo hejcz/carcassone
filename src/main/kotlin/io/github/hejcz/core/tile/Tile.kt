@@ -15,7 +15,7 @@ interface Tile : TileWithGreenFields {
             direction.opposite()
         ) in other.exploreGreenFields(Location(direction.opposite()))
 
-    fun name() = javaClass.simpleName.substring(4)
+    fun name() = javaClass.simpleName
     fun rotate(rotation: Rotation): Tile = when (rotation) {
         NoRotation -> this
         Rotation90 -> TileRotated90(this)

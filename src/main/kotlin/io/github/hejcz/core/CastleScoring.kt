@@ -1,15 +1,24 @@
 package io.github.hejcz.core
 
+import kotlin.math.ceil
+
 typealias CastleScoring = (State, Castle) -> Int
 
-val scoreCompletedCastle = { _: State, castle: Castle -> 2 * castle.countEmblemsAndTiles() }
-
-val scoreIncompleteCastle = { _: State, castle: Castle -> castle.countEmblemsAndTiles() }
-
-val scoreCompletedCastleWithCathedral = { state: State, castle: Castle ->
-    castle.countEmblemsAndTiles() * if (castle.hasCathedral(state)) 3 else 2
+val castleScoring: CastleScoring = { state: State, castle: Castle ->
+    val pointsPerEmblemAndTile = if (castle.hasCathedral(state)) 3 else 2
+    calculatePoints(pointsPerEmblemAndTile, castle)
 }
 
-val scoreIncompleteCastleWithCathedral = { state: State, castle: Castle ->
-    if (castle.hasCathedral(state)) 0 else castle.countEmblemsAndTiles()
+val incompleteCastleScoring: CastleScoring = { state: State, castle: Castle ->
+    val pointsPerEmblemAndTile = if (castle.hasCathedral(state)) 0 else 1
+    calculatePoints(pointsPerEmblemAndTile, castle)
+}
+
+private fun calculatePoints(pointsPerEmblemAndTile: Int, castle: Castle): Int {
+    val points = pointsPerEmblemAndTile * castle.countEmblemsAndTiles()
+    return when {
+        castle.hasMage -> points + castle.countTiles()
+        castle.hasWitch -> ceil(points / 2.0).toInt()
+        else -> points
+    }
 }

@@ -11,7 +11,7 @@ object RoadCompletedSpec : Spek({
     describe("Road completed rule") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(Begin)
 
         it("Simple road example") {
             GameScenario(singlePlayer(TileS, TileS))

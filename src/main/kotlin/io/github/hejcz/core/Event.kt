@@ -1,5 +1,7 @@
 package io.github.hejcz.core
 
+import io.github.hejcz.magic.MagicTarget
+
 open class GameEvent
 
 // expectations
@@ -24,6 +26,8 @@ data class PlayerDidNotScore(val playerId: Long, val returnedPieces: Collection<
 
 data class CastleFinished(val castle: CompletedCastle) : GameEvent()
 
+data class RoadFinished(val road: CompletedRoad) : GameEvent()
+
 // errors
 
 object InvalidTileLocation : GameEvent()
@@ -31,6 +35,8 @@ object InvalidTileLocation : GameEvent()
 object InvalidPieceLocation : GameEvent()
 
 object PieceCanNotBeSkipped : GameEvent()
+
+data class PieceCanNotBePickedUp(val magicTarget: MagicTarget) : GameEvent()
 
 object NoAbbotToPickUp : GameEvent()
 

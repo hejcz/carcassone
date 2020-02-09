@@ -1,27 +1,33 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
+import io.github.hejcz.magic.MoveMagicianOrWitchCommand
 
 class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PutTile -> afterTilePlaced(state.recentPosition(), state)
+        is PutTile -> afterTilePlaced(state)
         is PutPiece -> afterPiecePlaced(state, command.role)
+        is MoveMagicianOrWitchCommand -> afterTilePlaced(state)
         else -> emptySet()
     }
 
-    private fun afterTilePlaced(position: Position, state: State): Collection<GameEvent> =
+    private fun afterTilePlaced(state: State): Collection<GameEvent> =
         listOf(Up, Right, Down, Left)
-            .map { explore(state, position, it) }
+            .map { explore(state, state.recentPosition(), it) }
             .filter { it.completed }
+            .filter { it.parts.isNotEmpty() }
             .distinct()
-            .filter { it.pieces.isNotEmpty() }
-            .flatMap { generateEvents(it, state) }
+            .flatMap { road ->
+                setOf(RoadFinished(CompletedRoad(road.parts))) + when {
+                    road.pieces.isNotEmpty() -> generateEvents(road, state)
+                    else -> emptySet()
+                }
+            }
 
     private fun generateEvents(road: Road, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(road.pieces)
         val score = scoring(state, road)
-        returnPieces(road)
         return winners.ids.map { id -> road.createPlayerScoredEvent(id, score) } +
             losers.ids.map { id -> road.createOccupiedAreaCompletedEvent(id) }
     }
@@ -35,15 +41,11 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
             return emptyList()
         }
         // if road is finished and player could put piece then this is the only one piece on this road
-        val returnedPieces = returnPieces(road)
         return setOf(
             PlayerScored(
-                state.currentPlayerId(), scoring(state, road), returnedPieces.mapTo(mutableSetOf()) { it.pieceOnBoard })
+                state.currentPlayerId(), scoring(state, road), road.piecesOf(state.currentPlayerId())
+            )
         )
-    }
-
-    private fun returnPieces(road: Road): List<OwnedPiece> {
-        return road.pieces.map { it.toPieceWithOwner() }
     }
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Road {

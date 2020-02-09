@@ -13,12 +13,12 @@ object IncompleteCloisterEndGameRewardSpec : Spek({
         fun singlePlayer(vararg tiles: Tile) = Game(
             Players.singlePlayer(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        ).apply { dispatch(Begin) }
+        ).dispatch(Begin)
 
         fun multiPlayer(vararg tiles: Tile) = Game(
             Players.twoPlayers(),
             TestGameSetup(TestBasicRemainingTiles(*tiles))
-        ).apply { dispatch(Begin) }
+        ).dispatch(Begin)
 
         it("should detect cloister with 7/8 surrounding tiles") {
             GameScenario(singlePlayer(TileD, TileD, TileB, TileB, TileB, TileB, TileB))

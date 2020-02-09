@@ -36,12 +36,12 @@ class RulesSetup {
 
     companion object {
         private val BASIC_RULES: List<Rule> =
-            listOf(RewardCompletedCastle(scoreCompletedCastle), RewardCompletedRoad(scoreRoad), RewardCompletedCloister)
+            listOf(RewardCompletedCastle(castleScoring), RewardCompletedRoad(roadScoring), RewardCompletedCloister)
 
         private val BASIC_END_RULES: List<EndRule> =
             listOf(
-                RewardIncompleteCastle(scoreIncompleteCastle),
-                RewardIncompleteRoad(scoreRoad),
+                RewardIncompleteCastle(incompleteCastleScoring),
+                RewardIncompleteRoad(roadScoring),
                 RewardIncompleteCloister,
                 RewardPeasants
             )

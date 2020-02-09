@@ -12,6 +12,10 @@ sealed class Direction {
     fun sameIf(direction: Direction) = if (direction == this) setOf(this) else emptySet()
     fun sameIfOneOf(vararg directions: Direction) = if (this in directions) setOf(this) else emptySet()
     fun allIfOneOf(vararg directions: Direction) = if (this in directions) directions.toSet() else emptySet()
+
+    companion object {
+        val ALL by lazy { setOf(Up, Down, Left, Right) }
+    }
 }
 
 object Up : Direction() {

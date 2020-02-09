@@ -2,6 +2,10 @@ package io.github.hejcz.corncircles
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
+import io.github.hejcz.inn.tiles.InnTileRotated180
+import io.github.hejcz.inn.tiles.InnTileRotated270
+import io.github.hejcz.inn.tiles.InnTileRotated90
+import io.github.hejcz.magic.MagicTile
 
 enum class CornSymbol(val matches: (Role) -> Boolean) {
     KNIGHT({ it is Knight }), BRIGAND({ it is Brigand }), PEASANT({ it is Peasant })
@@ -9,6 +13,25 @@ enum class CornSymbol(val matches: (Role) -> Boolean) {
 
 interface CornCircleTile : Tile {
     fun cornCircleEffect(): CornSymbol
+
+    override fun rotate(rotation: Rotation): Tile = when (rotation) {
+        NoRotation -> this
+        Rotation90 -> CornCircleRotated90(this)
+        Rotation180 -> CornCircleRotated180(this)
+        Rotation270 -> CornCircleRotated270(this)
+    }
+
+    private class CornCircleRotated90(private val tile: CornCircleTile) : TileRotated90(tile), CornCircleTile {
+        override fun cornCircleEffect(): CornSymbol = tile.cornCircleEffect()
+    }
+
+    private class CornCircleRotated180(private val tile: CornCircleTile) : TileRotated180(tile), CornCircleTile {
+        override fun cornCircleEffect(): CornSymbol = tile.cornCircleEffect()
+    }
+
+    private class CornCircleRotated270(private val tile: CornCircleTile) : TileRotated270(tile), CornCircleTile {
+        override fun cornCircleEffect(): CornSymbol = tile.cornCircleEffect()
+    }
 }
 
 object Korn1 : CornCircleTile, TileWithGreenFields by GreenFields(

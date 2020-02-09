@@ -7,33 +7,37 @@ class GameScenario(private val game: Game) {
     fun then(command: Command) =
         GameScenario(game.dispatch(command))
 
-    fun thenReceivedEventShouldBeOnlyPlaceTile() = check { it.shouldContainPlaceTileOnly() }
+    fun thenReceivedEventShouldBeOnlyPlaceTile() = _check { it.shouldContainPlaceTileOnly() }
 
-    fun thenReceivedEventShouldBe(event: GameEvent) = check { it containsEvent event }
+    fun thenReceivedEventShouldBe(event: GameEvent) = _check { it containsEvent event }
 
-    fun thenReceivedEventShouldBe(event: PlayerScored) = check { it containsEvent event }
+    fun thenReceivedEventShouldBe(event: PlayerScored) = _check { it containsEvent event }
 
-    fun thenReceivedEventShouldBe(event: PlayerDidNotScore) = check { it containsEvent event }
+    fun thenReceivedEventShouldBe(event: PlayerDidNotScore) = _check { it containsEvent event }
 
-    fun thenShouldNotReceiveEvent(event: GameEvent) = check { it doesNotContainEvent event }
+    fun thenShouldNotReceiveEvent(event: GameEvent) = _check { it doesNotContainEvent event }
 
-    fun thenShouldNotReceiveEvent(event: PlayerScored) = check { it doesNotContainEvent event }
+    fun thenShouldNotReceiveEvent(event: PlayerScored) = _check { it doesNotContainEvent event }
 
-    fun thenShouldNotReceiveEvent(event: PlayerDidNotScore) = check { it doesNotContainEvent event }
+    fun thenShouldNotReceiveEvent(event: PlayerDidNotScore) = _check { it doesNotContainEvent event }
 
-    fun thenNoEventsShouldBePublished() = check { it.recentEvents() shouldEqual emptyList() }
+    fun thenNoEventsShouldBePublished() = _check { it.recentEvents() shouldEqual emptyList() }
 
-    private fun check(check: (Game) -> Unit): GameScenario {
+    fun _check(check: (Game) -> Unit): GameScenario {
         check(game)
         return this
     }
 
-    fun thenReceivedEventsShouldBe(expected: List<PlayerScored>) = check { it.recentEvents() == expected }
+    fun thenReceivedEventsShouldBe(expected: List<PlayerScored>) = _check { it.recentEvents() == expected }
+
+    fun thenEventsCountShouldBe(number: Int) = _check { it.recentEvents().size == number }
+
+    inline fun <reified T> thenReceivedEventsShouldHaveType() = _check { it.recentEvents() is T }
 
     companion object {
         fun Game.shouldContainPlaceTileOnly() =
             if (this.recentEvents().size != 1 || this.recentEvents().iterator().next() !is PlaceTile) {
-                throw AssertionError("Expected only PlaceTile event but was $this")
+                throw AssertionError("Expected only PlaceTile event but was ${this.recentEvents()}")
             } else {
                 // ok
             }
@@ -52,7 +56,7 @@ class GameScenario(private val game: Game) {
             )
         } -> {
         } // ok
-        else -> throw AssertionError("Expected event not found: $expected")
+        else -> throw AssertionError("Expected event not found: $expected\nAvailable events: ${this.recentEvents()}\n")
     }
 
     private infix fun Game.containsEvent(expected: PlayerDidNotScore) = when {
