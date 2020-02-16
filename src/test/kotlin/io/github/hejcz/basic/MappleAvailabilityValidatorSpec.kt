@@ -54,5 +54,4 @@ object MappleAvailabilityValidatorSpec : Spek({
                 .thenReceivedEventShouldBeOnlyPlaceTile()
         }
     }
-
 })

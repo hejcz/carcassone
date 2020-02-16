@@ -91,39 +91,38 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(ScoreEvent(
                     1, 15 - 7, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up)))))
         }
-
     }
 
     describe("rules") {
-        it ("can be placed on open objects only 1") {
+        it("can be placed on open objects only 1") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Down, MagicTarget.WITCH))
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed castle
         }
 
-        it ("can be placed on open objects only 2") {
+        it("can be placed on open objects only 2") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Right, MagicTarget.WITCH))
                 .thenReceivedEventShouldBe(PieceEvent) // open castle
         }
 
-        it ("can be placed on open objects only 3") {
+        it("can be placed on open objects only 3") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Down, MagicTarget.MAGICIAN))
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed castle
         }
 
-        it ("can be placed on open objects only 4") {
+        it("can be placed on open objects only 4") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Right, MagicTarget.MAGICIAN))
                 .thenReceivedEventShouldBe(PieceEvent) // open castle
         }
 
-        it ("can be placed on open objects only 5") {
+        it("can be placed on open objects only 5") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileA, MaHeA))
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .then(SkipPieceCmd)
@@ -132,7 +131,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed road
         }
 
-        it ("can be placed on open objects only 6") {
+        it("can be placed on open objects only 6") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileA, MaHeA))
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .then(SkipPieceCmd)
@@ -141,7 +140,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent) // open road
         }
 
-        it ("can be placed on open objects only 7") {
+        it("can be placed on open objects only 7") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileA, MaHeA))
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .then(SkipPieceCmd)
@@ -150,7 +149,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed road
         }
 
-        it ("can be placed on open objects only 8") {
+        it("can be placed on open objects only 8") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileA, MaHeA))
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .then(SkipPieceCmd)
@@ -159,7 +158,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent) // open road
         }
 
-        it ("can be placed on other tile than recent") {
+        it("can be placed on other tile than recent") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileA, MaHeA))
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .then(SkipPieceCmd)
@@ -168,7 +167,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent) // open castle on first tile
         }
 
-        it ("can't be placed on same object 1") {
+        it("can't be placed on same object 1") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileC, MaHeA, MaHeE))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
@@ -180,7 +179,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it ("can't be placed on same object 2") {
+        it("can't be placed on same object 2") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileC, MaHeA, MaHeE))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
@@ -192,7 +191,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it ("can't be placed on same object 3") {
+        it("can't be placed on same object 3") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileC, MaHeA, MaHeE))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
@@ -205,7 +204,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it ("can't be placed on same object 4") {
+        it("can't be placed on same object 4") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileC, MaHeA, MaHeE))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
@@ -218,7 +217,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it ("can be moved to other open object 1") {
+        it("can be moved to other open object 1") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileC, MaHeA, MaHeE))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
@@ -231,7 +230,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent)
         }
 
-        it ("can be moved to other open object 2") {
+        it("can be moved to other open object 2") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileC, MaHeA, MaHeE))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
@@ -244,7 +243,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent)
         }
 
-        it ("delays points calculation if npc must be moved 1") {
+        it("delays points calculation if npc must be moved 1") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeA, MaHeF, TileP, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Up, MagicTarget.WITCH))
@@ -260,7 +259,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(ScoreEvent(1, 8 - 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))))
         }
 
-        it ("delays points calculation if npc must be moved 2") {
+        it("delays points calculation if npc must be moved 2") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeA, MaHeF, TileP, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Up, MagicTarget.WITCH))
@@ -279,7 +278,7 @@ object WitchAndMagicianSpec : Spek({
 
     describe("pick up rules") {
 
-        it ("can't pick up instead of move 1") {
+        it("can't pick up instead of move 1") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeA, MaHeF, TileP, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Up, MagicTarget.WITCH))
@@ -289,7 +288,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.WITCH))
         }
 
-        it ("can't pick up instead of move 2") {
+        it("can't pick up instead of move 2") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeA, MaHeF, TileP, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Up, MagicTarget.MAGICIAN))
@@ -299,7 +298,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.MAGICIAN))
         }
 
-        it ("can't pick up instead of move 3") {
+        it("can't pick up instead of move 3") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeA, MaHeF, TileP, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Up, MagicTarget.WITCH))
@@ -309,7 +308,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.MAGICIAN))
         }
 
-        it ("can't pick up instead of move 4") {
+        it("can't pick up instead of move 4") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeA, MaHeF, TileP, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Up, MagicTarget.WITCH))
@@ -319,7 +318,7 @@ object WitchAndMagicianSpec : Spek({
                 .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.MAGICIAN))
         }
 
-        it ("can pick up if there is no chance to move") {
+        it("can pick up if there is no chance to move") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup,
                 TileA, MaHeD, TileB, TileB, TileB, TileE, MaHeD, TileB))
                 .then(TileCmd(Position(-1, 0), Rotation270))
@@ -340,7 +339,5 @@ object WitchAndMagicianSpec : Spek({
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.WITCH))
                 .thenReceivedEventShouldBe(PieceEvent)
         }
-
     }
-
 })

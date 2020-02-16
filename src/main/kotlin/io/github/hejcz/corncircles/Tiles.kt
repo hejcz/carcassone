@@ -2,10 +2,6 @@ package io.github.hejcz.corncircles
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.inn.tiles.InnTileRotated180
-import io.github.hejcz.inn.tiles.InnTileRotated270
-import io.github.hejcz.inn.tiles.InnTileRotated90
-import io.github.hejcz.magic.MagicTile
 
 enum class CornSymbol(val matches: (Role) -> Boolean) {
     KNIGHT({ it is Knight }), BRIGAND({ it is Brigand }), PEASANT({ it is Peasant })

@@ -48,5 +48,4 @@ object MagicianAndWitchExtension : Extension {
             setOf(CantPickUpPieceEvent(command.magicTarget))
         }
     }
-
 }

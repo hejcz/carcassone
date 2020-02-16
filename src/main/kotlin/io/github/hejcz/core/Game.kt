@@ -55,7 +55,7 @@ class Game private constructor(
         val (state1, events1) = handler.beforeScoring(state, command)
 
         val scoreEvents = when {
-            eventsQueue.shouldRunRules(state1) ->  rules.flatMap { it.afterCommand(command, state1) }
+            eventsQueue.shouldRunRules(state1) -> rules.flatMap { it.afterCommand(command, state1) }
             else -> emptyList()
         }
 
