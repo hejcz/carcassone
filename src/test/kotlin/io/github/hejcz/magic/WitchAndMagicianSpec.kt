@@ -22,11 +22,11 @@ object WitchAndMagicianSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation90)) // MaHeD
                 .thenReceivedEventShouldBe(PlaceWitchOrMagician)
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Up, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(0, 2), Rotation180)) // E
-                .thenReceivedEventShouldBe(PlayerScored(
+                .thenReceivedEventShouldBe(ScoreEvent(
                     1, 4 + 2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up)))))
         }
 
@@ -35,13 +35,13 @@ object WitchAndMagicianSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation90)) // MaHeD
                 .thenReceivedEventShouldBe(PlaceWitchOrMagician)
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Up, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(0, 2), Rotation90)) // F
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(0, 3), Rotation180)) // E
-                .thenReceivedEventShouldBe(PlayerScored(
+                .thenReceivedEventShouldBe(ScoreEvent(
                     1, 8 + 3, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up)))))
         }
 
@@ -57,7 +57,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(TileCmd(Position(0, 3), Rotation180)) // E
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 2), Rotation270)) // E
-                .thenReceivedEventShouldBe(PlayerScored(
+                .thenReceivedEventShouldBe(ScoreEvent(
                     1, 15 + 5, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up)))))
         }
     }
@@ -68,11 +68,11 @@ object WitchAndMagicianSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation90)) // MaHeD
                 .thenReceivedEventShouldBe(PlaceWitchOrMagician)
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Up, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(0, 2), Rotation180)) // E
-                .thenReceivedEventShouldBe(PlayerScored(
+                .thenReceivedEventShouldBe(ScoreEvent(
                     1, 4 - 2, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up)))))
         }
 
@@ -88,7 +88,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(TileCmd(Position(0, 3), Rotation180)) // E
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 2), Rotation270)) // E
-                .thenReceivedEventShouldBe(PlayerScored(
+                .thenReceivedEventShouldBe(ScoreEvent(
                     1, 15 - 7, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up)))))
         }
 
@@ -99,28 +99,28 @@ object WitchAndMagicianSpec : Spek({
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Down, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(InvalidPieceLocation) // closed castle
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed castle
         }
 
         it ("can be placed on open objects only 2") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Right, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece) // open castle
+                .thenReceivedEventShouldBe(PieceEvent) // open castle
         }
 
         it ("can be placed on open objects only 3") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Down, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(InvalidPieceLocation) // closed castle
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed castle
         }
 
         it ("can be placed on open objects only 4") {
             GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, MaHeB))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 1), Right, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece) // open castle
+                .thenReceivedEventShouldBe(PieceEvent) // open castle
         }
 
         it ("can be placed on open objects only 5") {
@@ -129,7 +129,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Left, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(InvalidPieceLocation) // closed road
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed road
         }
 
         it ("can be placed on open objects only 6") {
@@ -138,7 +138,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Right, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece) // open road
+                .thenReceivedEventShouldBe(PieceEvent) // open road
         }
 
         it ("can be placed on open objects only 7") {
@@ -147,7 +147,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Left, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(InvalidPieceLocation) // closed road
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent) // closed road
         }
 
         it ("can be placed on open objects only 8") {
@@ -156,7 +156,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(1, 0), Right, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece) // open road
+                .thenReceivedEventShouldBe(PieceEvent) // open road
         }
 
         it ("can be placed on other tile than recent") {
@@ -165,7 +165,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece) // open castle on first tile
+                .thenReceivedEventShouldBe(PieceEvent) // open castle on first tile
         }
 
         it ("can't be placed on same object 1") {
@@ -174,10 +174,10 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(TileCmd(Position(1, 1), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(-1, 1), Right, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it ("can't be placed on same object 2") {
@@ -186,10 +186,10 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(TileCmd(Position(1, 1), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(-1, 1), Right, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it ("can't be placed on same object 3") {
@@ -198,11 +198,11 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 1), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(-1, 1), Right, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it ("can't be placed on same object 4") {
@@ -211,11 +211,11 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 1), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(-1, 1), Right, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it ("can be moved to other open object 1") {
@@ -224,11 +224,11 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 1), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Right, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
         }
 
         it ("can be moved to other open object 2") {
@@ -237,11 +237,11 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Up, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 1), NoRotation))
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Right, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
         }
 
         it ("delays points calculation if npc must be moved 1") {
@@ -254,10 +254,10 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(PlaceWitchOrMagician)
-                .thenReceivedEventsShouldHaveType<CastleFinished>()
+                .thenReceivedEventsShouldHaveType<CastleClosedEvent>()
                 .thenEventsCountShouldBe(2)
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Left, MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(PlayerScored(1, 8 - 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 8 - 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))))
         }
 
         it ("delays points calculation if npc must be moved 2") {
@@ -270,10 +270,10 @@ object WitchAndMagicianSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 1), Rotation270))
                 .thenReceivedEventShouldBe(PlaceWitchOrMagician)
-                .thenReceivedEventsShouldHaveType<CastleFinished>()
+                .thenReceivedEventsShouldHaveType<CastleClosedEvent>()
                 .thenEventsCountShouldBe(2)
                 .then(MoveMagicianOrWitchCmd(Position(0, 0), Left, MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(PlayerScored(1, 8 + 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 8 + 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up)))))
         }
     }
 
@@ -286,7 +286,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(PieceCanNotBePickedUp(MagicTarget.WITCH))
+                .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.WITCH))
         }
 
         it ("can't pick up instead of move 2") {
@@ -296,7 +296,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(PieceCanNotBePickedUp(MagicTarget.MAGICIAN))
+                .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.MAGICIAN))
         }
 
         it ("can't pick up instead of move 3") {
@@ -306,7 +306,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(PieceCanNotBePickedUp(MagicTarget.MAGICIAN))
+                .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.MAGICIAN))
         }
 
         it ("can't pick up instead of move 4") {
@@ -316,7 +316,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.MAGICIAN))
-                .thenReceivedEventShouldBe(PieceCanNotBePickedUp(MagicTarget.MAGICIAN))
+                .thenReceivedEventShouldBe(CantPickUpPieceEvent(MagicTarget.MAGICIAN))
         }
 
         it ("can pick up if there is no chance to move") {
@@ -338,7 +338,7 @@ object WitchAndMagicianSpec : Spek({
                 .then(TileCmd(Position(0, 2), Rotation90))
                 .thenReceivedEventShouldBe(PlaceWitchOrMagician)
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.WITCH))
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
         }
 
     }

@@ -23,7 +23,7 @@ object PlainEndGameRewardSpec : Spek({
             GameScenario(singlePlayer(TileE))
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PieceCmd(SmallPiece, Peasant(Location(Left))))
-                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
 
         it("Simple case without scoring") {
@@ -39,7 +39,7 @@ object PlainEndGameRewardSpec : Spek({
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right))))
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(PlayerScored(1, 6, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 6, emptySet()))
         }
 
         it("Wrong side of road") {
@@ -53,7 +53,7 @@ object PlainEndGameRewardSpec : Spek({
             GameScenario(singlePlayer(TileJ))
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PieceCmd(SmallPiece, Peasant(Location(Up, RightSide))))
-                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
 
         it("Multiple players disconnected green fields") {
@@ -62,8 +62,8 @@ object PlainEndGameRewardSpec : Spek({
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right))))
                 .then(TileCmd(Position(0, 2), Rotation180))
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right))))
-                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
-                .thenReceivedEventShouldBe(PlayerScored(2, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(2, 3, emptySet()))
         }
 
         it("Multiple players dominance of one") {
@@ -80,8 +80,8 @@ object PlainEndGameRewardSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 3), Rotation270))
                 .then(SkipPieceCmd)
-                .thenShouldNotReceiveEvent(PlayerScored(2, 3, emptySet()))
-                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
+                .thenShouldNotReceiveEvent(ScoreEvent(2, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
     }
 })

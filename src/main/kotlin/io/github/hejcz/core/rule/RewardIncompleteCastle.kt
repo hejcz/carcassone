@@ -12,7 +12,7 @@ class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
                 0 -> emptyList()
                 else -> {
                     val (winners, _) = WinnerSelector.find(castle.pieces)
-                    winners.ids.map { id -> PlayerScored(id, score, emptySet()) }
+                    winners.ids.map { id -> ScoreEvent(id, score, emptySet()) }
                 }
             }
         }

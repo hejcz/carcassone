@@ -23,7 +23,7 @@ object MappleAvailabilityValidatorSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
-                .thenReceivedEventShouldBe(NoMappleAvailable(SmallPiece))
+                .thenReceivedEventShouldBe(NoMappleEvent(SmallPiece))
         }
 
         it("should allow to put piece player received from completed object") {
@@ -34,7 +34,7 @@ object MappleAvailabilityValidatorSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
-                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
 
         it("should restore all handlers player placed on object") {

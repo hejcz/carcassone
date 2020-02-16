@@ -28,43 +28,43 @@ object CornCirclesSpec : Spek({
         it("first example") {
             GameScenario(threePlayerGame(TileL, TileQ, TileW, TileE, TileE, TileH, TileG, TileU, TileU, Korn6, TileU))
                 // red
-                .then(TileCmd(Position(-1, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-1, 0), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Peasant(Location(Down, LeftSide)))).thenReceivedEventShouldBeOnlyPlaceTile()
                 // green
-                .then(TileCmd(Position(-1, 1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-1, 1), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Up))).thenReceivedEventShouldBeOnlyPlaceTile()
                 // blue
-                .then(TileCmd(Position(-2, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-2, 0), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd).thenReceivedEventShouldBeOnlyPlaceTile()
                 // red
-                .then(TileCmd(Position(-3, 0), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-3, 0), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd).thenReceivedEventShouldBeOnlyPlaceTile()
                 // green
-                .then(TileCmd(Position(-4, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-4, 0), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd).thenReceivedEventShouldBeOnlyPlaceTile()
                 // blue
-                .then(TileCmd(Position(-4, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-4, 1), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Peasant(Location(Down)))).thenReceivedEventShouldBeOnlyPlaceTile()
                 // red
-                .then(TileCmd(Position(-5, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-5, 1), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Right))).thenReceivedEventShouldBeOnlyPlaceTile()
                 // green
-                .then(TileCmd(Position(-1, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-1, -1), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd).thenReceivedEventShouldBeOnlyPlaceTile()
                 // blue
-                .then(TileCmd(Position(-2, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-2, -1), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd).thenReceivedEventShouldBeOnlyPlaceTile()
                 // red - Korn1
-                .then(TileCmd(Position(-3, 1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-3, 1), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(ChooseCornAction(1))
+                .thenReceivedEventShouldBe(ChooseCornActionEvent(1))
                 // action
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
-                .thenReceivedEventShouldBe(AddPiece(2))
+                .thenReceivedEventShouldBe(AddPieceEvent(2))
                 .then(AddPieceCmd(Position(-1, 1), SmallPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(AddPiece(3))
+                .thenReceivedEventShouldBe(AddPieceEvent(3))
                 .then(AvoidCornCircleActionCmd)
-                .thenReceivedEventShouldBe(AddPiece(1))
+                .thenReceivedEventShouldBe(AddPieceEvent(1))
                 .then(AddPieceCmd(Position(-3, 1), SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBeOnlyPlaceTile()
         }
@@ -80,13 +80,13 @@ object CornCirclesSpec : Spek({
                 .then(TileCmd(Position(2, 1), Rotation90))
                 .then(SkipPieceCmd)
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
-                .thenReceivedEventShouldBe(AddPiece(1))
+                .thenReceivedEventShouldBe(AddPieceEvent(1))
                 .then(AddPieceCmd(Position(0, 1), SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(AddPiece(2))
+                .thenReceivedEventShouldBe(AddPieceEvent(2))
                 .then(AddPieceCmd(Position(1, 0), BigPiece, Knight(Up)))
                 .then(TileCmd(Position(1, 2), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
+                    ScoreEvent(
                         2, 18, listOf(
                             PieceOnBoard(Position(1, 0), BigPiece, Knight(Up)),
                             PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))
@@ -94,7 +94,7 @@ object CornCirclesSpec : Spek({
                     )
                 )
                 .thenReceivedEventShouldBe(
-                    PlayerDidNotScore(
+                    NoScoreEvent(
                         1, listOf(
                             PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down)),
                             PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))
@@ -108,14 +108,14 @@ object CornCirclesSpec : Spek({
             GameScenario(innAndCornTwoPlayersGame(Korn6))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ChooseCornAction(1))
+                .thenReceivedEventShouldBe(ChooseCornActionEvent(1))
         }
 
         it("can't choose corn action until corn tile is drawn") {
             GameScenario(innAndCornTwoPlayersGame(TileD))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
-                .thenReceivedEventShouldBe(UnexpectedCommand)
+                .thenReceivedEventShouldBe(UnexpectedCommandEvent)
         }
 
         it("can avoid placing mapple when player has no piece in role specified on tile") {
@@ -126,7 +126,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
                 .then(AvoidCornCircleActionCmd)
-                .thenReceivedEventShouldBe(PieceCanNotBeSkipped)
+                .thenReceivedEventShouldBe(CantSkipPieceEvent)
         }
 
         it("can't avoid placing mapple when player has no piece in role specified on tile") {
@@ -137,7 +137,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
                 .then(AvoidCornCircleActionCmd)
-                .thenReceivedEventShouldBe(AddPiece(2))
+                .thenReceivedEventShouldBe(AddPieceEvent(2))
         }
 
         it("can avoid placing mapple when player has no piece in role specified on tile") {
@@ -148,7 +148,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
                 .then(AvoidCornCircleActionCmd)
-                .thenReceivedEventShouldBe(PieceCanNotBeSkipped)
+                .thenReceivedEventShouldBe(CantSkipPieceEvent)
         }
 
         it("can't avoid placing mapple when player has no piece in role specified on tile") {
@@ -159,7 +159,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
                 .then(AvoidCornCircleActionCmd)
-                .thenReceivedEventShouldBe(RemovePiece(2))
+                .thenReceivedEventShouldBe(RemovePieceEvent(2))
         }
 
         it("must add piece where it is already deployed") {
@@ -170,7 +170,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
                 .then(AddPieceCmd(Position(1, 0), SmallPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(AddPiece(2))
+                .thenReceivedEventShouldBe(AddPieceEvent(2))
         }
 
         it("must not add piece where it is not deployed") {
@@ -181,7 +181,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
                 .then(AddPieceCmd(Position(0, 1), SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("must not add piece when player does not have such mapple available") {
@@ -193,7 +193,7 @@ object CornCirclesSpec : Spek({
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
                 // player has only 1 big mapple
                 .then(AddPieceCmd(Position(1, 0), BigPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(NoMappleAvailable(BigPiece))
+                .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
         }
 
         it("must remove piece from place where it is already deployed") {
@@ -204,7 +204,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
                 .then(RemovePieceCmd(Position(1, 0), SmallPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(RemovePiece(2))
+                .thenReceivedEventShouldBe(RemovePieceEvent(2))
         }
 
         it("must not remove piece from place where it is not deployed") {
@@ -215,7 +215,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
                 .then(RemovePieceCmd(Position(0, 1), SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("must not remove piece that is not in his pool e.g. it is already on board") {
@@ -226,7 +226,7 @@ object CornCirclesSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
                 .then(RemovePieceCmd(Position(1, 0), BigPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
     }
 })

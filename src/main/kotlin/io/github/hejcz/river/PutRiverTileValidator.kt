@@ -7,7 +7,7 @@ object PutRiverTileValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> =
         when {
             command is TileCmd && state.currentTile() is RiverTile -> when {
-                state.recentTile() !is RiverTile -> setOf(InvalidTileLocation)
+                state.recentTile() !is RiverTile -> setOf(InvalidTileLocationEvent)
                 else -> {
                     val recentTileDirection: Direction = state.recentPosition().relativeDirectionTo(command.position)
                     val currentTile = state.currentTile().rotate(command.rotation) as RiverTile
@@ -16,9 +16,9 @@ object PutRiverTileValidator : CommandValidator {
                     val currentTileRiver = currentTile.exploreRiver()
                     when {
                         // is not extending river but is adjacent e.g. by green field
-                        recentTileDirection.opposite() !in recentTileRiver -> setOf(InvalidTileLocation)
+                        recentTileDirection.opposite() !in recentTileRiver -> setOf(InvalidTileLocationEvent)
                         riverTurnsInSameDirection(recentTileDirection, recentTileRiver, currentTileRiver) -> setOf(
-                            InvalidTileLocation
+                            InvalidTileLocationEvent
                         )
                         else -> emptySet()
                     }

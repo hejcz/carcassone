@@ -27,7 +27,7 @@ object RewardPeasants : EndRule {
                 val countedPieces = fieldParts.groupingBy { (playerId, _) -> playerId }.eachCount()
                 val maxElement = countedPieces.maxBy { it.value }!!.value
                 countedPieces.filter { it.value == maxElement }
-                    .map { PlayerScored(it.key, 3 * completedCastles, emptySet()) }
+                    .map { ScoreEvent(it.key, 3 * completedCastles, emptySet()) }
             }
     }
 

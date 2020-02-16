@@ -10,10 +10,10 @@ object PiecePlacementValidator : CommandValidator {
                 val tile = state.recentTile()
                 when {
                     !command.piece.mayBeUsedAs(command.role) -> setOf(
-                        PieceMayNotBeUsedInRole(command.piece, command.role)
+                        InvalidPieceRoleEvent(command.piece, command.role)
                     )
                     role.canBePlacedOn(tile) -> emptySet()
-                    else -> setOf(InvalidPieceLocation)
+                    else -> setOf(InvalidPieceLocationEvent)
                 }
             }
             else -> emptySet()

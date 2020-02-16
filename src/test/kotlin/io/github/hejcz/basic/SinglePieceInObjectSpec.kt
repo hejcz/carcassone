@@ -22,7 +22,7 @@ object SinglePieceInObjectSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(TileCmd(Position(0, 2), Rotation180))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("knights two players") {
@@ -31,7 +31,7 @@ object SinglePieceInObjectSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(TileCmd(Position(0, 2), Rotation180))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("brigands") {
@@ -40,7 +40,7 @@ object SinglePieceInObjectSpec : Spek({
                 .then(PieceCmd(SmallPiece, Brigand(Right)))
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("brigands two players") {
@@ -49,7 +49,7 @@ object SinglePieceInObjectSpec : Spek({
                 .then(PieceCmd(SmallPiece, Brigand(Right)))
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("peasants") {
@@ -58,7 +58,7 @@ object SinglePieceInObjectSpec : Spek({
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right, LeftSide))))
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right))))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("peasants two players") {
@@ -67,7 +67,7 @@ object SinglePieceInObjectSpec : Spek({
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right, LeftSide))))
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Peasant(Location(Right))))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
     }
 })

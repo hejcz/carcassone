@@ -22,7 +22,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
             .filter { it.parts.isNotEmpty() }
             .toList()
             .flatMap { castle ->
-                setOf(CastleFinished(CompletedCastle(castle.parts))) + when {
+                setOf(CastleClosedEvent(CompletedCastle(castle.parts))) + when {
                     castle.pieces.isNotEmpty() -> generateEvents(castle, state)
                     else -> emptySet()
                 }
@@ -35,8 +35,8 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
     private fun generateEvents(castle: Castle, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(castle.pieces)
         val score = castleScoring(state, castle)
-        return winners.ids.map { id -> PlayerScored(id, score, castle.piecesOf(id)) } +
-            losers.ids.map { id -> PlayerDidNotScore(id, castle.piecesOf(id)) }
+        return winners.ids.map { id -> ScoreEvent(id, score, castle.piecesOf(id)) } +
+            losers.ids.map { id -> NoScoreEvent(id, castle.piecesOf(id)) }
     }
 
     private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> {
@@ -49,7 +49,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
         }
         val score = castleScoring(state, castle)
         // if castle is finished and player is allowed to put piece inside then this is the only one piece on castle
-        return setOf(PlayerScored(state.currentPlayerId(), score, castle.piecesOf(state.currentPlayerId())))
+        return setOf(ScoreEvent(state.currentPlayerId(), score, castle.piecesOf(state.currentPlayerId())))
     }
 
     private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Castle {

@@ -11,15 +11,15 @@ class GameScenario(private val game: Game) {
 
     fun thenReceivedEventShouldBe(event: GameEvent) = _check { it containsEvent event }
 
-    fun thenReceivedEventShouldBe(event: PlayerScored) = _check { it containsEvent event }
+    fun thenReceivedEventShouldBe(event: ScoreEvent) = _check { it containsEvent event }
 
-    fun thenReceivedEventShouldBe(event: PlayerDidNotScore) = _check { it containsEvent event }
+    fun thenReceivedEventShouldBe(event: NoScoreEvent) = _check { it containsEvent event }
 
     fun thenShouldNotReceiveEvent(event: GameEvent) = _check { it doesNotContainEvent event }
 
-    fun thenShouldNotReceiveEvent(event: PlayerScored) = _check { it doesNotContainEvent event }
+    fun thenShouldNotReceiveEvent(event: ScoreEvent) = _check { it doesNotContainEvent event }
 
-    fun thenShouldNotReceiveEvent(event: PlayerDidNotScore) = _check { it doesNotContainEvent event }
+    fun thenShouldNotReceiveEvent(event: NoScoreEvent) = _check { it doesNotContainEvent event }
 
     fun thenNoEventsShouldBePublished() = _check { it.recentEvents() shouldEqual emptyList() }
 
@@ -28,7 +28,7 @@ class GameScenario(private val game: Game) {
         return this
     }
 
-    fun thenReceivedEventsShouldBe(expected: List<PlayerScored>) = _check { it.recentEvents() == expected }
+    fun thenReceivedEventsShouldBe(expected: List<ScoreEvent>) = _check { it.recentEvents() == expected }
 
     fun thenEventsCountShouldBe(number: Int) = _check { it.recentEvents().size == number }
 
@@ -36,7 +36,7 @@ class GameScenario(private val game: Game) {
 
     companion object {
         fun Game.shouldContainPlaceTileOnly() =
-            if (this.recentEvents().size != 1 || this.recentEvents().iterator().next() !is PlaceTile) {
+            if (this.recentEvents().size != 1 || this.recentEvents().iterator().next() !is TileEvent) {
                 throw AssertionError("Expected only PlaceTile event but was ${this.recentEvents()}")
             } else {
                 // ok
@@ -49,9 +49,9 @@ class GameScenario(private val game: Game) {
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
-    private infix fun Game.containsEvent(expected: PlayerScored) = when {
+    private infix fun Game.containsEvent(expected: ScoreEvent) = when {
         this.recentEvents().any {
-            it is PlayerScored && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(
+            it is ScoreEvent && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(
                 expected.returnedPieces
             )
         } -> {
@@ -59,9 +59,9 @@ class GameScenario(private val game: Game) {
         else -> throw AssertionError("Expected event not found: $expected\nAvailable events: ${this.recentEvents()}\n")
     }
 
-    private infix fun Game.containsEvent(expected: PlayerDidNotScore) = when {
+    private infix fun Game.containsEvent(expected: NoScoreEvent) = when {
         this.recentEvents().any {
-            it is PlayerDidNotScore && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(
+            it is NoScoreEvent && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(
                 expected.returnedPieces
             )
         } -> {
@@ -75,9 +75,9 @@ class GameScenario(private val game: Game) {
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
-    private infix fun Game.doesNotContainEvent(expected: PlayerScored) = when {
+    private infix fun Game.doesNotContainEvent(expected: ScoreEvent) = when {
         this.recentEvents().none {
-            it is PlayerScored && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(
+            it is ScoreEvent && it.playerId == expected.playerId && it.score == expected.score && it.returnedPieces.equalsAnyOrder(
                 expected.returnedPieces
             )
         } -> {
@@ -85,9 +85,9 @@ class GameScenario(private val game: Game) {
         else -> throw AssertionError("Expected event not found: $expected")
     }
 
-    private infix fun Game.doesNotContainEvent(expected: PlayerDidNotScore) = when {
+    private infix fun Game.doesNotContainEvent(expected: NoScoreEvent) = when {
         this.recentEvents().none {
-            it is PlayerDidNotScore && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(
+            it is NoScoreEvent && it.playerId == expected.playerId && it.returnedPieces.equalsAnyOrder(
                 expected.returnedPieces
             )
         } -> {

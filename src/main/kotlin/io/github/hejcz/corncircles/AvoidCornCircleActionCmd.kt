@@ -19,7 +19,7 @@ val AvoidCornCircleActionHandler = object : CommandHandler {
 val AvoidCornCircleActionValidator = commandValidator<AvoidCornCircleActionCmd> { state, _ ->
     when (val tile = state.recentTile()) {
         is CornCircleTile -> when {
-            state.currentPlayerPieces(tile.cornCircleEffect()).isNotEmpty() -> setOf(PieceCanNotBeSkipped)
+            state.currentPlayerPieces(tile.cornCircleEffect()).isNotEmpty() -> setOf(CantSkipPieceEvent)
             else -> emptySet()
         }
         else -> emptySet()

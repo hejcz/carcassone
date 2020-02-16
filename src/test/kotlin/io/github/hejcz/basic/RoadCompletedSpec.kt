@@ -19,7 +19,7 @@ object RoadCompletedSpec : Spek({
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+                    ScoreEvent(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
         }
 
@@ -27,10 +27,10 @@ object RoadCompletedSpec : Spek({
             GameScenario(singlePlayer(TileS, TileS))
                 .then(TileCmd(Position(1, 0), Rotation90))
                 .then(SkipPieceCmd)
-                .then(TileCmd(Position(-1, 0), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-1, 0), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Brigand(Right)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
+                    ScoreEvent(1, 3, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
                 )
         }
 
@@ -42,7 +42,7 @@ object RoadCompletedSpec : Spek({
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
                 .then(TileCmd(Position(1, -1), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+                    ScoreEvent(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
         }
 
@@ -56,9 +56,9 @@ object RoadCompletedSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -1), Rotation180))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down))))
+                    ScoreEvent(1, 4, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Down))))
                 )
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("should detect single event when last tile has roads in many directions") {
@@ -71,9 +71,9 @@ object RoadCompletedSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
+                    ScoreEvent(1, 4, setOf(PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Right))))
                 )
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("should detect multiple roads completed with different pieces count") {
@@ -92,17 +92,17 @@ object RoadCompletedSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(0, -1), NoRotation))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 3, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left))))
+                    ScoreEvent(1, 3, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Brigand(Left))))
                 )
                 .thenReceivedEventShouldBe(
-                    PlayerScored(
+                    ScoreEvent(
                         1, 7, setOf(
                             PieceOnBoard(Position(-1, -1), SmallPiece, Brigand(Left)),
                             PieceOnBoard(Position(-1, 0), SmallPiece, Brigand(Left))
                         )
                     )
                 )
-                .thenReceivedEventShouldBe(SelectPiece)
+                .thenReceivedEventShouldBe(PieceEvent)
         }
     }
 })

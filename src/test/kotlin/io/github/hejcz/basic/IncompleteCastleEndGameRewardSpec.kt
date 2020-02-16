@@ -25,14 +25,14 @@ object IncompleteCastleEndGameRewardSpec : Spek({
             GameScenario(singlePlayer(TileG))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(PlayerScored(1, 2, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 2, emptySet()))
         }
 
         it("should give reward for incomplete castle with emblem") {
             GameScenario(singlePlayer(TileF))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
 
         it("should not reward knight who just got rewarded for finishing castle") {
@@ -40,7 +40,7 @@ object IncompleteCastleEndGameRewardSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(
-                    PlayerScored(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
+                    ScoreEvent(1, 4, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
         }
     }

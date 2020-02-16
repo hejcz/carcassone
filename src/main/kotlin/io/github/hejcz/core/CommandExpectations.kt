@@ -35,7 +35,7 @@ class PutTileExpectation : Expectation {
 
     override fun shouldRunRules(state: State): Boolean = !state.mageOrWitchMustBeInstantlyMoved()
 
-    override fun toEvent(state: State): GameEvent = PlaceTile(state.currentTileName(), state.currentPlayerId())
+    override fun toEvent(state: State): GameEvent = TileEvent(state.currentTileName(), state.currentPlayerId())
 }
 
 class PutPieceExpectation : Expectation {
@@ -46,7 +46,7 @@ class PutPieceExpectation : Expectation {
         else -> emptyList()
     }
 
-    override fun toEvent(state: State): GameEvent = SelectPiece
+    override fun toEvent(state: State): GameEvent = PieceEvent
 }
 
 class ChooseCornCircleActionExpectation : Expectation {
@@ -60,19 +60,19 @@ class ChooseCornCircleActionExpectation : Expectation {
         }
     }
 
-    override fun toEvent(state: State): GameEvent = ChooseCornAction(state.currentPlayerId())
+    override fun toEvent(state: State): GameEvent = ChooseCornActionEvent(state.currentPlayerId())
 }
 
 class AddPieceExpectation : Expectation {
     override fun expects(command: Command): Boolean = command is AddPieceCmd || command is AvoidCornCircleActionCmd
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = emptyList()
-    override fun toEvent(state: State): GameEvent = AddPiece(state.currentPlayerId())
+    override fun toEvent(state: State): GameEvent = AddPieceEvent(state.currentPlayerId())
 }
 
 class RemovePieceExpectation : Expectation {
     override fun expects(command: Command): Boolean = command is RemovePieceCmd || command is AvoidCornCircleActionCmd
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = emptyList()
-    override fun toEvent(state: State): GameEvent = RemovePiece(state.currentPlayerId())
+    override fun toEvent(state: State): GameEvent = RemovePieceEvent(state.currentPlayerId())
 }
 
 class MoveMagicianOrWitchExpectation : Expectation {

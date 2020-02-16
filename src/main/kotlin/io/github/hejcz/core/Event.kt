@@ -8,40 +8,40 @@ open class GameEvent
 
 object BeginEvent : GameEvent()
 
-data class PlaceTile(val tileId: String, val playerId: Long) : GameEvent()
+data class TileEvent(val tileId: String, val playerId: Long) : GameEvent()
 
-object SelectPiece : GameEvent()
+object PieceEvent : GameEvent()
 
-data class AddPiece(val playerId: Long) : GameEvent()
+data class AddPieceEvent(val playerId: Long) : GameEvent()
 
-data class RemovePiece(val playerId: Long) : GameEvent()
+data class RemovePieceEvent(val playerId: Long) : GameEvent()
 
-data class ChooseCornAction(val playerId: Long) : GameEvent()
+data class ChooseCornActionEvent(val playerId: Long) : GameEvent()
 
 // events
 
-data class PlayerScored(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
+data class ScoreEvent(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
 
-data class PlayerDidNotScore(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
+data class NoScoreEvent(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
 
-data class CastleFinished(val castle: CompletedCastle) : GameEvent()
+data class CastleClosedEvent(val castle: CompletedCastle) : GameEvent()
 
-data class RoadFinished(val road: CompletedRoad) : GameEvent()
+data class RoadClosedEvent(val road: CompletedRoad) : GameEvent()
 
 // errors
 
-object InvalidTileLocation : GameEvent()
+object InvalidTileLocationEvent : GameEvent()
 
-object InvalidPieceLocation : GameEvent()
+object InvalidPieceLocationEvent : GameEvent()
 
-object PieceCanNotBeSkipped : GameEvent()
+object CantSkipPieceEvent : GameEvent()
 
-data class PieceCanNotBePickedUp(val magicTarget: MagicTarget) : GameEvent()
+data class CantPickUpPieceEvent(val magicTarget: MagicTarget) : GameEvent()
 
-object NoAbbotToPickUp : GameEvent()
+object CantPickUpAbbotEvent : GameEvent()
 
-data class PieceMayNotBeUsedInRole(val piece: Piece, val role: Role) : GameEvent()
+data class InvalidPieceRoleEvent(val piece: Piece, val role: Role) : GameEvent()
 
-data class NoMappleAvailable(val piece: Piece) : GameEvent()
+data class NoMappleEvent(val piece: Piece) : GameEvent()
 
-object UnexpectedCommand : GameEvent()
+object UnexpectedCommandEvent : GameEvent()

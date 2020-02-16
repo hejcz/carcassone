@@ -16,24 +16,24 @@ object PutTileValidatorSpec : Spek({
         it("roads validation") {
             GameScenario(singlePlayer(TileA))
                 .then(TileCmd(Position(1, 0), NoRotation))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("roads validation") {
             GameScenario(singlePlayer(TileA))
                 .then(TileCmd(Position(1, 0), Rotation180))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("roads validation") {
             GameScenario(singlePlayer(TileA))
                 .then(TileCmd(Position(1, 0), Rotation270))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("roads validation") {
             GameScenario(singlePlayer(TileA))
-                .then(TileCmd(Position(1, 0), Rotation90)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(1, 0), Rotation90)).thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("Connecting tiles with bounded object") {
@@ -41,7 +41,7 @@ object PutTileValidatorSpec : Spek({
                 .then(TileCmd(Position(0, -1), Rotation180))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(0, -2), Rotation180))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
     }
 })

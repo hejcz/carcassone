@@ -35,7 +35,7 @@ object MagicianAndWitchExtension : Extension {
         if (state.canBePlacedOn(command.magicTarget.toPiece(), PositionedDirection(command.position, command.direction))) {
             emptySet()
         } else {
-            setOf(InvalidPieceLocation)
+            setOf(InvalidPieceLocationEvent)
         }
     }
 
@@ -45,7 +45,7 @@ object MagicianAndWitchExtension : Extension {
         if (state.canBePickedUp(command.magicTarget.toPiece())) {
             emptySet()
         } else {
-            setOf(PieceCanNotBePickedUp(command.magicTarget))
+            setOf(CantPickUpPieceEvent(command.magicTarget))
         }
     }
 

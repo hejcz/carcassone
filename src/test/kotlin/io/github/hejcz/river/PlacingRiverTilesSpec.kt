@@ -19,47 +19,47 @@ object PlacingRiverTilesSpec : Spek({
 
         it("Placing river tile") {
             GameScenario(singlePlayer(TileBB6F6))
-                .then(TileCmd(Position(0, -1), NoRotation)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(0, -1), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("Placing river tile in invalid place") {
             GameScenario(singlePlayer(TileD))
                 .then(TileCmd(Position(1, 0), NoRotation))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Placing river tile in invalid place") {
             GameScenario(singlePlayer(TileD))
                 .then(TileCmd(Position(-1, 0), Rotation90))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Placing river tile in invalid place") {
             GameScenario(singlePlayer(TileD))
                 .then(TileCmd(Position(0, 1), Rotation180))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Connecting river tiles 1") {
             GameScenario(singlePlayer(TileBB6F2))
-                .then(TileCmd(Position(0, -1), Rotation90)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(0, -1), Rotation90)).thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("Connecting river tiles 2") {
             GameScenario(singlePlayer(TileBB6F2))
-                .then(TileCmd(Position(0, -1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(0, -1), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("Connecting river tiles invalid") {
             GameScenario(singlePlayer(TileBB6F2))
                 .then(TileCmd(Position(0, -1), Rotation180))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Connecting river tiles invalid") {
             GameScenario(singlePlayer(TileBB6F2))
                 .then(TileCmd(Position(0, -1), NoRotation))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Two consecutive river tiles can't turn in same direction") {
@@ -67,7 +67,7 @@ object PlacingRiverTilesSpec : Spek({
                 .then(TileCmd(Position(0, -1), Rotation180))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, -1), Rotation270))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Two consecutive river tiles can turn in same direction if are not consecutive") {
@@ -76,25 +76,25 @@ object PlacingRiverTilesSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, -1), Rotation90))
                 .then(SkipPieceCmd)
-                .then(TileCmd(Position(-2, -1), Rotation270)).thenReceivedEventShouldBe(SelectPiece)
+                .then(TileCmd(Position(-2, -1), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
         }
 
         it("River must be connected with previous river - it can't be adjacent by field e.g.") {
             GameScenario(singlePlayer(TileBB6F7))
                 .then(TileCmd(Position(0, 1), NoRotation))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("River must be connected with previous river - it can't be adjacent by field e.g.") {
             GameScenario(singlePlayer(TileBB6F7))
                 .then(TileCmd(Position(-1, 0), NoRotation))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("River must be connected with previous river - it can't be adjacent by field e.g.") {
             GameScenario(singlePlayer(TileBB6F7))
                 .then(TileCmd(Position(1, 0), Rotation90))
-                .thenReceivedEventShouldBe(InvalidTileLocation)
+                .thenReceivedEventShouldBe(InvalidTileLocationEvent)
         }
 
         it("Can place knight in castle on river tile") {
@@ -125,21 +125,21 @@ object PlacingRiverTilesSpec : Spek({
             GameScenario(singlePlayer(TileBB6F2))
                 .then(TileCmd(Position(0, -1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("Can't place a brigand on river") {
             GameScenario(singlePlayer(TileBB6F2))
                 .then(TileCmd(Position(0, -1), Rotation90))
                 .then(PieceCmd(SmallPiece, Brigand(Down)))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("Can't place a peasant on river") {
             GameScenario(singlePlayer(TileBB6F2))
                 .then(TileCmd(Position(0, -1), Rotation90))
                 .then(PieceCmd(SmallPiece, Peasant(Location(Down))))
-                .thenReceivedEventShouldBe(InvalidPieceLocation)
+                .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
         it("If river enabled source should be first") {

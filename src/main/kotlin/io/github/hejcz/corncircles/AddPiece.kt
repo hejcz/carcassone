@@ -20,8 +20,8 @@ val AddPieceHandler = object : CommandHandler {
 val AddPieceValidator = commandValidator<AddPieceCmd> { state, command ->
     when (val tile = state.recentTile()) {
         is CornCircleTile -> when {
-            !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocation)
-            playerDoesNotHaveAnyPieceThere(state, command) -> setOf(InvalidPieceLocation)
+            !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocationEvent)
+            playerDoesNotHaveAnyPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
             else -> emptySet()
         }
         else -> emptySet()

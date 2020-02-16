@@ -19,7 +19,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
             .filter { it.parts.isNotEmpty() }
             .distinct()
             .flatMap { road ->
-                setOf(RoadFinished(CompletedRoad(road.parts))) + when {
+                setOf(RoadClosedEvent(CompletedRoad(road.parts))) + when {
                     road.pieces.isNotEmpty() -> generateEvents(road, state)
                     else -> emptySet()
                 }
@@ -42,7 +42,7 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         }
         // if road is finished and player could put piece then this is the only one piece on this road
         return setOf(
-            PlayerScored(
+            ScoreEvent(
                 state.currentPlayerId(), scoring(state, road), road.piecesOf(state.currentPlayerId())
             )
         )

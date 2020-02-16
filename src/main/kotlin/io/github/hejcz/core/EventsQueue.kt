@@ -7,7 +7,7 @@ class EventsQueue private constructor(private val expectations: List<Expectation
     fun validate(command: Command): Collection<GameEvent> {
         return when {
             currentExpectation().expects(command) -> emptySet()
-            else -> setOf(UnexpectedCommand)
+            else -> setOf(UnexpectedCommandEvent)
         }
     }
 

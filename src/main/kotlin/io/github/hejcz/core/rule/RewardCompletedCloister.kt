@@ -18,7 +18,7 @@ object RewardCompletedCloister : Rule {
             .filter { state.tileAt(it).hasCloister() }
             .filter { isSurrounded(state, it) }
             .flatMap { cloisterPosition -> pieceWithOwner(state, cloisterPosition) }
-            .map { (playerId, pieceOnBoard) -> PlayerScored(playerId, COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)) }
+            .map { (playerId, pieceOnBoard) -> ScoreEvent(playerId, COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)) }
 
     private fun pieceWithOwner(state: State, completedCloisterPosition: Position) =
         state.findPieces(completedCloisterPosition, Monk)
@@ -32,9 +32,9 @@ object RewardCompletedCloister : Rule {
             }
         }
 
-    private fun playerScoredEvent(state: State, piece: Piece, role: Role): Set<PlayerScored> {
+    private fun playerScoredEvent(state: State, piece: Piece, role: Role): Set<ScoreEvent> {
         val pieceOnBoard = PieceOnBoard(state.recentPosition(), piece, role)
-        return setOf(PlayerScored(state.currentPlayerId(), COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)))
+        return setOf(ScoreEvent(state.currentPlayerId(), COMPLETED_CLOISTER_REWARD, setOf(pieceOnBoard)))
     }
 
     private fun isSurrounded(state: State, position: Position): Boolean =

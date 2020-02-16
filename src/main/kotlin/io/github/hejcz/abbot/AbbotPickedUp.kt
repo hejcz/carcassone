@@ -15,7 +15,7 @@ object AbbotPickedUp : Rule {
             .find { (playerId, _) -> playerId == state.currentPlayerId() }!!
             .let { (playerId, piece) ->
                 setOf(
-                    PlayerScored(
+                    ScoreEvent(
                         playerId, score(state, piece.position), setOf(PieceOnBoard(position, AbbotPiece, Abbot))
                     )
                 )
