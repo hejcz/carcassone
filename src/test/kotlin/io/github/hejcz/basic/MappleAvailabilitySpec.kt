@@ -13,44 +13,44 @@ object MappleAvailabilityValidatorSpec : Spek({
     fun playerWithTwoPieces() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, SmallPiece))
 
     fun game(player: Player, vararg tiles: Tile) =
-        Game(setOf(player), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(Begin)
+        Game(setOf(player), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
 
     describe("Game") {
 
         it("should not allow to put piece player does not have available") {
             GameScenario(game(playerWithSinglePiece(), TileD, TileD))
-                .then(PutTile(Position(1, 0), NoRotation))
-                .then(PutPiece(SmallPiece, Knight(Up)))
-                .then(PutTile(Position(2, 0), NoRotation))
-                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(TileCmd(Position(1, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Knight(Up)))
+                .then(TileCmd(Position(2, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Brigand(Left)))
                 .thenReceivedEventShouldBe(NoMappleAvailable(SmallPiece))
         }
 
         it("should allow to put piece player received from completed object") {
             GameScenario(game(playerWithSinglePiece(), TileD, TileD, TileD))
-                .then(PutTile(Position(1, 0), NoRotation))
-                .then(PutPiece(SmallPiece, Knight(Up)))
-                .then(PutTile(Position(1, 1), Rotation180))
-                .then(SkipPiece)
-                .then(PutTile(Position(2, 0), NoRotation))
-                .then(PutPiece(SmallPiece, Brigand(Left)))
+                .then(TileCmd(Position(1, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Knight(Up)))
+                .then(TileCmd(Position(1, 1), Rotation180))
+                .then(SkipPieceCmd)
+                .then(TileCmd(Position(2, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Brigand(Left)))
                 .thenReceivedEventShouldBe(PlayerScored(1, 3, emptySet()))
         }
 
         it("should restore all handlers player placed on object") {
             GameScenario(game(playerWithTwoPieces(), TileG, TileV, TileE, TileM, TileU, TileV, TileD))
-                .then(PutTile(Position(0, 1), Rotation90))
-                .then(PutPiece(SmallPiece, Knight(Up)))
-                .then(PutTile(Position(1, 1), Rotation270))
-                .then(SkipPiece)
-                .then(PutTile(Position(1, 2), Rotation270))
-                .then(PutPiece(SmallPiece, Knight(Left)))
-                .then(PutTile(Position(0, 2), Rotation90))
-                .then(SkipPiece)
-                .then(PutTile(Position(2, 1), Rotation90))
-                .then(PutPiece(SmallPiece, Brigand(Left))).thenReceivedEventShouldBeOnlyPlaceTile()
-                .then(PutTile(Position(1, 0), Rotation90))
-                .then(PutPiece(SmallPiece, Peasant(Location(Right))))
+                .then(TileCmd(Position(0, 1), Rotation90))
+                .then(PieceCmd(SmallPiece, Knight(Up)))
+                .then(TileCmd(Position(1, 1), Rotation270))
+                .then(SkipPieceCmd)
+                .then(TileCmd(Position(1, 2), Rotation270))
+                .then(PieceCmd(SmallPiece, Knight(Left)))
+                .then(TileCmd(Position(0, 2), Rotation90))
+                .then(SkipPieceCmd)
+                .then(TileCmd(Position(2, 1), Rotation90))
+                .then(PieceCmd(SmallPiece, Brigand(Left))).thenReceivedEventShouldBeOnlyPlaceTile()
+                .then(TileCmd(Position(1, 0), Rotation90))
+                .then(PieceCmd(SmallPiece, Peasant(Location(Right))))
                 .thenReceivedEventShouldBeOnlyPlaceTile()
         }
     }

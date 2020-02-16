@@ -3,13 +3,13 @@ package io.github.hejcz.corncircles
 import io.github.hejcz.core.*
 import io.github.hejcz.util.*
 
-data class AddPieceCommand(val position: Position, val piece: Piece, val role: Role) : Command
+data class AddPieceCmd(val position: Position, val piece: Piece, val role: Role) : Command
 
 val AddPieceHandler = object : CommandHandler {
-    override fun isApplicableTo(command: Command): Boolean = command is AddPieceCommand
+    override fun isApplicableTo(command: Command): Boolean = command is AddPieceCmd
 
     override fun beforeScoring(state: State, command: Command): GameChanges =
-        (command as AddPieceCommand).let {
+        (command as AddPieceCmd).let {
             GameChanges.noEvents(
                 state.addPiece(command.position, command.piece, command.role)
                     .changeActivePlayer()
@@ -17,7 +17,7 @@ val AddPieceHandler = object : CommandHandler {
         }
 }
 
-val AddPieceValidator = commandValidator<AddPieceCommand> { state, command ->
+val AddPieceValidator = commandValidator<AddPieceCmd> { state, command ->
     when (val tile = state.recentTile()) {
         is CornCircleTile -> when {
             !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocation)
@@ -28,6 +28,6 @@ val AddPieceValidator = commandValidator<AddPieceCommand> { state, command ->
     }
 }
 
-private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPieceCommand) =
+private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPieceCmd) =
     state.findPieces(command.position, command.role)
         .none { state.currentPlayerId() == it.playerId }

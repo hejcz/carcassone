@@ -74,7 +74,7 @@ class Game private constructor(
         }
 
         val newState = when {
-            newEventsQueue.isPutTileNext() && command != Begin -> state2.changeActivePlayer()
+            newEventsQueue.isPutTileNext() && command != BeginCmd -> state2.changeActivePlayer()
             else -> state2
         }
 

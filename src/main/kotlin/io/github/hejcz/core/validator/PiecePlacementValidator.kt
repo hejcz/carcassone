@@ -5,7 +5,7 @@ import io.github.hejcz.core.*
 object PiecePlacementValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> {
         return when (command) {
-            is PutPiece -> {
+            is PieceCmd -> {
                 val role = command.role
                 val tile = state.recentTile()
                 when {

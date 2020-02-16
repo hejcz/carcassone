@@ -5,8 +5,8 @@ import io.github.hejcz.core.*
 object GardenCompletedRule : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PutTile -> afterTilePlaced(state.recentPosition(), state)
-        is PutPiece -> afterPiecePlaced(state, command.role)
+        is TileCmd -> afterTilePlaced(state.recentPosition(), state)
+        is PieceCmd -> afterPiecePlaced(state, command.role)
         else -> emptySet()
     }
 

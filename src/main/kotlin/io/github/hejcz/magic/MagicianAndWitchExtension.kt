@@ -21,7 +21,7 @@ object MagicianAndWitchExtension : Extension {
         commandHandlersSetup.add(PickUpMagicianOrWitchHandler)
     }
 
-    private val MoveMagicianOrWitchCommandHandler = eventsHandler<MoveMagicianOrWitchCommand> { state, command ->
+    private val MoveMagicianOrWitchCommandHandler = eventsHandler<MoveMagicianOrWitchCmd> { state, command ->
         GameChanges.noEvents(
             state.addNpcPiece(
                 command.magicTarget.toPiece(),
@@ -31,7 +31,7 @@ object MagicianAndWitchExtension : Extension {
         )
     }
 
-    private val MoveMagicianOrWitchCommandValidator = commandValidator<MoveMagicianOrWitchCommand> { state, command ->
+    private val MoveMagicianOrWitchCommandValidator = commandValidator<MoveMagicianOrWitchCmd> { state, command ->
         if (state.canBePlacedOn(command.magicTarget.toPiece(), PositionedDirection(command.position, command.direction))) {
             emptySet()
         } else {
@@ -39,9 +39,9 @@ object MagicianAndWitchExtension : Extension {
         }
     }
 
-    private val PickUpMagicianOrWitchHandler = eventsHandler<PickUpMagicianOrWitch>()
+    private val PickUpMagicianOrWitchHandler = eventsHandler<PickUpMagicianOrWitchCmd>()
 
-    private val PickUpMagicianOrWitchValidator = commandValidator<PickUpMagicianOrWitch> { state, command ->
+    private val PickUpMagicianOrWitchValidator = commandValidator<PickUpMagicianOrWitchCmd> { state, command ->
         if (state.canBePickedUp(command.magicTarget.toPiece())) {
             emptySet()
         } else {

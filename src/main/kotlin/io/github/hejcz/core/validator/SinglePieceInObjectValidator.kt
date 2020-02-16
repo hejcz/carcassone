@@ -4,7 +4,7 @@ import io.github.hejcz.core.*
 
 object SinglePieceInObjectValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> = when (command) {
-        is PutPiece -> when (val role = command.role) {
+        is PieceCmd -> when (val role = command.role) {
             is Knight -> {
                 val (parts, _) = CastlesExplorer.explore(state, state.recentPosition(), role.direction)
                 val pieceAlreadyPresentOnObject = parts

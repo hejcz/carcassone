@@ -1,14 +1,14 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
-import io.github.hejcz.magic.MoveMagicianOrWitchCommand
+import io.github.hejcz.magic.MoveMagicianOrWitchCmd
 
 class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PutTile -> afterTilePlaced(state)
-        is PutPiece -> afterPiecePlaced(state, command.role)
-        is MoveMagicianOrWitchCommand -> afterTilePlaced(state)
+        is TileCmd -> afterTilePlaced(state)
+        is PieceCmd -> afterPiecePlaced(state, command.role)
+        is MoveMagicianOrWitchCmd -> afterTilePlaced(state)
         else -> emptySet()
     }
 

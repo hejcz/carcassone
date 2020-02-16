@@ -8,8 +8,8 @@ object RewardCompletedCloister : Rule {
     private const val COMPLETED_CLOISTER_REWARD = 9
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PutTile -> afterTilePlaced(state.recentPosition(), state)
-        is PutPiece -> afterPiecePlaced(state, command.piece, command.role)
+        is TileCmd -> afterTilePlaced(state.recentPosition(), state)
+        is PieceCmd -> afterPiecePlaced(state, command.piece, command.role)
         else -> emptySet()
     }
 

@@ -2,10 +2,22 @@ package io.github.hejcz.core
 
 interface Command
 
-data class PutTile(val position: Position, val rotation: Rotation) : Command
+/**
+ * Starts the game.
+ */
+object BeginCmd : Command
 
-object Begin : Command
+/**
+ * Places tile on the board.
+ */
+data class TileCmd(val position: Position, val rotation: Rotation) : Command
 
-data class PutPiece(val piece: Piece, val role: Role) : Command
+/**
+ * Places piece on the board.
+ */
+data class PieceCmd(val piece: Piece, val role: Role) : Command
 
-object SkipPiece : Command
+/**
+ * Skip placing piece.
+ */
+object SkipPieceCmd : Command

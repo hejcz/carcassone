@@ -6,13 +6,13 @@ enum class CornCircleAction {
     ADD_PIECE, REMOVE_PIECE
 }
 
-data class ChooseCornCircleActionCommand(val action: CornCircleAction) : Command
+data class ChooseCornCircleActionCmd(val action: CornCircleAction) : Command
 
 val ChooseCornCircleActionHandler = object : CommandHandler {
-    override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCommand
+    override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCmd
 
     override fun beforeScoring(state: State, command: Command): GameChanges =
-        (command as ChooseCornCircleActionCommand).let {
+        (command as ChooseCornCircleActionCmd).let {
             GameChanges.noEvents(
                 state.changeActivePlayer()
             )

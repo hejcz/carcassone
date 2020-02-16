@@ -6,7 +6,7 @@ import io.github.hejcz.core.tile.*
 object AbbotPickedUp : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is PickUpAbbot -> afterAbbotPicked(state, command.position)
+        is PickUpAbbotCmd -> afterAbbotPicked(state, command.position)
         else -> emptySet()
     }
 

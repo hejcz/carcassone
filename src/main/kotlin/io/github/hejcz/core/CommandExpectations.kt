@@ -3,8 +3,8 @@ package io.github.hejcz.core
 import io.github.hejcz.abbot.*
 import io.github.hejcz.corncircles.*
 import io.github.hejcz.magic.MagicTile
-import io.github.hejcz.magic.MoveMagicianOrWitchCommand
-import io.github.hejcz.magic.PickUpMagicianOrWitch
+import io.github.hejcz.magic.MoveMagicianOrWitchCmd
+import io.github.hejcz.magic.PickUpMagicianOrWitchCmd
 import io.github.hejcz.magic.PlaceWitchOrMagician
 
 interface Expectation {
@@ -15,7 +15,7 @@ interface Expectation {
 }
 
 class BeginExpectation : Expectation {
-    override fun expects(command: Command) = command is Begin
+    override fun expects(command: Command) = command is BeginCmd
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> =
         listOf(PutTileExpectation())
 
@@ -23,7 +23,7 @@ class BeginExpectation : Expectation {
 }
 
 class PutTileExpectation : Expectation {
-    override fun expects(command: Command): Boolean = command is PutTile
+    override fun expects(command: Command): Boolean = command is TileCmd
 
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> =
         when {
@@ -39,7 +39,7 @@ class PutTileExpectation : Expectation {
 }
 
 class PutPieceExpectation : Expectation {
-    override fun expects(command: Command): Boolean = command is PutPiece || command is PickUpAbbot || command is SkipPiece
+    override fun expects(command: Command): Boolean = command is PieceCmd || command is PickUpAbbotCmd || command is SkipPieceCmd
 
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = when {
         noExpectations -> listOf(PutTileExpectation())
@@ -50,10 +50,10 @@ class PutPieceExpectation : Expectation {
 }
 
 class ChooseCornCircleActionExpectation : Expectation {
-    override fun expects(command: Command): Boolean = command is ChooseCornCircleActionCommand
+    override fun expects(command: Command): Boolean = command is ChooseCornCircleActionCmd
 
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> {
-        val cmd = command as ChooseCornCircleActionCommand
+        val cmd = command as ChooseCornCircleActionCmd
         return when (cmd.action) {
             CornCircleAction.ADD_PIECE -> state.allPlayersIdsStartingWithCurrent().map { AddPieceExpectation() } + PutTileExpectation()
             CornCircleAction.REMOVE_PIECE -> state.allPlayersIdsStartingWithCurrent().map { RemovePieceExpectation() } + PutTileExpectation()
@@ -64,19 +64,19 @@ class ChooseCornCircleActionExpectation : Expectation {
 }
 
 class AddPieceExpectation : Expectation {
-    override fun expects(command: Command): Boolean = command is AddPieceCommand || command is AvoidCornCircleAction
+    override fun expects(command: Command): Boolean = command is AddPieceCmd || command is AvoidCornCircleActionCmd
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = emptyList()
     override fun toEvent(state: State): GameEvent = AddPiece(state.currentPlayerId())
 }
 
 class RemovePieceExpectation : Expectation {
-    override fun expects(command: Command): Boolean = command is RemovePieceCommand || command is AvoidCornCircleAction
+    override fun expects(command: Command): Boolean = command is RemovePieceCmd || command is AvoidCornCircleActionCmd
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = emptyList()
     override fun toEvent(state: State): GameEvent = RemovePiece(state.currentPlayerId())
 }
 
 class MoveMagicianOrWitchExpectation : Expectation {
-    override fun expects(command: Command): Boolean = command is MoveMagicianOrWitchCommand || command is PickUpMagicianOrWitch
+    override fun expects(command: Command): Boolean = command is MoveMagicianOrWitchCmd || command is PickUpMagicianOrWitchCmd
     override fun next(command: Command, state: State, noExpectations: Boolean): List<Expectation> = emptyList()
     override fun toEvent(state: State): GameEvent = PlaceWitchOrMagician
 }
