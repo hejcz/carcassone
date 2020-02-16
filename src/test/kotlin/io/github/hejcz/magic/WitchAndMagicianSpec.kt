@@ -339,5 +339,19 @@ object WitchAndMagicianSpec : Spek({
                 .then(PickUpMagicianOrWitchCmd(MagicTarget.WITCH))
                 .thenReceivedEventShouldBe(PieceEvent)
         }
+
+        it("should not have points scored twice when magic tile closes object") {
+            GameScenario(single(::WitchAndMagicianAndInnAndCathedralsGameSetup, TileG, MaHeB))
+                .then(TileCmd(Position(0, 1), Rotation90))
+                .then(PieceCmd(SmallPiece, Knight(Up)))
+                .then(TileCmd(Position(0, 2), Rotation90))
+                .thenReceivedEventShouldBe(
+                    ScoreEvent(1, 6, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up))))
+                )
+                .then(MoveMagicianOrWitchCmd(Position(0, 0), Left, MagicTarget.WITCH))
+                .thenShouldNotReceiveEvent(
+                    ScoreEvent(1, 6, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Up))))
+                )
+        }
     }
 })
