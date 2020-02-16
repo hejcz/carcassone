@@ -33,15 +33,16 @@ class Game private constructor(
         verbose
     )
 
-    private fun copy(newEvents: Collection<GameEvent> = events, newState: State = state) =
-        Game(eventsQueue, validators, rules, endRules, handlers, newEvents, newState, verbose)
+    private fun copy(newEventsQueue: EventsQueue = eventsQueue, newEvents: Collection<GameEvent> = events, newState: State = state) =
+        Game(newEventsQueue, validators, rules, endRules, handlers, newEvents, newState, verbose)
 
     fun dispatch(command: Command): Game {
         if (verbose) {
             println("-- Command --")
             println(command)
         }
-        val errors = validate(command) + eventsQueue.validate(state, command)
+
+        val errors = validate(command) + eventsQueue.validate(command)
 
         if (errors.isNotEmpty()) {
             printEventsIfVerbose(errors)
@@ -52,21 +53,28 @@ class Game private constructor(
             ?: throw NoHandlerForCommand(command)
 
         val (state1, events1) = handler.beforeScoring(state, command)
-        val scoreEvents = rules.flatMap { it.afterCommand(command, state1) }
+
+        val scoreEvents = when {
+            eventsQueue.shouldRunRules(state1) ->  rules.flatMap { it.afterCommand(command, state1) }
+            else -> emptyList()
+        }
+
         val (state2, events2) = handler.afterScoring(state1, scoreEvents)
 
+        val newEventsQueue = eventsQueue.next(state2, command)
+
         val endGameEvents: Collection<GameEvent> = when {
-            isEndOfTheGame() -> endRules.flatMap { it.apply(state2) }
+            isEndOfTheGame(newEventsQueue) -> endRules.flatMap { it.apply(state2) }
             else -> emptySet()
         }
 
         val expectationsEvents: Collection<GameEvent> = when {
-            isEndOfTheGame() -> emptySet()
-            else -> setOf(eventsQueue.event(state2))
+            isEndOfTheGame(newEventsQueue) -> emptySet()
+            else -> setOf(newEventsQueue.event(state2))
         }
 
         val newState = when {
-            eventsQueue.isPutTileNext() && command != Begin -> state2.changeActivePlayer()
+            newEventsQueue.isPutTileNext() && command != Begin -> state2.changeActivePlayer()
             else -> state2
         }
 
@@ -74,7 +82,7 @@ class Game private constructor(
 
         printEventsIfVerbose(newEvents)
 
-        return copy(newEvents, newState)
+        return copy(newEventsQueue, newEvents, newState)
     }
 
     private fun printEventsIfVerbose(events: Collection<GameEvent>) {
@@ -86,7 +94,7 @@ class Game private constructor(
 
     fun recentEvents() = events
 
-    private fun isEndOfTheGame() = eventsQueue.isPutTileNext() && state.currentTile() is NoTile
+    private fun isEndOfTheGame(eq: EventsQueue) = eq.isPutTileNext() && state.currentTile() is NoTile
 
     private fun validate(command: Command) =
         validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet()

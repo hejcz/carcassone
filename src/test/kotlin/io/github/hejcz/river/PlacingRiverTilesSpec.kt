@@ -15,7 +15,7 @@ object PlacingRiverTilesSpec : Spek({
 
         fun singlePlayer(vararg tiles: Tile) =
             Game(Players.singlePlayer(), RiverTestGameSetup(TestRiverRemainingTiles(*tiles)))
-                .apply { dispatch(Begin) }
+                .dispatch(Begin)
 
         it("Placing river tile") {
             GameScenario(singlePlayer(TileBB6F6))

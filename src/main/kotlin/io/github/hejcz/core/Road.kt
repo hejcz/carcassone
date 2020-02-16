@@ -2,7 +2,7 @@ package io.github.hejcz.core
 
 import io.github.hejcz.inn.tiles.*
 
-data class Road(val completed: Boolean, private val parts: Set<PositionedDirection>, private val state: State) {
+data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, private val state: State) {
 
     val tilesCount by lazy {
         parts.map { it.position }.distinct().count()
@@ -11,23 +11,32 @@ data class Road(val completed: Boolean, private val parts: Set<PositionedDirecti
     val pieces by lazy {
         parts.flatMap { road ->
             state.findPieces(road.position, Brigand(road.direction))
-                .map { (id, brigand) -> FoundPiece(id, brigand, road.position, road.direction) }
+                .map { (id, brigand) -> FoundPiece(brigand, road.position, road.direction, id) }
         }
     }
 
     fun createPlayerScoredEvent(playerId: Long, score: Int) =
-        PlayerScored(playerId, score, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard })
+        PlayerScored(playerId, score, piecesOf(playerId))
 
     fun createPlayerScoredEventWithoutPieces(playerId: Long, score: Int) =
         PlayerScored(playerId, score, emptySet())
 
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
-        PlayerDidNotScore(playerId, pieces.filter { it.playerId == playerId }.map { it.pieceOnBoard })
+        PlayerDidNotScore(playerId, piecesOf(playerId))
 
     fun hasInn(state: State) = this.pieces.any {
         val tile = state.tileAt(it.position)
         tile is InnTile && tile.isInnOnRoad(it.direction)
     }
+
+    val hasMage = parts.any { part -> state.exists(part.position, part.direction, MagePiece) }
+
+    val hasWitch = parts.any { part -> state.exists(part.position, part.direction, WitchPiece) }
+
+    fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces
+        .filter { !it.isNPC }
+        .filter { it.playerId() == playerId }
+        .map { it.pieceOnBoard }
 
     companion object {
         fun from(state: State, parts: Set<PositionedDirection>, isCompleted: Boolean) =

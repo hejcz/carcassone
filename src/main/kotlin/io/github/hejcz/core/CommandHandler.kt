@@ -8,13 +8,16 @@ interface CommandHandler {
         // clean up pieces
         val state1 = scoreEvents
             .mapNotNull { it as? PlayerScored }
-            .fold(state) { s, event -> s.returnPieces(event.returnedPieces.map { OwnedPiece(it, event.playerId) }) }
+            .fold(state) { s, event -> s.returnPieces(event.returnedPieces.map { OwnedPiece(event.playerId, it) }) }
         val state2 = scoreEvents
             .mapNotNull { it as? PlayerDidNotScore }
-            .fold(state1) { s, event -> s.returnPieces(event.returnedPieces.map { OwnedPiece(it, event.playerId) }) }
+            .fold(state1) { s, event -> s.returnPieces(event.returnedPieces.map { OwnedPiece(event.playerId, it) }) }
         val state3 = scoreEvents
             .mapNotNull { it as? CastleFinished }
             .fold(state2) { s, event -> s.addCompletedCastle(event.castle) }
-        return GameChanges.noEvents(state3)
+        val state4 = scoreEvents
+            .mapNotNull { it as? RoadFinished }
+            .fold(state3) { s, event -> s.addCompletedRoad(event.road) }
+        return GameChanges.noEvents(state4)
     }
 }

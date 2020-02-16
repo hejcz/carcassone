@@ -2,12 +2,14 @@ package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
+import io.github.hejcz.magic.MoveMagicianOrWitchCommand
 
 class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PutTile -> afterTilePlaced(state)
         is PutPiece -> afterPiecePlaced(state, command.role)
+        is MoveMagicianOrWitchCommand -> afterTilePlaced(state)
         else -> emptySet()
     }
 
@@ -17,6 +19,7 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
             .map { explore(state, state.recentPosition(), it) }
             .distinct()
             .filter { it.completed }
+            .filter { it.parts.isNotEmpty() }
             .toList()
             .flatMap { castle ->
                 setOf(CastleFinished(CompletedCastle(castle.parts))) + when {

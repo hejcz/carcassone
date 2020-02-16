@@ -11,7 +11,7 @@ object PutTileValidatorSpec : Spek({
     describe("Putting tile in invalid places") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(Begin)
 
         it("roads validation") {
             GameScenario(singlePlayer(TileA))

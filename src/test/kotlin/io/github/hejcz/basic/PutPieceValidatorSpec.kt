@@ -11,7 +11,7 @@ object PutPieceValidatorSpec : Spek({
     describe("Putting handlers in invalid places") {
 
         fun game() =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))).apply { dispatch(Begin) }
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))).dispatch(Begin)
 
         it("monk on tile without cloister") {
             GameScenario(game())

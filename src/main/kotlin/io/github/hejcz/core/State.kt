@@ -6,7 +6,6 @@ import io.github.hejcz.corncircles.CornSymbol
 interface State {
     // getters
     fun currentTile(): Tile
-
     fun recentPosition(): Position
     fun recentTile(): Tile
     fun tileAt(position: Position): Tile
@@ -14,23 +13,28 @@ interface State {
     fun completedCastle(positionedDirection: PositionedDirection): CompletedCastle?
     fun currentTileName(): String
     fun anyPlayerHasPiece(position: Position, role: Role): Boolean
-    fun allKnights(): List<Pair<Long, PieceOnBoard>>
-    fun allBrigands(): List<Pair<Long, PieceOnBoard>>
-    fun allMonks(): List<Pair<Long, PieceOnBoard>>
-    fun allAbbots(): List<Pair<Long, PieceOnBoard>>
-    fun allPeasants(): List<Pair<Long, PieceOnBoard>>
-    fun currentPlayerPieces(cornSymbol: CornSymbol): List<Pair<Long, PieceOnBoard>>
-    fun findPieces(position: Position, role: Role): List<Pair<Long, PieceOnBoard>>
+    fun allKnights(): List<OwnedPiece>
+    fun allBrigands(): List<OwnedPiece>
+    fun allMonks(): List<OwnedPiece>
+    fun allAbbots(): List<OwnedPiece>
+    fun allPeasants(): List<OwnedPiece>
+    fun currentPlayerPieces(cornSymbol: CornSymbol): List<OwnedPiece>
+    fun findPieces(position: Position, role: Role): List<OwnedPiece>
+    fun exists(position: Position, direction: Direction, piece: NpcPiece): Boolean
     fun allPlayersIdsStartingWithCurrent(): List<Long>
     fun isAvailableForCurrentPlayer(piece: Piece): Boolean
     fun previousPlayerId(): Long
+    fun mageOrWitchMustBeInstantlyMoved(): Boolean
+    fun canBePlacedOn(piece: NpcPiece, targetPos: PositionedDirection): Boolean
+    fun canBePickedUp(piece: NpcPiece): Boolean
     // mutators
     fun addTile(position: Position, rotation: Rotation): State
-
+    fun addNpcPiece(piece: NpcPiece, position: Position, direction: Direction): State
     fun addPiece(piece: Piece, role: Role): State
     fun addPiece(position: Position, piece: Piece, role: Role): State
     fun removePiece(position: Position, piece: Piece, role: Role): State
     fun returnPieces(pieces: Collection<OwnedPiece>): State
     fun changeActivePlayer(): State
     fun addCompletedCastle(completedCastle: CompletedCastle): State
+    fun addCompletedRoad(completedRoad: CompletedRoad): State
 }

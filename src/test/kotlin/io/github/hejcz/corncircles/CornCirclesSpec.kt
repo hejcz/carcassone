@@ -16,12 +16,12 @@ object CornCirclesSpec : Spek({
     fun threePlayerGame(vararg tiles: Tile) = Game(
         setOf(Player(id = 1, order = 1), Player(id = 2, order = 2), Player(id = 3, order = 3)),
         CornCirclesGameSetup(TestBasicRemainingTiles(*tiles))
-    ).apply { dispatch(Begin) }
+    ).dispatch(Begin)
 
     fun innAndCornTwoPlayersGame(vararg tiles: Tile) = Game(
         setOf(Player(id = 1, order = 1), Player(id = 2, order = 2)),
         TestGameSetup(TestBasicRemainingTiles(*tiles), listOf(CornCirclesExtension, InnAndCathedralsExtension))
-    ).apply { dispatch(Begin) }
+    ).dispatch(Begin)
 
     describe("examples from rule book") {
 
@@ -87,7 +87,7 @@ object CornCirclesSpec : Spek({
                 .then(PutTile(Position(1, 2), Rotation180))
                 .thenReceivedEventShouldBe(
                     PlayerScored(
-                        2, 12, listOf(
+                        2, 18, listOf(
                             PieceOnBoard(Position(1, 0), BigPiece, Knight(Up)),
                             PieceOnBoard(Position(1, 0), SmallPiece, Knight(Up))
                         )

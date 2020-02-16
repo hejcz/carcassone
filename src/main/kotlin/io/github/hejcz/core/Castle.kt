@@ -6,9 +6,13 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
     val pieces by lazy {
         parts.flatMap { part ->
             state.findPieces(part.position, Knight(part.direction))
-                .map { (id, knight) -> FoundPiece(id, knight, part.position, part.direction) }
+                .map { (id, knight) -> FoundPiece(knight, part.position, part.direction, id) }
         }
     }
+
+    val hasMage = parts.any { part -> state.exists(part.position, part.direction, MagePiece) }
+
+    val hasWitch = parts.any { part -> state.exists(part.position, part.direction, WitchPiece) }
 
     private val tilesCount by lazy {
         parts.map { (position, _) -> position }.distinct().size
@@ -28,8 +32,14 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
 
     fun countEmblemsAndTiles() = emblems + tilesCount
 
-    fun piecesOf(playerId: Long) = pieces.filter { piece -> piece.playerId == playerId }.map { it.pieceOnBoard }
+    fun countTiles() = tilesCount
+
+    fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces
+        .filter { !it.isNPC }
+        .filter { it.playerId() == playerId }
+        .map { it.pieceOnBoard }
 
     fun hasCathedral(state: State) =
-        this.pieces.asSequence().map { state.tileAt(it.position) }.any { it is InnTile && it.hasCathedral() }
+        this.parts.asSequence().map { state.tileAt(it.position) }.any { it is InnTile && it.hasCathedral() }
+
 }

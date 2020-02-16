@@ -4,6 +4,7 @@ import io.github.hejcz.abbot.AbbotExtension
 import io.github.hejcz.core.tile.Tile
 import io.github.hejcz.corncircles.*
 import io.github.hejcz.inn.InnAndCathedralsExtension
+import io.github.hejcz.magic.MagicianAndWitchExtension
 import io.github.hejcz.river.RiverExtension
 import io.github.hejcz.setup.Extension
 import io.github.hejcz.setup.GameSetup
@@ -32,3 +33,9 @@ class InnAndCathedralsTestGameSetup(remainingTiles: RemainingTiles) :
 
 class CornCirclesGameSetup(remainingTiles: RemainingTiles) :
     TestGameSetup(remainingTiles, listOf(CornCirclesExtension))
+
+class WitchAndMagicianGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(MagicianAndWitchExtension))
+
+class WitchAndMagicianAndInnAndCathedralsGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(InnAndCathedralsExtension, MagicianAndWitchExtension))

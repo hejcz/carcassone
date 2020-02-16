@@ -30,4 +30,4 @@ val AddPieceValidator = commandValidator<AddPieceCommand> { state, command ->
 
 private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPieceCommand) =
     state.findPieces(command.position, command.role)
-        .none { state.currentPlayerId() == it.first }
+        .none { state.currentPlayerId() == it.playerId }

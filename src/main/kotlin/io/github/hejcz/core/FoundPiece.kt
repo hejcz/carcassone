@@ -1,12 +1,12 @@
 package io.github.hejcz.core
 
 data class FoundPiece(
-    override val playerId: Long,
     val pieceOnBoard: PieceOnBoard,
     val position: Position,
-    val direction: Direction
+    val direction: Direction,
+    private val playerId: Long? = null,
+    override val isNPC: Boolean = false
 ) : PieceOnObject {
     override val piece: Piece = pieceOnBoard.piece
-
-    fun toPieceWithOwner() = OwnedPiece(pieceOnBoard, playerId)
+    override fun playerId(): Long = playerId!!
 }

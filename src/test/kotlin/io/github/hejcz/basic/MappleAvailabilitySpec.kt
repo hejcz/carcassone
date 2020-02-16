@@ -8,14 +8,14 @@ import org.spekframework.spek2.style.specification.describe
 
 object MappleAvailabilityValidatorSpec : Spek({
 
+    fun playerWithSinglePiece() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece))
+
+    fun playerWithTwoPieces() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, SmallPiece))
+
+    fun game(player: Player, vararg tiles: Tile) =
+        Game(setOf(player), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(Begin)
+
     describe("Game") {
-
-        fun playerWithSinglePiece() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece))
-
-        fun playerWithTwoPieces() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece, SmallPiece))
-
-        fun game(player: Player, vararg tiles: Tile) =
-            Game(setOf(player), TestGameSetup(TestBasicRemainingTiles(*tiles))).apply { dispatch(Begin) }
 
         it("should not allow to put piece player does not have available") {
             GameScenario(game(playerWithSinglePiece(), TileD, TileD))
@@ -49,9 +49,10 @@ object MappleAvailabilityValidatorSpec : Spek({
                 .then(SkipPiece)
                 .then(PutTile(Position(2, 1), Rotation90))
                 .then(PutPiece(SmallPiece, Brigand(Left))).thenReceivedEventShouldBeOnlyPlaceTile()
-                .then(PutTile(Position(0, 1), Rotation90))
-                .then(PutPiece(SmallPiece, Peasant(Location(Right, RightSide))))
+                .then(PutTile(Position(1, 0), Rotation90))
+                .then(PutPiece(SmallPiece, Peasant(Location(Right))))
                 .thenReceivedEventShouldBeOnlyPlaceTile()
         }
     }
+
 })

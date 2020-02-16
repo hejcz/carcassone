@@ -30,4 +30,4 @@ val RemovePieceValidator = commandValidator<RemovePieceCommand> { state, command
 
 private fun playerDoesNotHaveSuchPieceThere(state: State, command: RemovePieceCommand) =
     state.findPieces(command.position, command.role)
-        .none { state.currentPlayerId() == it.first && it.second.piece == command.piece }
+        .none { state.currentPlayerId() == it.playerId && it.pieceOnBoard.piece == command.piece }
