@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.inn.tiles.*
+import io.github.hejcz.expansion.inn.tiles.*
 
 data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, private val state: State) {
 

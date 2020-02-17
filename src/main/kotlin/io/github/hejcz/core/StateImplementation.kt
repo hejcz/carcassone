@@ -1,7 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.corncircles.*
+import io.github.hejcz.expansion.corncircles.*
 
 class BasicState(players: Collection<Player>, remainingTiles: List<Tile>) :
     State by InnerState(

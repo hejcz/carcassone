@@ -2,7 +2,7 @@ package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.magic.MoveMagicianOrWitchCmd
+import io.github.hejcz.expansion.magic.MoveMagicianOrWitchCmd
 
 class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
 

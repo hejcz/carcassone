@@ -1,11 +1,11 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.abbot.*
-import io.github.hejcz.corncircles.*
-import io.github.hejcz.magic.MagicTile
-import io.github.hejcz.magic.MoveMagicianOrWitchCmd
-import io.github.hejcz.magic.PickUpMagicianOrWitchCmd
-import io.github.hejcz.magic.PlaceWitchOrMagician
+import io.github.hejcz.expansion.abbot.*
+import io.github.hejcz.expansion.corncircles.*
+import io.github.hejcz.expansion.magic.MagicTile
+import io.github.hejcz.expansion.magic.MoveMagicianOrWitchCmd
+import io.github.hejcz.expansion.magic.PickUpMagicianOrWitchCmd
+import io.github.hejcz.expansion.magic.PlaceWitchOrMagician
 
 interface Expectation {
     fun expects(command: Command): Boolean

@@ -1,6 +1,6 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.corncircles.*
+import io.github.hejcz.expansion.corncircles.*
 
 data class PiecesOnBoard(
     private val knights: List<OwnedPiece> = emptyList(),

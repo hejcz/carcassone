@@ -1,13 +1,13 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.abbot.AbbotExtension
+import io.github.hejcz.expansion.abbot.AbbotExtension
 import io.github.hejcz.core.tile.Tile
-import io.github.hejcz.corncircles.*
-import io.github.hejcz.inn.InnAndCathedralsExtension
-import io.github.hejcz.magic.MagicianAndWitchExtension
-import io.github.hejcz.river.RiverExtension
-import io.github.hejcz.setup.Extension
-import io.github.hejcz.setup.GameSetup
+import io.github.hejcz.expansion.corncircles.*
+import io.github.hejcz.expansion.inn.InnAndCathedralsExtension
+import io.github.hejcz.expansion.magic.MagicianAndWitchExtension
+import io.github.hejcz.expansion.river.RiverExtension
+import io.github.hejcz.core.setup.Extension
+import io.github.hejcz.core.setup.GameSetup
 
 interface RemainingTiles {
     fun tiles(): List<Tile>

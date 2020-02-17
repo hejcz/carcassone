@@ -1,7 +1,7 @@
 package io.github.hejcz.core.validator
 
 import io.github.hejcz.core.*
-import io.github.hejcz.corncircles.*
+import io.github.hejcz.expansion.corncircles.*
 
 object PieceAvailabilityValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> = when (command) {

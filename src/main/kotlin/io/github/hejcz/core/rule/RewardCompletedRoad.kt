@@ -1,7 +1,7 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
-import io.github.hejcz.magic.MoveMagicianOrWitchCmd
+import io.github.hejcz.expansion.magic.MoveMagicianOrWitchCmd
 
 class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 

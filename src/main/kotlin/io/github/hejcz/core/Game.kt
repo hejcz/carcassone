@@ -1,7 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.NoTile
-import io.github.hejcz.setup.GameSetup
+import io.github.hejcz.core.setup.GameSetup
 
 class Game private constructor(
     private val eventsQueue: EventsQueue,

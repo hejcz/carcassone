@@ -1,7 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.Tile
-import io.github.hejcz.corncircles.CornSymbol
+import io.github.hejcz.expansion.corncircles.CornSymbol
 
 interface State {
     // getters
