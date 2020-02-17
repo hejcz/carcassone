@@ -4,8 +4,13 @@ import io.github.hejcz.core.*
 import org.amshove.kluent.shouldEqual
 
 class GameScenario(private val game: Game) {
-    fun then(command: Command) =
-        GameScenario(game.dispatch(command))
+    fun then(command: Command): GameScenario {
+        val newGame = game.dispatch(command)
+        if (newGame.recentEvents().contains(UnexpectedCommandEvent)) {
+            throw RuntimeException("Test might not use unexpected command: $command")
+        }
+        return GameScenario(newGame)
+    }
 
     fun thenReceivedEventShouldBeOnlyPlaceTile() = _check { it.shouldContainPlaceTileOnly() }
 

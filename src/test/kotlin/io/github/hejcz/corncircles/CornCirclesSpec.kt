@@ -112,10 +112,14 @@ object CornCirclesSpec : Spek({
         }
 
         it("can't choose corn action until corn tile is drawn") {
-            GameScenario(innAndCornTwoPlayersGame(TileD))
-                .then(TileCmd(Position(1, 0), NoRotation))
-                .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
-                .thenReceivedEventShouldBe(UnexpectedCommandEvent)
+            try {
+                GameScenario(innAndCornTwoPlayersGame(TileD))
+                    .then(TileCmd(Position(1, 0), NoRotation))
+                    .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
+                error("bad command not detected")
+            } catch (ex: Exception) {
+                // success
+            }
         }
 
         it("can avoid placing mapple when player has no piece in role specified on tile") {

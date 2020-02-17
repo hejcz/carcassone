@@ -11,7 +11,7 @@ object SinglePieceInObjectSpec : Spek({
     describe("Putting handlers in taken object") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)), verbose = true).dispatch(BeginCmd)
 
         fun multiPlayer(vararg tiles: Tile) =
             Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
@@ -20,7 +20,7 @@ object SinglePieceInObjectSpec : Spek({
             GameScenario(singlePlayer(TileF, TileF))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .then(TileCmd(Position(0, 2), Rotation180))
+                .then(TileCmd(Position(0, 2), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
@@ -29,7 +29,7 @@ object SinglePieceInObjectSpec : Spek({
             GameScenario(multiPlayer(TileF, TileF))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .then(TileCmd(Position(0, 2), Rotation180))
+                .then(TileCmd(Position(0, 2), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
