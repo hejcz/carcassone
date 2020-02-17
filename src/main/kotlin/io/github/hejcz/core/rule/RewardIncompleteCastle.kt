@@ -4,14 +4,14 @@ import io.github.hejcz.core.*
 
 class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
 
-    override fun apply(state: State) = state.allKnights()
+    override fun apply(state: State) = state.all(Knight::class)
         .mapNotNull { (_, piece) -> testCastle(state, piece.position, (piece.role as Knight).direction) }
         .distinct()
         .flatMap { castle ->
             when (val score = scoring(state, castle)) {
                 0 -> emptyList()
                 else -> {
-                    val (winners, _) = WinnerSelector.find(castle.pieces)
+                    val (winners, _) = WinnerSelector.find(castle.pieces())
                     winners.ids.map { id -> ScoreEvent(id, score, emptySet()) }
                 }
             }

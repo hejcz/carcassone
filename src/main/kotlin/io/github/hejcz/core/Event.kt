@@ -18,15 +18,25 @@ data class RemovePieceEvent(val playerId: Long) : GameEvent()
 
 data class ChooseCornActionEvent(val playerId: Long) : GameEvent()
 
+interface SystemGameEvent
+
+interface MixedGameEvent
+
+object ScorePointsEvent : GameEvent(), SystemGameEvent
+
+object ChangePlayerEvent : GameEvent(), SystemGameEvent
+
+object EndGameEvent : GameEvent(), SystemGameEvent
+
 // events
 
-data class ScoreEvent(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
+data class ScoreEvent(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>) : GameEvent(), MixedGameEvent
 
-data class NoScoreEvent(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent()
+data class NoScoreEvent(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent(), MixedGameEvent
 
-data class CastleClosedEvent(val castle: CompletedCastle) : GameEvent()
+data class CastleClosedEvent(val castle: CompletedCastle) : GameEvent(), SystemGameEvent
 
-data class RoadClosedEvent(val road: CompletedRoad) : GameEvent()
+data class RoadClosedEvent(val road: CompletedRoad) : GameEvent(), SystemGameEvent
 
 // errors
 

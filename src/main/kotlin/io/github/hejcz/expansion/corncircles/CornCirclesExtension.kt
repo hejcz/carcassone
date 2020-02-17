@@ -26,12 +26,7 @@ object CornCirclesExtension : Extension {
     private val AvoidCornCircleActionHandler = object : CommandHandler {
         override fun isApplicableTo(command: Command): Boolean = command is AvoidCornCircleActionCmd
 
-        override fun beforeScoring(state: State, command: Command): GameChanges =
-            (command as AvoidCornCircleActionCmd).let {
-                GameChanges.noEvents(
-                    state.changeActivePlayer()
-                )
-            }
+        override fun apply(state: State, command: Command): State = state
     }
 
     private val AvoidCornCircleActionValidator =
@@ -48,12 +43,9 @@ object CornCirclesExtension : Extension {
     private val AddPieceHandler = object : CommandHandler {
         override fun isApplicableTo(command: Command): Boolean = command is AddPieceCmd
 
-        override fun beforeScoring(state: State, command: Command): GameChanges =
+        override fun apply(state: State, command: Command): State =
             (command as AddPieceCmd).let {
-                GameChanges.noEvents(
-                    state.addPiece(command.position, command.piece, command.role)
-                        .changeActivePlayer()
-                )
+                state.addPiece(command.position, command.piece, command.role)
             }
     }
 
@@ -72,12 +64,7 @@ object CornCirclesExtension : Extension {
     private val ChooseCornCircleActionHandler = object : CommandHandler {
         override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCmd
 
-        override fun beforeScoring(state: State, command: Command): GameChanges =
-            (command as ChooseCornCircleActionCmd).let {
-                GameChanges.noEvents(
-                    state.changeActivePlayer()
-                )
-            }
+        override fun apply(state: State, command: Command): State = state
     }
 
     private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPieceCmd) =
@@ -87,12 +74,9 @@ object CornCirclesExtension : Extension {
     private val RemovePieceHandler = object : CommandHandler {
         override fun isApplicableTo(command: Command): Boolean = command is RemovePieceCmd
 
-        override fun beforeScoring(state: State, command: Command): GameChanges =
+        override fun apply(state: State, command: Command): State =
             (command as RemovePieceCmd).let {
-                GameChanges.noEvents(
-                    state.removePiece(command.position, command.piece, command.role)
-                        .changeActivePlayer()
-                )
+                state.removePiece(command.position, command.piece, command.role)
             }
     }
 

@@ -1,6 +1,7 @@
 package io.github.hejcz.helper
 
 import io.github.hejcz.core.*
+import io.github.hejcz.helper.GameScenario.Companion.shouldContainPlaceTileOnly
 import org.amshove.kluent.shouldEqual
 
 class GameScenario(private val game: Game) {
@@ -51,7 +52,7 @@ class GameScenario(private val game: Game) {
     private infix fun Game.containsEvent(expected: GameEvent) = when {
         this.recentEvents().any { it == expected } -> {
         } // ok
-        else -> throw AssertionError("Expected event not found: $expected")
+        else -> throw AssertionError("Expected event not found: $expected.\nAvailable: ${this.recentEvents()}")
     }
 
     private infix fun Game.containsEvent(expected: ScoreEvent) = when {
@@ -77,7 +78,7 @@ class GameScenario(private val game: Game) {
     private infix fun Game.doesNotContainEvent(expected: GameEvent) = when {
         this.recentEvents().none { it == expected } -> {
         } // ok
-        else -> throw AssertionError("Expected event not found: $expected")
+        else -> throw AssertionError("Not expected event found: $expected")
     }
 
     private infix fun Game.doesNotContainEvent(expected: ScoreEvent) = when {

@@ -1,10 +1,9 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.core.tile.NoTile
 import io.github.hejcz.core.setup.GameSetup
 
 class Game private constructor(
-    private val eventsQueue: EventsQueue,
+    private val flowController: GameFlowController,
     private val validators: Collection<CommandValidator>,
     private val rules: Collection<Rule>,
     private val endRules: Collection<EndRule>,
@@ -15,77 +14,123 @@ class Game private constructor(
 ) {
 
     constructor(players: Collection<Player>, gameSetup: GameSetup, verbose: Boolean = false) : this(
-        EventsQueue(),
+        GameFlowController(FlowState(idOfPlayerMakingMove = players.toList()[0].id, gameStarted = false)),
         gameSetup.validators(),
         gameSetup.rules(),
         gameSetup.endRules(),
         gameSetup.handlers(),
         emptySet(),
-        BasicState(
+        InitialState(
             players.map {
                 when {
                     it.initialPieces.isNotEmpty() -> it
                     else -> Player(it.id, it.order, gameSetup.pieces())
                 }
             },
-            gameSetup.tiles()
+            gameSetup.tiles(),
+            gameSetup.stateExtensions()
         ),
         verbose
     )
 
-    private fun copy(newEventsQueue: EventsQueue = eventsQueue, newEvents: Collection<GameEvent> = events, newState: State = state) =
-        Game(newEventsQueue, validators, rules, endRules, handlers, newEvents, newState, verbose)
+    private fun copy(flowController: GameFlowController, newEvents: Collection<GameEvent>, newState: State) =
+        Game(flowController, validators, rules, endRules, handlers, newEvents, newState, verbose)
 
     fun dispatch(command: Command): Game {
-        if (verbose) {
-            println("-- Command --")
-            println(command)
-        }
+        printIfVerbose(command)
 
-        val errors = validate(command) + eventsQueue.validate(command)
+        // validation
+
+        val state = state.setCurrentPlayer(flowController.currentPlayer())
+
+        val validateEvents = validators.asSequence()
+            .map { it.validate(state, command) }
+            .firstOrNull { it.isNotEmpty() }
+            ?.toSet()
+            ?: emptySet()
+
+        val errors = validateEvents + when {
+            !flowController.isOk(command, state) -> setOf(UnexpectedCommandEvent)
+            else -> emptySet()
+        }
 
         if (errors.isNotEmpty()) {
-            printEventsIfVerbose(errors)
-            return copy(newEvents = errors)
+            return copy(flowController, errors, state)
         }
+
+        // apply command to state
 
         val handler = handlers.firstOrNull { it.isApplicableTo(command) }
             ?: throw NoHandlerForCommand(command)
 
-        val (state1, events1) = handler.beforeScoring(state, command)
+        var newState = handler.apply(state, command)
 
-        val scoreEvents = when {
-            eventsQueue.shouldRunRules(state1) -> rules.flatMap { it.afterCommand(command, state1) }
-            else -> emptyList()
+        var newFlowController = flowController.dispatch(command, state)
+
+        var events = newFlowController.events(newState)
+
+        val dispatchEvents = dispatchEvents(command, newState, events)
+
+        newState = dispatchEvents.state
+        events = dispatchEvents.events
+
+        // dispatch everything what does not require user action
+
+        while (newFlowController.isOk(SystemCmd, newState)) {
+            newFlowController = newFlowController.dispatch(SystemCmd, state)
+            val de = dispatchEvents(command, newState, newFlowController.events(newState))
+            newState = de.state
+            events += de.events
         }
 
-        val (state2, events2) = handler.afterScoring(state1, scoreEvents)
+        printIfVerbose(events)
 
-        val newEventsQueue = eventsQueue.next(state2, command)
-
-        val endGameEvents: Collection<GameEvent> = when {
-            isEndOfTheGame(newEventsQueue) -> endRules.flatMap { it.apply(state2) }
-            else -> emptySet()
-        }
-
-        val expectationsEvents: Collection<GameEvent> = when {
-            isEndOfTheGame(newEventsQueue) -> emptySet()
-            else -> setOf(newEventsQueue.event(state2))
-        }
-
-        val newState = when {
-            newEventsQueue.isPutTileNext() && command != BeginCmd -> state2.changeActivePlayer()
-            else -> state2
-        }
-
-        val newEvents = events1 + events2 + scoreEvents + endGameEvents + expectationsEvents
-
-        printEventsIfVerbose(newEvents)
-
-        return copy(newEventsQueue, newEvents, newState)
+        return copy(newFlowController, events, newState)
     }
 
-    private fun printEventsIfVerbose(events: Collection<GameEvent>) {
+    private fun dispatchEvents(command: Command, state: State, events: Collection<GameEvent>): GameChanges {
+        var changingState = state
+        var changingEvents = events
+        var processedEvents: Collection<GameEvent> = emptySet()
+
+        while (true) {
+            val systemEvents = changingEvents.filter { it is SystemGameEvent || it is MixedGameEvent }
+            val userEvents = changingEvents.filter { it !is SystemGameEvent }
+
+            if (systemEvents.isEmpty()) {
+                return GameChanges(changingState, userEvents + processedEvents)
+            }
+
+            val changes = systemEvents.fold(GameChanges(changingState, emptySet())) { acc, event ->
+                when (event) {
+                    is ScorePointsEvent -> GameChanges(
+                        acc.state, acc.events + rules.flatMap { it.afterCommand(command, acc.state) })
+                    is EndGameEvent -> GameChanges(acc.state, acc.events + endRules.flatMap { it.apply(acc.state) })
+                    is ChangePlayerEvent -> GameChanges.noEvents(acc.state.changeActivePlayer())
+                    is ScoreEvent -> GameChanges.noEvents(
+                        acc.state.returnPieces(event.returnedPieces.map { OwnedPiece(event.playerId, it) })
+                    )
+                    is NoScoreEvent -> GameChanges.noEvents(
+                        acc.state.returnPieces(event.returnedPieces.map { OwnedPiece(event.playerId, it) })
+                    )
+                    else -> throw RuntimeException("Unknown system event: $event")
+                }
+            }
+
+            changingState = changes.state
+            processedEvents += userEvents
+            changingEvents = changes.events
+        }
+    }
+
+    private fun printIfVerbose(command: Command) {
+        if (verbose) {
+            println("-- Command --")
+            println(command)
+        }
+    }
+
+    private fun printIfVerbose(events: Collection<GameEvent>) {
         if (verbose) {
             println("-- Events --")
             events.forEach { println(it) }
@@ -94,9 +139,4 @@ class Game private constructor(
 
     fun recentEvents() = events
 
-    private fun isEndOfTheGame(eq: EventsQueue) = eq.isPutTileNext() && state.currentTile() is NoTile
-
-    private fun validate(command: Command) =
-        validators.asSequence().map { it.validate(state, command) }.firstOrNull { it.isNotEmpty() }?.toSet()
-            ?: emptySet()
 }

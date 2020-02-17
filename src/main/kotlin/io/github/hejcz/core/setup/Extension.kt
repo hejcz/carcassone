@@ -6,4 +6,5 @@ interface Extension {
     fun modify(piecesSetup: PiecesSetup) = Unit
     fun modify(rulesSetup: RulesSetup) = Unit
     fun modify(commandHandlersSetup: CommandHandlersSetup) = Unit
+    fun modify(stateExtensionSetup: StateExtensionSetup) = Unit
 }

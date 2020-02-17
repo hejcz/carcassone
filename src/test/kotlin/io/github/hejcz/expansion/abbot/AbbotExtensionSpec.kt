@@ -147,6 +147,7 @@ object AbbotExtensionSpec : Spek({
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(1, -2), NoRotation))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Monk))))
         }
 
@@ -193,6 +194,7 @@ object AbbotExtensionSpec : Spek({
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(1, -2), NoRotation))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(0, -1), AbbotPiece, Abbot))))
         }
 

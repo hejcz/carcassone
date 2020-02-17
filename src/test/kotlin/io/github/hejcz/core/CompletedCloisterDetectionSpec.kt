@@ -39,6 +39,7 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(TileCmd(Position(0, -2), NoRotation))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -2), NoRotation))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(0, -1), SmallPiece, Monk))))
         }
 
@@ -63,7 +64,7 @@ object CompletedCloisterDetectionSpec : Spek({
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(0, -1), SmallPiece, Monk))))
         }
 
-        it("should detect two cloisters of diferent players completed in single move") {
+        it("should detect two cloisters of different players completed in single move") {
             GameScenario(multiPlayer(TileD, TileW, TileV, TileE, TileE, TileB, TileB, TileH, TileH, TileK, TileJ))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(SkipPieceCmd)
@@ -86,6 +87,7 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(TileCmd(Position(0, -2), Rotation270))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -2), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Monk))))
                 .thenReceivedEventShouldBe(ScoreEvent(2, 9, setOf(PieceOnBoard(Position(0, -1), SmallPiece, Monk))))
         }
@@ -113,7 +115,7 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(TileCmd(Position(0, -2), Rotation270))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -2), Rotation90))
-                .thenReceivedEventShouldBe(PieceEvent)
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(0, -1), SmallPiece, Monk))))
                 .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(Position(1, -1), SmallPiece, Monk))))
         }

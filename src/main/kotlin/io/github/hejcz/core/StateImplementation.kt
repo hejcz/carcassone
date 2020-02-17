@@ -2,9 +2,11 @@ package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.expansion.corncircles.*
+import io.github.hejcz.expansion.magic.MageAndWitchExtension
+import kotlin.reflect.KClass
 
-class BasicState(players: Collection<Player>, remainingTiles: List<Tile>) :
-    State by InnerState(
+class InitialState(players: Collection<Player>, remainingTiles: List<Tile>, stateExtensions: Set<StateExtension>) :
+    State by CoreState(
         board = Board(mapOf(Position(0, 0) to firstOrNoTile(remainingTiles))),
         players = players.associateBy { it.id },
         orderedPlayers = players.sortedBy { it.order },
@@ -15,7 +17,8 @@ class BasicState(players: Collection<Player>, remainingTiles: List<Tile>) :
         recentPosition = Position(0, 0),
         completedCastles = emptyMap(),
         completedRoads = emptyMap(),
-        piecesOnBoard = PiecesOnBoard()
+        piecesOnBoard = PiecesOnBoard(),
+        stateExtensions = stateExtensions.associateBy { it.id() }
     ) {
     companion object {
         internal fun tileAt(board: Board, position: Position): Tile = board.tiles[position] ?: NoTile
@@ -25,7 +28,7 @@ class BasicState(players: Collection<Player>, remainingTiles: List<Tile>) :
     }
 }
 
-private data class InnerState(
+private data class CoreState(
     private val board: Board,
     private val players: Map<Long, Player>,
     private val orderedPlayers: List<Player>,
@@ -36,29 +39,74 @@ private data class InnerState(
     private val recentPosition: Position,
     private val completedCastles: Map<PositionedDirection, CompletedCastle>,
     private val completedRoads: Map<PositionedDirection, CompletedRoad>,
-    private val piecesOnBoard: PiecesOnBoard
+    private val piecesOnBoard: PiecesOnBoard,
+    private val stateExtensions: Map<StateExtensionId, StateExtension>
 ) : State {
 
     override fun addTile(position: Position, rotation: Rotation): State {
         val tile = currentTile.rotate(rotation)
-        val tilesLeft = BasicState.drop1IfNotEmpty(remainingTiles)
-        return copy(
+        val tilesLeft = InitialState.drop1IfNotEmpty(remainingTiles)
+        val newState = copy(
             board = board.withTile(tile, position),
             recentPosition = position,
             recentTile = tile,
-            currentTile = BasicState.firstOrNoTile(tilesLeft),
-            remainingTiles = tilesLeft
+            currentTile = InitialState.firstOrNoTile(tilesLeft),
+            remainingTiles = tilesLeft,
+            completedCastles = completedCastles.mapValues { it.value.copy(isNew = false) }
         )
+        val newCastles = detectClosedCastles(newState).map { CompletedCastle(it, true) }
+            .flatMap { castle -> castle.castle.parts.map { it to castle } }
+            .toMap()
+        val newRoads = detectClosedRoads(newState).map { CompletedRoad(it, true) }
+            .flatMap { road -> road.road.parts.map { it to road } }
+            .toMap()
+        return newState.copy(
+            completedCastles = completedCastles + newCastles,
+            completedRoads = completedRoads + newRoads
+        )
+    }
+
+    override fun getNewCompletedCastles(): List<Castle> =
+        completedCastles.values.asSequence().filter { it.isNew }.map { it.castle.copy(state = this) }.distinct().toList()
+
+    override fun getNewCompletedRoads(): List<Road> =
+        completedRoads.values.asSequence().filter { it.isNew }.map { it.road.copy(state = this) }.distinct().toList()
+
+    private fun detectClosedCastles(state: State): List<Castle> =
+        castlesDirections(state.tileAt(state.recentPosition()))
+            .asSequence()
+            .map { exploreCastle(state, state.recentPosition(), it) }
+            .distinct()
+            .filter { it.completed }
+            .filter { it.parts.isNotEmpty() }
+            .toList()
+
+    private fun castlesDirections(tile: Tile) = listOf(Up, Right, Down, Left)
+        .flatMap { tile.exploreCastle(it) }
+        .distinct()
+
+    private fun exploreCastle(state: State, startingPosition: Position, startingDirection: Direction): Castle {
+        val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)
+        return Castle.from(state, positionsToDirections, isCompleted)
+    }
+
+    private fun detectClosedRoads(state: State): List<Road> =
+        listOf(Up, Right, Down, Left)
+            .map { exploreRoad(state, state.recentPosition(), it) }
+            .filter { it.completed }
+            .filter { it.parts.isNotEmpty() }
+            .distinct()
+
+    private fun exploreRoad(state: State, startingPosition: Position, startingDirection: Direction): Road {
+        val (parts, isCompleted) = RoadsExplorer.explore(state, startingPosition, startingDirection)
+        return Road.from(state, parts, isCompleted)
     }
 
     override fun addPiece(piece: Piece, role: Role): State = doAddPiece(recentPosition, piece, role)
 
-    override fun addNpcPiece(piece: NpcPiece, position: Position, direction: Direction): State =
-        copy(piecesOnBoard = piecesOnBoard.putNPC(piece, position, direction))
-
     override fun addPiece(position: Position, piece: Piece, role: Role): State = doAddPiece(position, piece, role)
 
-    private fun doAddPiece(position: Position, piece: Piece, role: Role): InnerState {
+    private fun doAddPiece(position: Position, piece: Piece, role: Role): CoreState {
         val updatedCurrentPlayer = currentPlayer().lockPiece(piece)
         val updatedPiecesOnBoard = piecesOnBoard.put(updatedCurrentPlayer, position, piece, role)
         return copy(
@@ -72,7 +120,7 @@ private data class InnerState(
         return doRemovePiece(piece, position, role, currentPlayerId())
     }
 
-    private fun doRemovePiece(piece: Piece, position: Position, role: Role, ownerId: Long): InnerState {
+    private fun doRemovePiece(piece: Piece, position: Position, role: Role, ownerId: Long): CoreState {
         val updatedOwner = (players[ownerId] ?: error("No player with id $ownerId")).unlockPiece(piece)
         val updatedPiecesOnBoard = piecesOnBoard.remove(updatedOwner, position, piece, role)
         return copy(
@@ -85,17 +133,14 @@ private data class InnerState(
     override fun returnPieces(pieces: Collection<OwnedPiece>): State =
         pieces.fold(this) { acc, (id, piece) -> acc.doRemovePiece(piece.piece, piece.position, piece.role, id) }
 
-    override fun changeActivePlayer(): State = copy(
-        currentPlayerIndex = (currentPlayerIndex + 1) % orderedPlayers.size
-    )
+    override fun changeActivePlayer(): State = copy(currentPlayerIndex = nextPlayerIndex())
 
-    override fun addCompletedCastle(completedCastle: CompletedCastle): State = copy(
-        completedCastles = completedCastles + completedCastle.elements.associateWith { completedCastle }
-    )
+    private fun nextPlayerIndex() = (currentPlayerIndex + 1) % orderedPlayers.size
 
-    override fun addCompletedRoad(completedRoad: CompletedRoad): State = copy(
-        completedRoads = completedRoads + completedRoad.elements.associateWith { completedRoad }
-    )
+    override fun update(extension: StateExtension): State =
+        copy(stateExtensions = stateExtensions + (extension.id() to extension))
+
+    override fun get(id: StateExtensionId): StateExtension? = stateExtensions[id]
 
     override fun currentTile(): Tile = currentTile
 
@@ -103,34 +148,28 @@ private data class InnerState(
 
     override fun recentTile(): Tile = recentTile
 
-    override fun tileAt(position: Position): Tile = BasicState.tileAt(board, position)
+    override fun tileAt(position: Position): Tile = InitialState.tileAt(board, position)
 
     override fun currentPlayerId(): Long = currentPlayer().id
 
+    override fun nextPlayerId(i: Int): Long = orderedPlayers[(currentPlayerIndex + i) % orderedPlayers.size].id
+
+    override fun setCurrentPlayer(currentPlayer: Long): State =
+        copy(currentPlayerIndex = orderedPlayers.indexOfFirst { it.id == currentPlayer })
+
     override fun completedCastle(positionedDirection: PositionedDirection) = completedCastles[positionedDirection]
 
-    override fun currentTileName() = currentTile.name()
+    override fun currentTileName(): String = currentTile.name()
 
     override fun anyPlayerHasPiece(position: Position, role: Role) = piecesOnBoard.piecesOn(position, role).isNotEmpty()
 
-    override fun allKnights(): List<OwnedPiece> = piecesOnBoard.allKnights()
-
-    override fun allBrigands(): List<OwnedPiece> = piecesOnBoard.allBrigands()
-
-    override fun allMonks(): List<OwnedPiece> = piecesOnBoard.allMonks()
-
-    override fun allAbbots(): List<OwnedPiece> = piecesOnBoard.allAbbots()
-
-    override fun allPeasants(): List<OwnedPiece> = piecesOnBoard.allPeasants()
+    override fun all(clazz: KClass<out Role>): List<OwnedPiece> = piecesOnBoard.get(clazz)
 
     override fun currentPlayerPieces(cornSymbol: CornSymbol): List<OwnedPiece> =
         piecesOnBoard.playerPieces(currentPlayer(), cornSymbol)
 
     override fun findPieces(position: Position, role: Role): List<OwnedPiece> =
         piecesOnBoard.piecesOn(position, role)
-
-    override fun exists(position: Position, direction: Direction, piece: NpcPiece): Boolean =
-        piecesOnBoard.containsNPC(position, direction, piece)
 
     override fun allPlayersIdsStartingWithCurrent(): List<Long> {
         val sorted = players.values.sortedBy { it.order }
@@ -143,86 +182,32 @@ private data class InnerState(
 
     override fun isAvailableForCurrentPlayer(piece: Piece) = currentPlayer().isAvailable(piece)
 
-    override fun previousPlayerId(): Long {
-        val order = currentPlayer().order - 1
-        val normalizedOrder = if (order == 0) players.count() else order
-        return players.values.first { it.order == normalizedOrder }.id
-    }
-
-    override fun mageOrWitchMustBeInstantlyMoved(): Boolean {
-        val magician = piecesOnBoard.magician()
-        val witch = piecesOnBoard.witch()
-        if (magician == null || witch == null) {
-            return false
-        }
-        val isMagicianOnCastle = tileAt(magician.position).exploreCastle(magician.direction).isNotEmpty()
-        val isWitchOnCastle = tileAt(witch.position).exploreCastle(witch.direction).isNotEmpty()
-        return when {
-            isMagicianOnCastle != isWitchOnCastle -> false
-            isMagicianOnCastle -> CastlesExplorer.explore(this, magician.position, magician.direction).first.contains(
-                PositionedDirection(witch.position, witch.direction))
-            else -> RoadsExplorer.explore(this, magician.position, magician.direction).first.contains(
-                PositionedDirection(witch.position, witch.direction))
-        }
-    }
-
-    override fun canBePickedUp(piece: NpcPiece): Boolean {
-        val (actual, other) = when (piece) {
-            MagePiece -> piecesOnBoard.magician() to piecesOnBoard.witch()
-            WitchPiece -> piecesOnBoard.witch() to piecesOnBoard.magician()
-        }
-        if (actual == null) {
-            return false
-        }
-        val openPositions = findOpenCastles() + findOpenRoads()
-        val actualPositions = exploreRoadOrCastle(actual)
-        val otherPositions = other?.let { exploreRoadOrCastle(it) } ?: emptySet()
-        val allowedPositions = openPositions - actualPositions - otherPositions
-        return allowedPositions.isEmpty()
-    }
-
-    override fun canBePlacedOn(piece: NpcPiece, targetPos: PositionedDirection): Boolean {
-        val (actual, other) = when (piece) {
-            MagePiece -> piecesOnBoard.magician() to piecesOnBoard.witch()
-            WitchPiece -> piecesOnBoard.witch() to piecesOnBoard.magician()
-        }
-        val openCastles = findOpenCastles()
-        val openRoads = findOpenRoads()
-        val isOpenObject = openCastles.contains(targetPos) || openRoads.contains(targetPos)
-        if (actual == null && other == null) {
-            return isOpenObject
-        }
-        if (actual != null && exploreRoadOrCastle(actual).contains(targetPos)) {
-            return false
-        }
-        if (other != null && exploreRoadOrCastle(other).contains(targetPos)) {
-            return false
-        }
-        return isOpenObject
-    }
-
-    private fun exploreRoadOrCastle(npc: NPCOnBoard): Set<PositionedDirection> {
-        return when {
-            tileAt(npc.position).exploreCastle(npc.direction).isNotEmpty() ->
-                CastlesExplorer.explore(this, npc.position, npc.direction).first
-            else ->
-                RoadsExplorer.explore(this, npc.position, npc.direction).first
-        }
-    }
-
-    private fun findOpenCastles(): Set<PositionedDirection> {
+    override fun findOpenCastles(): Set<PositionedDirection> {
         val allCastles = board.tiles.flatMap { (position, tile) ->
             Direction.ALL.flatMap { tile.exploreCastle(it) }.map { PositionedDirection(position, it) }
         }.toSet()
         return allCastles - completedCastles.keys
     }
 
-    private fun findOpenRoads(): Set<PositionedDirection> {
+    override fun findOpenRoads(): Set<PositionedDirection> {
         val allRoads = board.tiles.flatMap { (position, tile) ->
             Direction.ALL.flatMap { tile.exploreRoad(it) }.map { PositionedDirection(position, it) }
         }.toSet()
         return allRoads - completedRoads.keys
     }
+
+    override fun countPlayers(): Int = players.size
+
+    override fun previousPlayerId(): Long {
+        val order = currentPlayer().order - 1
+        val normalizedOrder = if (order == 0) players.count() else order
+        return players.values.first { it.order == normalizedOrder }.id
+    }
+
+    override fun getMageAndWitchState(): MageAndWitchExtension.MageAndWitchState? =
+        get(MageAndWitchExtension.MageAndWitchState.ID) as? MageAndWitchExtension.MageAndWitchState
+
+    override fun tilesLeft(): Int = remainingTiles.size - 1
 
     private fun currentPlayer() = orderedPlayers[currentPlayerIndex]
 }

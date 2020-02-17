@@ -85,6 +85,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(AddPieceEvent(2))
                 .then(AddPieceCmd(Position(1, 0), BigPiece, Knight(Up)))
                 .then(TileCmd(Position(1, 2), Rotation180))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(
                         2, 18, listOf(

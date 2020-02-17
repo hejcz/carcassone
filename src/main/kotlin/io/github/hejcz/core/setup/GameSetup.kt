@@ -1,16 +1,21 @@
 package io.github.hejcz.core.setup
 
+import io.github.hejcz.core.StateExtension
+
 open class GameSetup(private vararg val extensions: Extension) {
 
     open fun tiles() = TilesSetup().withExtensions(*extensions).remainingTiles()
 
-    open fun validators() = ValidatorsSetup().withExtensions(*extensions).validators()
+    fun validators() = ValidatorsSetup().withExtensions(*extensions).validators()
 
-    open fun pieces() = PiecesSetup().withExtensions(*extensions).pieces()
+    fun pieces() = PiecesSetup().withExtensions(*extensions).pieces()
 
-    open fun rules() = RulesSetup().withExtensions(*extensions).rules()
+    fun rules() = RulesSetup().withExtensions(*extensions).rules()
 
-    open fun endRules() = RulesSetup().withExtensions(*extensions).endRules()
+    fun endRules() = RulesSetup().withExtensions(*extensions).endRules()
 
-    open fun handlers() = CommandHandlersSetup().withExtensions(*extensions).handlers()
+    fun handlers() = CommandHandlersSetup().withExtensions(*extensions).handlers()
+
+    fun stateExtensions(): Set<StateExtension> = StateExtensionSetup().withExtensions(*extensions).states()
+
 }
