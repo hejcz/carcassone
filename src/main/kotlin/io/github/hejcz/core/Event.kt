@@ -34,10 +34,6 @@ data class ScoreEvent(val playerId: Long, val score: Int, val returnedPieces: Co
 
 data class NoScoreEvent(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent(), MixedGameEvent
 
-data class CastleClosedEvent(val castle: CompletedCastle) : GameEvent(), SystemGameEvent
-
-data class RoadClosedEvent(val road: CompletedRoad) : GameEvent(), SystemGameEvent
-
 // errors
 
 object InvalidTileLocationEvent : GameEvent()
