@@ -1,7 +1,6 @@
 package io.github.hejcz.expansion.corncircles
 
 import io.github.hejcz.core.*
-import io.github.hejcz.util.*
 
 enum class CornCircleAction {
     ADD_PIECE, REMOVE_PIECE

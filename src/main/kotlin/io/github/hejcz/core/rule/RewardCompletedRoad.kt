@@ -1,32 +1,26 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
-import io.github.hejcz.expansion.magic.MoveMagicianOrWitchCmd
+import io.github.hejcz.expansion.magic.MoveMageOrWitchCmd
 
 class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
 
     override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
-        is TileCmd -> afterTilePlaced(state)
-        is PieceCmd -> afterPiecePlaced(state, command.role)
-        is MoveMagicianOrWitchCmd -> afterTilePlaced(state)
+        is PieceCmd -> afterTilePlaced(state) + afterPiecePlaced(state, command.role)
+        is SkipPieceCmd -> afterTilePlaced(state)
         else -> emptySet()
-    }
+    }.distinct()
 
     private fun afterTilePlaced(state: State): Collection<GameEvent> =
-        listOf(Up, Right, Down, Left)
-            .map { explore(state, state.recentPosition(), it) }
-            .filter { it.completed }
-            .filter { it.parts.isNotEmpty() }
-            .distinct()
-            .flatMap { road ->
-                setOf(RoadClosedEvent(CompletedRoad(road.parts))) + when {
-                    road.pieces.isNotEmpty() -> generateEvents(road, state)
-                    else -> emptySet()
-                }
+        state.getNewCompletedRoads().flatMap { road ->
+            when {
+                road.pieces().isNotEmpty() -> generateEvents(road, state)
+                else -> emptySet<GameEvent>()
             }
+        }
 
     private fun generateEvents(road: Road, state: State): List<GameEvent> {
-        val (winners, losers) = WinnerSelector.find(road.pieces)
+        val (winners, losers) = WinnerSelector.find(road.pieces())
         val score = scoring(state, road)
         return winners.ids.map { id -> road.createPlayerScoredEvent(id, score) } +
             losers.ids.map { id -> road.createOccupiedAreaCompletedEvent(id) }
@@ -36,20 +30,10 @@ class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
         if (role !is Brigand) {
             return emptySet()
         }
-        val road = explore(state, state.recentPosition(), role.direction)
-        if (!road.completed) {
-            return emptyList()
-        }
-        // if road is finished and player could put piece then this is the only one piece on this road
-        return setOf(
-            ScoreEvent(
-                state.currentPlayerId(), scoring(state, road), road.piecesOf(state.currentPlayerId())
-            )
-        )
-    }
-
-    private fun explore(state: State, startingPosition: Position, startingDirection: Direction): Road {
-        val (parts, isCompleted) = RoadsExplorer.explore(state, startingPosition, startingDirection)
-        return Road.from(state, parts, isCompleted)
+        return state.getNewCompletedRoads()
+            .find { it.parts.contains(PositionedDirection(state.recentPosition(), role.direction)) }
+            // if road is finished and player could put piece then this is the only one piece on this road
+            ?.let { setOf(ScoreEvent(state.currentPlayerId(), scoring(state, it), it.piecesOf(state.currentPlayerId()))) }
+            ?: emptySet()
     }
 }

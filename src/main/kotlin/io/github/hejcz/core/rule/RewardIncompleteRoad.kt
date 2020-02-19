@@ -5,11 +5,11 @@ import io.github.hejcz.core.*
 class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
 
     override fun apply(state: State): Collection<GameEvent> {
-        return state.allBrigands()
+        return state.all(Brigand::class)
             .mapNotNull { (_, piece) -> explore(state, piece.position, (piece.role as Brigand).direction) }
             .distinct()
             .flatMap { road: Road ->
-                val (winners, _) = WinnerSelector.find(road.pieces)
+                val (winners, _) = WinnerSelector.find(road.pieces())
                 when (val score = scoring(state, road)) {
                     0 -> emptyList()
                     else -> winners.ids.map { playerId -> road.createPlayerScoredEventWithoutPieces(playerId, score) }

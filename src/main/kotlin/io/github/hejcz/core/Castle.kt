@@ -3,16 +3,19 @@ package io.github.hejcz.core
 import io.github.hejcz.expansion.inn.tiles.*
 
 data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, private val state: State) {
-    val pieces by lazy {
+    fun pieces() =
         parts.flatMap { part ->
             state.findPieces(part.position, Knight(part.direction))
                 .map { (id, knight) -> FoundPiece(knight, part.position, part.direction, id) }
         }
-    }
 
-    val hasMage = parts.any { part -> state.exists(part.position, part.direction, MagePiece) }
+    val hasMage = state.getMageAndWitchState()
+        ?.let { parts.any { part -> it.isMageOn(part.position, part.direction) } }
+        ?: false
 
-    val hasWitch = parts.any { part -> state.exists(part.position, part.direction, WitchPiece) }
+    val hasWitch = state.getMageAndWitchState()
+        ?.let { parts.any { part -> it.isWitchOn(part.position, part.direction) } }
+        ?: false
 
     private val tilesCount by lazy {
         parts.map { (position, _) -> position }.distinct().size
@@ -34,7 +37,7 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
 
     fun countTiles() = tilesCount
 
-    fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces
+    fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
         .filter { !it.isNPC }
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }

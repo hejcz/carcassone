@@ -34,6 +34,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(0, 2), Rotation180))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 12, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
@@ -60,6 +61,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(0, 2), Rotation180))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 15, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
@@ -76,6 +78,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(2, 1), Rotation270))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 18, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
@@ -96,6 +99,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 2), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 24, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
@@ -116,6 +120,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 2), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 27, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
@@ -138,6 +143,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(-1, 1), Rotation90))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 2), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 33, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Down))))
                 )
@@ -220,6 +226,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(TileCmd(Position(1, 1), Rotation180))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 12, setOf(PieceOnBoard(Position(1, 0), BigPiece, Knight(Up))))
                 )
@@ -242,6 +249,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(1, 1), Rotation180))
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(-1, 1), Rotation90))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(
                         1, 16, setOf(
@@ -263,6 +271,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
                 .then(TileCmd(Position(-1, 0), NoRotation))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 6, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
@@ -276,6 +285,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
                 .then(TileCmd(Position(-1, 0), NoRotation))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 3, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
@@ -313,13 +323,13 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
         }
 
-        it("should be returned if road is finished") {
+        it("should not be returned immediately if road is finished") {
             GameScenario(singlePlayer(TileL, TileL))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(BigPiece, Brigand(Left)))
                 .then(TileCmd(Position(-1, 0), NoRotation))
                 .then(PieceCmd(BigPiece, Brigand(Left)))
-                .thenShouldNotReceiveEvent(NoMappleEvent(BigPiece))
+                .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
         }
     }
 
@@ -330,6 +340,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Right)))
                 .then(TileCmd(Position(1, 1), Rotation270))
+                .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
                     ScoreEvent(1, 8, setOf(PieceOnBoard(Position(0, 1), SmallPiece, Knight(Right))))
                 )

@@ -10,7 +10,7 @@ object SinglePieceInObjectSpec : Spek({
     describe("Putting handlers in taken object") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)), verbose = true).dispatch(BeginCmd)
+            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
 
         fun multiPlayer(vararg tiles: Tile) =
             Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)

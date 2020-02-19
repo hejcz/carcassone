@@ -8,12 +8,11 @@ data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, pri
         parts.map { it.position }.distinct().count()
     }
 
-    val pieces by lazy {
+    fun pieces() =
         parts.flatMap { road ->
             state.findPieces(road.position, Brigand(road.direction))
                 .map { (id, brigand) -> FoundPiece(brigand, road.position, road.direction, id) }
         }
-    }
 
     fun createPlayerScoredEvent(playerId: Long, score: Int) =
         ScoreEvent(playerId, score, piecesOf(playerId))
@@ -24,16 +23,20 @@ data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, pri
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
         NoScoreEvent(playerId, piecesOf(playerId))
 
-    fun hasInn(state: State) = this.pieces.any {
+    fun hasInn(state: State) = pieces().any {
         val tile = state.tileAt(it.position)
         tile is InnTile && tile.isInnOnRoad(it.direction)
     }
 
-    val hasMage = parts.any { part -> state.exists(part.position, part.direction, MagePiece) }
+    val hasMage = state.getMageAndWitchState()
+        ?.let { parts.any { part -> it.isMageOn(part.position, part.direction) } }
+        ?: false
 
-    val hasWitch = parts.any { part -> state.exists(part.position, part.direction, WitchPiece) }
+    val hasWitch = state.getMageAndWitchState()
+        ?.let { parts.any { part -> it.isWitchOn(part.position, part.direction) } }
+        ?: false
 
-    fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces
+    fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
         .filter { !it.isNPC }
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }

@@ -5,6 +5,6 @@ import io.github.hejcz.core.*
 object PutTileHandler : CommandHandler {
     override fun isApplicableTo(command: Command): Boolean = command is TileCmd
 
-    override fun beforeScoring(state: State, command: Command): GameChanges =
-        (command as TileCmd).let { GameChanges.noEvents(state.addTile(command.position, command.rotation)) }
+    override fun apply(state: State, command: Command): State =
+        (command as TileCmd).let { state.addTile(command.position, command.rotation) }
 }

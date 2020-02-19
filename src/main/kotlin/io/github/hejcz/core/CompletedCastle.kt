@@ -1,3 +1,3 @@
 package io.github.hejcz.core
 
-data class CompletedCastle(val elements: Collection<PositionedDirection>)
+data class CompletedCastle(val castle: Castle, val isNew: Boolean)

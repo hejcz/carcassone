@@ -1,3 +1,3 @@
 package io.github.hejcz.core
 
-data class CompletedRoad(val elements: Collection<PositionedDirection>)
+data class CompletedRoad(val road: Road, val isNew: Boolean)

@@ -28,13 +28,3 @@ object AbbotPiece : Piece() {
 
     override fun toString(): String = "AbbotPiece"
 }
-
-sealed class NpcPiece
-
-object MagePiece : NpcPiece() {
-    override fun toString(): String = "MagePiece"
-}
-
-object WitchPiece : NpcPiece() {
-    override fun toString(): String = "WitchPiece"
-}

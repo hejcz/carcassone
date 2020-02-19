@@ -4,5 +4,5 @@ import io.github.hejcz.core.*
 
 object SkipPieceHandler : CommandHandler {
     override fun isApplicableTo(command: Command): Boolean = command is SkipPieceCmd
-    override fun beforeScoring(state: State, command: Command): GameChanges = GameChanges.noEvents(state)
+    override fun apply(state: State, command: Command): State = state
 }
