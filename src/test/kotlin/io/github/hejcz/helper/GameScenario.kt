@@ -8,7 +8,7 @@ class GameScenario(private val game: Game) {
     fun then(command: Command): GameScenario {
         val newGame = game.dispatch(command)
         if (newGame.recentEvents().contains(UnexpectedCommandEvent)) {
-            throw RuntimeException("Test might not use unexpected command: $command")
+            throw UnexpectedCommandException()
         }
         return GameScenario(newGame)
     }

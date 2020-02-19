@@ -118,7 +118,7 @@ object CornCirclesSpec : Spek({
                     .then(TileCmd(Position(1, 0), NoRotation))
                     .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
                 error("bad command not detected")
-            } catch (ex: Exception) {
+            } catch (ex: UnexpectedCommandException) {
                 // success
             }
         }
@@ -232,6 +232,36 @@ object CornCirclesSpec : Spek({
                 .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
                 .then(RemovePieceCmd(Position(1, 0), BigPiece, Knight(Up)))
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
+        }
+
+        it("must respect decision of player placing tile 1") {
+            val scenario = GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
+                .then(TileCmd(Position(1, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Knight(Up)))
+                .then(TileCmd(Position(0, 1), NoRotation))
+                .then(PieceCmd(SmallPiece, Knight(Down)))
+                .then(ChooseCornCircleActionCmd(CornCircleAction.REMOVE_PIECE))
+            try {
+                scenario.then(AddPieceCmd(Position(1, 0), SmallPiece, Knight(Up)))
+            } catch (ex: UnexpectedCommandException) {
+                return@it
+            }
+            error("Unexpected command should be thrown")
+        }
+
+        it("must respect decision of player placing tile 2") {
+            val scenario = GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
+                .then(TileCmd(Position(1, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Knight(Up)))
+                .then(TileCmd(Position(0, 1), NoRotation))
+                .then(PieceCmd(SmallPiece, Knight(Down)))
+                .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
+            try {
+                scenario.then(RemovePieceCmd(Position(1, 0), SmallPiece, Knight(Up)))
+            } catch (ex: UnexpectedCommandException) {
+                return@it
+            }
+            error("Unexpected command should be thrown")
         }
     }
 })

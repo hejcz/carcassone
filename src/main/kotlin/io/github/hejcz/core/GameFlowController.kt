@@ -31,7 +31,7 @@ data class FlowState(
 data class GameFlowController(val state: FlowState) {
 
     fun isOk(command: Command, state: State): Boolean =
-        expectation(state).matches(command)
+        expectation(state).matches(command, this.state)
 
     fun dispatch(command: Command, state: State): GameFlowController {
         val expectation: NewExpectation = expectation(state)
@@ -39,13 +39,13 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private interface NewExpectation {
-        fun matches(command: Command): Boolean
+        fun matches(command: Command, state: FlowState): Boolean
         fun newState(command: Command, state: FlowState, gameState: State): FlowState
         fun events(gameState: State, state: FlowState): Set<GameEvent>
     }
 
     private object PlaceTile : NewExpectation {
-        override fun matches(command: Command): Boolean = command is TileCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is TileCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             FlowState(state.idOfPlayerMakingMove).copy(
                 tilePlaced = true,
@@ -63,7 +63,7 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private object PlacePiece : NewExpectation {
-        override fun matches(command: Command): Boolean =
+        override fun matches(command: Command, state: FlowState): Boolean =
             command is PieceCmd || command is SkipPieceCmd || command is PickUpAbbotCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(piecePlaced = true)
@@ -71,7 +71,7 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private object MoveWizard : NewExpectation {
-        override fun matches(command: Command): Boolean =
+        override fun matches(command: Command, state: FlowState): Boolean =
             command is MoveMageOrWitchCmd || command is PickUpMageOrWitchCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(placedWizard = true)
@@ -79,14 +79,14 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private object CalculateScore : NewExpectation {
-        override fun matches(command: Command): Boolean = command is SystemCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(scoreCalculated = true)
         override fun events(gameState: State, state: FlowState) = setOf(ScorePointsEvent)
     }
 
     private object ChooseCornAction : NewExpectation {
-        override fun matches(command: Command): Boolean = command is ChooseCornCircleActionCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is ChooseCornCircleActionCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(chosenCornAction = (command as ChooseCornCircleActionCmd).action,
                 idOfPlayerMakingMove = gameState.nextPlayerId(1))
@@ -95,8 +95,10 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private object TakeCornAction : NewExpectation {
-        override fun matches(command: Command): Boolean =
-            command is AddPieceCmd || command is RemovePieceCmd || command is AvoidCornCircleActionCmd
+        override fun matches(command: Command, state: FlowState): Boolean =
+            command is AddPieceCmd && CornCircleAction.ADD_PIECE == state.chosenCornAction
+                || command is RemovePieceCmd && CornCircleAction.REMOVE_PIECE == state.chosenCornAction
+                || command is AvoidCornCircleActionCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(takenCornActions = state.takenCornActions + 1,
                 idOfPlayerMakingMove = gameState.nextPlayerId(1))
@@ -107,28 +109,28 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private object ChangePlayer : NewExpectation {
-        override fun matches(command: Command): Boolean = command is SystemCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(idOfPlayerMakingMove = gameState.nextPlayerId(1), changedPlayer = true)
         override fun events(gameState: State, state: FlowState) = setOf(ChangePlayerEvent)
     }
 
     private object UseBuilder : NewExpectation {
-        override fun matches(command: Command): Boolean = command is SystemCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(usedBuilder = true, changedPlayer = true)
         override fun events(gameState: State, state: FlowState) = emptySet<GameEvent>()
     }
 
     private object EndGame : NewExpectation {
-        override fun matches(command: Command): Boolean = command is SystemCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(endGameSignaled = true)
         override fun events(gameState: State, state: FlowState) = setOf(EndGameEvent)
     }
 
     private object StartGame : NewExpectation {
-        override fun matches(command: Command): Boolean = command is BeginCmd
+        override fun matches(command: Command, state: FlowState): Boolean = command is BeginCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(gameStarted = true)
         override fun events(gameState: State, state: FlowState) = emptySet<GameEvent>()
