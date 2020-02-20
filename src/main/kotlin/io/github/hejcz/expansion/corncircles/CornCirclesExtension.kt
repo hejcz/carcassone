@@ -1,9 +1,8 @@
 package io.github.hejcz.expansion.corncircles
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.*
+import io.github.hejcz.setup.*
 import io.github.hejcz.core.commandValidator
-import io.github.hejcz.engine.setup.*
 
 object CornCirclesExtension : Extension {
 
@@ -34,12 +33,12 @@ object CornCirclesExtension : Extension {
         fun makeDecision(state: State, action: CornCircleAction): State =
             state.update(copy(selected = action))
 
-        fun isSelected(state: State, action: CornCircleAction) = action == selected
+        fun isSelected(action: CornCircleAction) = action == selected
 
         fun currentPlayerPieces(state: State, symbol: CornSymbol) = when (symbol) {
-            CornSymbol.KNIGHT -> state.allOf(Knight::class, state.currentPlayerId())
-            CornSymbol.BRIGAND -> state.allOf(Brigand::class, state.currentPlayerId())
-            CornSymbol.PEASANT -> state.allOf(Peasant::class, state.currentPlayerId())
+            KnightSymbol -> state.allOf(Knight::class, state.currentPlayerId())
+            BrigandSymbol -> state.allOf(Brigand::class, state.currentPlayerId())
+            PeasantSymbol -> state.allOf(Peasant::class, state.currentPlayerId())
         }
 
         companion object {
@@ -84,7 +83,7 @@ object CornCirclesExtension : Extension {
             when (val tile = state.recentTile()) {
                 is CornCircleTile -> when {
                     !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocationEvent)
-                    state.cornState().isSelected(state, CornCircleAction.REMOVE_PIECE) ->
+                    state.cornState().isSelected(CornCircleAction.REMOVE_PIECE) ->
                         setOf(PlayerSelectedOtherCornAction)
                     playerDoesNotHaveAnyPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
                     !state.isAvailableForCurrentPlayer(command.piece) -> setOf(NoMappleEvent(command.piece))
@@ -119,7 +118,7 @@ object CornCirclesExtension : Extension {
             when (val tile = state.recentTile()) {
                 is CornCircleTile -> when {
                     !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocationEvent)
-                    state.cornState().isSelected(state, CornCircleAction.ADD_PIECE) ->
+                    state.cornState().isSelected(CornCircleAction.ADD_PIECE) ->
                         setOf(PlayerSelectedOtherCornAction)
                     playerDoesNotHaveSuchPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
                     else -> emptySet()

@@ -1,10 +1,9 @@
 package io.github.hejcz.expansion.magic
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.*
+import io.github.hejcz.setup.*
 import io.github.hejcz.core.commandValidator
 import io.github.hejcz.core.eventsHandler
-import io.github.hejcz.engine.setup.*
 
 object MageAndWitchExtension : Extension {
 
@@ -99,8 +98,8 @@ object MageAndWitchExtension : Extension {
          */
         fun canBePickedUp(state: State, piece: MagicTarget): Boolean {
             val (target, other) = when (piece) {
-                MagicTarget.MAGE -> mage to witch
-                MagicTarget.WITCH -> witch to mage
+                Mage -> mage to witch
+                Witch -> witch to mage
             }
             if (target == null) {
                 return false
@@ -117,8 +116,8 @@ object MageAndWitchExtension : Extension {
          */
         fun canBePlacedOn(state: State, piece: MagicTarget, targetPos: PositionedDirection): Boolean {
             val (target, other) = when (piece) {
-                MagicTarget.MAGE -> mage to witch
-                MagicTarget.WITCH -> witch to mage
+                Mage -> mage to witch
+                Witch -> witch to mage
             }
             val openCastles = state.findOpenCastles()
             val openRoads = state.findOpenRoads()
@@ -136,8 +135,8 @@ object MageAndWitchExtension : Extension {
         }
 
         private fun putNPC(piece: MagicTarget, position: Position, direction: Direction): StateExt = when (piece) {
-            MagicTarget.MAGE -> copy(mage = PositionedDirection(position, direction))
-            MagicTarget.WITCH -> copy(witch = PositionedDirection(position, direction))
+            Mage -> copy(mage = PositionedDirection(position, direction))
+            Witch -> copy(witch = PositionedDirection(position, direction))
         }
 
         private fun exploreRoadOrCastle(state: State, npc: PositionedDirection): Set<PositionedDirection> {

@@ -1,9 +1,8 @@
 package io.github.hejcz.expansion.abbot
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.*
+import io.github.hejcz.setup.*
 import io.github.hejcz.core.tile.NoTile
-import io.github.hejcz.engine.setup.*
 
 object AbbotExtension : Extension {
     override fun modify(piecesSetup: PiecesSetup) = piecesSetup.add(AbbotPiece)

@@ -1,11 +1,10 @@
 package io.github.hejcz.expansion.inn
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.Extension
-import io.github.hejcz.engine.setup.PiecesSetup
-import io.github.hejcz.engine.setup.TilesSetup
+import io.github.hejcz.setup.Extension
+import io.github.hejcz.setup.PiecesSetup
+import io.github.hejcz.setup.TilesSetup
 import io.github.hejcz.expansion.inn.tiles.*
-import io.github.hejcz.engine.setup.*
 
 object InnAndCathedralsExtension : Extension {
     override fun modify(piecesSetup: PiecesSetup) = piecesSetup.add(BigPiece)

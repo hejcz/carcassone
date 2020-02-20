@@ -1,8 +1,8 @@
 package io.github.hejcz.expansion.buildersandtraders
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.Extension
-import io.github.hejcz.engine.setup.StateExtensionSetup
+import io.github.hejcz.setup.Extension
+import io.github.hejcz.setup.StateExtensionSetup
 
 interface BuildersAndTradersTile
 

@@ -1,7 +1,7 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.engine.setup.Extension
-import io.github.hejcz.engine.setup.GameSetup
+import io.github.hejcz.setup.Extension
+import io.github.hejcz.setup.GameSetup
 import io.github.hejcz.core.tile.Tile
 import io.github.hejcz.expansion.abbot.AbbotExtension
 import io.github.hejcz.expansion.corncircles.CornCirclesExtension

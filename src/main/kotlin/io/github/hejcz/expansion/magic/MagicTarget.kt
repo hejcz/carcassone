@@ -1,5 +1,8 @@
 package io.github.hejcz.expansion.magic
 
-enum class MagicTarget {
-    WITCH, MAGE;
-}
+sealed class MagicTarget
+
+object Witch : MagicTarget()
+
+object Mage : MagicTarget()
+

@@ -1,7 +1,7 @@
 package io.github.hejcz.expansion.river
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.TilesSetup
+import io.github.hejcz.setup.TilesSetup
 import io.github.hejcz.core.tile.Tile
 import io.github.hejcz.core.tile.TileD
 import io.github.hejcz.engine.Game

@@ -1,7 +1,7 @@
 package io.github.hejcz.helper
 
 import io.github.hejcz.core.Player
-import io.github.hejcz.engine.setup.PiecesSetup
+import io.github.hejcz.setup.PiecesSetup
 
 object Players {
     fun singlePlayer() = setOf(Player(id = 1, order = 1, initialPieces = PiecesSetup().pieces()))

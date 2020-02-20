@@ -1,4 +1,4 @@
-package io.github.hejcz.engine.setup
+package io.github.hejcz.setup
 
 interface Extension {
     fun modify(deck: TilesSetup) = Unit

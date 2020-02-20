@@ -3,8 +3,20 @@ package io.github.hejcz.expansion.corncircles
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 
-enum class CornSymbol(val matches: (Role) -> Boolean) {
-    KNIGHT({ it is Knight }), BRIGAND({ it is Brigand }), PEASANT({ it is Peasant })
+sealed class CornSymbol {
+    abstract fun matches(role: Role): Boolean
+}
+
+object KnightSymbol : CornSymbol() {
+    override fun matches(role: Role): Boolean = role is Knight
+}
+
+object BrigandSymbol : CornSymbol() {
+    override fun matches(role: Role): Boolean = role is Brigand
+}
+
+object PeasantSymbol : CornSymbol() {
+    override fun matches(role: Role): Boolean = role is Peasant
 }
 
 interface CornCircleTile : Tile {
@@ -35,7 +47,7 @@ object Korn1 : CornCircleTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right, RightSide), Location(Down, LeftSide)),
     setOf(Location(Right, LeftSide), Location(Left, RightSide), Location(Up))
 ) {
-    override fun cornCircleEffect(): CornSymbol = CornSymbol.BRIGAND
+    override fun cornCircleEffect(): CornSymbol = BrigandSymbol
 
     override fun exploreCastle(direction: Direction): Directions = emptySet()
 
@@ -51,7 +63,7 @@ object Korn2 : CornCircleTile, TileWithGreenFields by GreenFields(
     setOf(Location(Right, RightSide), Location(Down, LeftSide), Location(Left, RightSide), Location(Up, LeftSide)),
     setOf(Location(Right, LeftSide), Location(Up, RightSide))
 ) {
-    override fun cornCircleEffect(): CornSymbol = CornSymbol.BRIGAND
+    override fun cornCircleEffect(): CornSymbol = BrigandSymbol
 
     override fun exploreCastle(direction: Direction): Directions = emptySet()
 
@@ -66,7 +78,7 @@ object Korn3 : CornCircleTile {
     override fun exploreGreenFields(location: Location): Locations =
         setOf(Location(Left), Location(Right), Location(Down, RightSide), Location(Down, LeftSide))
 
-    override fun cornCircleEffect(): CornSymbol = CornSymbol.PEASANT
+    override fun cornCircleEffect(): CornSymbol = PeasantSymbol
 
     override fun exploreCastle(direction: Direction): Directions = direction.sameIf(Up)
 
@@ -77,7 +89,7 @@ object Korn4 : CornCircleTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left, LeftSide), Location(Right, RightSide)),
     setOf(Location(Right, LeftSide), Location(Left, RightSide))
 ) {
-    override fun cornCircleEffect(): CornSymbol = CornSymbol.PEASANT
+    override fun cornCircleEffect(): CornSymbol = PeasantSymbol
 
     override fun exploreCastle(direction: Direction): Directions = direction.sameIf(Up)
 
@@ -88,7 +100,7 @@ object Korn5 : CornCircleTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left)),
     setOf(Location(Right))
 ) {
-    override fun cornCircleEffect(): CornSymbol = CornSymbol.KNIGHT
+    override fun cornCircleEffect(): CornSymbol = KnightSymbol
 
     override fun exploreCastle(direction: Direction): Directions = direction.sameIfOneOf(Up, Down)
 
@@ -99,7 +111,7 @@ object Korn6 : CornCircleTile, TileWithGreenFields by GreenFields(
     setOf(Location(Left)),
     setOf(Location(Right))
 ) {
-    override fun cornCircleEffect(): CornSymbol = CornSymbol.KNIGHT
+    override fun cornCircleEffect(): CornSymbol = KnightSymbol
 
     override fun exploreCastle(direction: Direction): Directions = when (direction) {
         Up, Left -> setOf(Up, Left)

@@ -1,7 +1,5 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.expansion.magic.MagicTarget
-
 open class GameEvent
 
 // expectations

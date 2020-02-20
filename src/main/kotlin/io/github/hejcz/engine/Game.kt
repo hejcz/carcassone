@@ -1,7 +1,7 @@
 package io.github.hejcz.engine
 
 import io.github.hejcz.core.*
-import io.github.hejcz.engine.setup.GameSetup
+import io.github.hejcz.setup.GameSetup
 
 class Game private constructor(
     private val flowController: GameFlowController,
