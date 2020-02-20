@@ -1,4 +1,4 @@
-package io.github.hejcz.core.setup
+package io.github.hejcz.engine.setup
 
 import io.github.hejcz.core.tile.*
 

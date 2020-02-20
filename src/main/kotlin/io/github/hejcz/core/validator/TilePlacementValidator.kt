@@ -1,7 +1,7 @@
 package io.github.hejcz.core.validator
 
 import io.github.hejcz.core.*
-import io.github.hejcz.core.tile.*
+import io.github.hejcz.core.tile.NoTile
 
 object TilePlacementValidator : CommandValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> = when (command) {

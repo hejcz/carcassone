@@ -1,7 +1,7 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
-import io.github.hejcz.core.tile.*
+import io.github.hejcz.core.tile.NoTile
 
 object RewardIncompleteCloister : EndRule {
     override fun apply(state: State): Collection<GameEvent> =

@@ -1,7 +1,5 @@
 package io.github.hejcz.core
 
-import java.lang.RuntimeException
-
 data class Player(
     override val id: Long,
     override val order: Int,

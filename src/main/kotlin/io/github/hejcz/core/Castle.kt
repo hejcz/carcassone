@@ -1,7 +1,5 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.expansion.inn.tiles.*
-
 data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, private val state: State) {
     fun pieces() =
         parts.flatMap { part ->
@@ -32,7 +30,4 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
     fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }
-
-    fun hasCathedral(state: State) =
-        parts.asSequence().map { state.tileAt(it.position) }.any { it is InnTile && it.hasCathedral() }
 }

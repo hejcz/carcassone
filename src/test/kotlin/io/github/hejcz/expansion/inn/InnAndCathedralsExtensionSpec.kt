@@ -2,10 +2,11 @@ package io.github.hejcz.expansion.inn
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
+import io.github.hejcz.engine.Game
+import io.github.hejcz.expansion.inn.tiles.*
 import io.github.hejcz.helper.GameScenario
 import io.github.hejcz.helper.InnAndCathedralsTestGameSetup
 import io.github.hejcz.helper.TestBasicRemainingTiles
-import io.github.hejcz.expansion.inn.tiles.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

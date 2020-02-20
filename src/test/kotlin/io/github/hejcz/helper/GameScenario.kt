@@ -1,9 +1,8 @@
 package io.github.hejcz.helper
 
 import io.github.hejcz.core.*
-import io.github.hejcz.helper.GameScenario.Companion.shouldContainPlaceTileOnly
+import io.github.hejcz.engine.Game
 import org.amshove.kluent.shouldEqual
-import java.lang.RuntimeException
 
 class GameScenario(private val game: Game) {
     fun then(command: Command): GameScenario {
@@ -22,11 +21,7 @@ class GameScenario(private val game: Game) {
 
     fun thenReceivedEventShouldBe(event: NoScoreEvent) = _check { it containsEvent event }
 
-    fun thenShouldNotReceiveEvent(event: GameEvent) = _check { it doesNotContainEvent event }
-
     fun thenShouldNotReceiveEvent(event: ScoreEvent) = _check { it doesNotContainEvent event }
-
-    fun thenShouldNotReceiveEvent(event: NoScoreEvent) = _check { it doesNotContainEvent event }
 
     fun thenNoEventsShouldBePublished() = _check { it.recentEvents() shouldEqual emptyList() }
 
@@ -42,10 +37,6 @@ class GameScenario(private val game: Game) {
     }
 
     fun thenReceivedEventsShouldBe(expected: List<ScoreEvent>) = _check { throwIfFalse(it.recentEvents() == expected) }
-
-    fun thenEventsCountShouldBe(number: Int) = _check { throwIfFalse(it.recentEvents().size == number) }
-
-    inline fun <reified T> thenReceivedEventsShouldHaveType() = _check { throwIfFalse(it.recentEvents() is T) }
 
     companion object {
         fun Game.shouldContainPlaceTileOnly() =

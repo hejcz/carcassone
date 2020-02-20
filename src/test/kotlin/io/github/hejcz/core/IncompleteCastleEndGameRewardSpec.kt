@@ -4,6 +4,7 @@ import io.github.hejcz.core.tile.Tile
 import io.github.hejcz.core.tile.TileD
 import io.github.hejcz.core.tile.TileF
 import io.github.hejcz.core.tile.TileG
+import io.github.hejcz.engine.Game
 import io.github.hejcz.helper.GameScenario
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles

@@ -1,8 +1,6 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.Tile
-import io.github.hejcz.expansion.corncircles.CornSymbol
-import io.github.hejcz.expansion.magic.MageAndWitchState
 import kotlin.reflect.KClass
 
 interface StateExtension {

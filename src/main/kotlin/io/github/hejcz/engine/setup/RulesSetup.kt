@@ -1,8 +1,10 @@
-package io.github.hejcz.core.setup
+package io.github.hejcz.engine.setup
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.rule.*
-import kotlin.reflect.*
+import io.github.hejcz.engine.castleScoring
+import io.github.hejcz.engine.incompleteCastleScoring
+import io.github.hejcz.engine.roadScoring
 
 class RulesSetup {
     private var rules = BASIC_RULES
@@ -25,14 +27,6 @@ class RulesSetup {
     fun rules(): Collection<Rule> = rules
 
     fun endRules(): Collection<EndRule> = endRules
-
-    fun <T : Any> replace(replaced: KClass<T>, replacement: Rule) {
-        rules = rules.filter { it::class != replaced } + replacement
-    }
-
-    fun <T : Any> replace(replaced: KClass<T>, replacement: EndRule) {
-        endRules = endRules.filterNot { it::class == replaced } + replacement
-    }
 
     companion object {
         private val BASIC_RULES: List<Rule> =

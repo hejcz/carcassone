@@ -1,9 +1,10 @@
 package io.github.hejcz.expansion.magic
 
 import io.github.hejcz.core.*
-import io.github.hejcz.core.setup.*
+import io.github.hejcz.engine.setup.*
 import io.github.hejcz.core.commandValidator
 import io.github.hejcz.core.eventsHandler
+import io.github.hejcz.engine.setup.*
 
 object MageAndWitchExtension : Extension {
 

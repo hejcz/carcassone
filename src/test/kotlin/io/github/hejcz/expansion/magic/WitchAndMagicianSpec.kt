@@ -2,8 +2,9 @@ package io.github.hejcz.expansion.magic
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.*
+import io.github.hejcz.engine.Game
 import io.github.hejcz.expansion.inn.tiles.TileEK
+import io.github.hejcz.helper.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

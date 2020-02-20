@@ -1,6 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
+import io.github.hejcz.engine.Game
 import io.github.hejcz.helper.GameScenario
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles
@@ -13,10 +14,14 @@ object PlainEndGameRewardSpec : Spek({
     describe("Green field") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true).dispatch(BeginCmd)
+            Game(
+                Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true
+            ).dispatch(BeginCmd)
 
         fun multiPlayer(vararg tiles: Tile) =
-            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true).dispatch(BeginCmd)
+            Game(
+                Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true
+            ).dispatch(BeginCmd)
 
         it("should be scored") {
             GameScenario(singlePlayer(TileE))

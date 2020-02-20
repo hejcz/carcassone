@@ -1,7 +1,14 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.*
+import io.github.hejcz.core.tile.Tile
+import io.github.hejcz.core.tile.TileD
+import io.github.hejcz.core.tile.TileF
+import io.github.hejcz.core.tile.TileV
+import io.github.hejcz.engine.Game
+import io.github.hejcz.helper.GameScenario
+import io.github.hejcz.helper.Players
+import io.github.hejcz.helper.TestBasicRemainingTiles
+import io.github.hejcz.helper.TestGameSetup
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -10,10 +17,14 @@ object SinglePieceInObjectSpec : Spek({
     describe("Putting handlers in taken object") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
+            Game(
+                Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))
+            ).dispatch(BeginCmd)
 
         fun multiPlayer(vararg tiles: Tile) =
-            Game(Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
+            Game(
+                Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))
+            ).dispatch(BeginCmd)
 
         it("knights") {
             GameScenario(singlePlayer(TileF, TileF))

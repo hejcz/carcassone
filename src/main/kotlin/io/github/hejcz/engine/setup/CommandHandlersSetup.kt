@@ -1,7 +1,10 @@
-package io.github.hejcz.core.setup
+package io.github.hejcz.engine.setup
 
-import io.github.hejcz.core.*
-import io.github.hejcz.core.handler.*
+import io.github.hejcz.core.CommandHandler
+import io.github.hejcz.core.handler.BeginGameHandler
+import io.github.hejcz.core.handler.PutPieceHandler
+import io.github.hejcz.core.handler.PutTileHandler
+import io.github.hejcz.core.handler.SkipPieceHandler
 
 class CommandHandlersSetup {
     private var handlers = BASIC_HANDLERS

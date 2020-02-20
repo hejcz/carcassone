@@ -1,10 +1,15 @@
 package io.github.hejcz.expansion.river
 
 import io.github.hejcz.core.*
-import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.*
+import io.github.hejcz.engine.setup.TilesSetup
+import io.github.hejcz.core.tile.Tile
+import io.github.hejcz.core.tile.TileD
+import io.github.hejcz.engine.Game
 import io.github.hejcz.expansion.river.tiles.*
-import io.github.hejcz.core.setup.TilesSetup
+import io.github.hejcz.helper.GameScenario
+import io.github.hejcz.helper.Players
+import io.github.hejcz.helper.RiverTestGameSetup
+import io.github.hejcz.helper.TestRiverRemainingTiles
 import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -14,7 +19,9 @@ object PlacingRiverTilesSpec : Spek({
     describe("River tile") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), RiverTestGameSetup(TestRiverRemainingTiles(*tiles)))
+            Game(
+                Players.singlePlayer(), RiverTestGameSetup(TestRiverRemainingTiles(*tiles))
+            )
                 .dispatch(BeginCmd)
 
         it("Placing river tile") {

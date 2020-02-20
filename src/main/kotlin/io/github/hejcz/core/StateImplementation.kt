@@ -1,8 +1,7 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.core.tile.*
-import io.github.hejcz.expansion.corncircles.*
-import io.github.hejcz.expansion.magic.MageAndWitchState
+import io.github.hejcz.core.tile.NoTile
+import io.github.hejcz.core.tile.Tile
 import kotlin.reflect.KClass
 
 class InitialState(players: Collection<Player>, remainingTiles: List<Tile>, stateExtensions: Set<StateExtension>) :

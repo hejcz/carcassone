@@ -1,6 +1,7 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
+import io.github.hejcz.engine.RoadScoring
 
 class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
 

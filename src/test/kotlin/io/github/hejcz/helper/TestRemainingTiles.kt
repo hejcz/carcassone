@@ -1,7 +1,9 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.core.tile.*
-import io.github.hejcz.expansion.river.tiles.*
+import io.github.hejcz.core.tile.NoTile
+import io.github.hejcz.core.tile.Tile
+import io.github.hejcz.core.tile.TileD
+import io.github.hejcz.expansion.river.tiles.TileBB6F1
 
 class TestBasicRemainingTiles(private val tiles: List<Tile>) : RemainingTiles {
     constructor(vararg tiles: Tile) : this(tiles.toList())

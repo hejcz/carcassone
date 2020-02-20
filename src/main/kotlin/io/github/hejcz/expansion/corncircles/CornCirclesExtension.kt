@@ -1,8 +1,9 @@
 package io.github.hejcz.expansion.corncircles
 
 import io.github.hejcz.core.*
-import io.github.hejcz.core.setup.*
+import io.github.hejcz.engine.setup.*
 import io.github.hejcz.core.commandValidator
+import io.github.hejcz.engine.setup.*
 
 object CornCirclesExtension : Extension {
 
@@ -86,6 +87,7 @@ object CornCirclesExtension : Extension {
                     state.cornState().isSelected(state, CornCircleAction.REMOVE_PIECE) ->
                         setOf(PlayerSelectedOtherCornAction)
                     playerDoesNotHaveAnyPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
+                    !state.isAvailableForCurrentPlayer(command.piece) -> setOf(NoMappleEvent(command.piece))
                     else -> emptySet()
                 }
                 else -> emptySet()

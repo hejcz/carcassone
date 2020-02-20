@@ -1,6 +1,7 @@
 package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
+import io.github.hejcz.engine.CastleScoring
 
 class RewardIncompleteCastle(private val scoring: CastleScoring) : EndRule {
 

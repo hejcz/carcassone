@@ -1,6 +1,7 @@
-package io.github.hejcz.core
+package io.github.hejcz.engine
 
-import io.github.hejcz.expansion.inn.tiles.InnTile
+import io.github.hejcz.core.Road
+import io.github.hejcz.core.State
 import kotlin.math.ceil
 
 typealias RoadScoring = (State, Road) -> Int
@@ -14,11 +15,6 @@ val roadScoring: RoadScoring = { state: State, road: Road ->
         }
     }
     calculatePoints(state, pointsPerTile, road)
-}
-
-private fun State.hasInnOn(road: Road) = road.parts.any {
-    val tile = this.tileAt(it.position)
-    tile is InnTile && tile.isInnOnRoad(it.direction)
 }
 
 private fun calculatePoints(state: State, pointsPerEmblemAndTile: Int, road: Road): Int {

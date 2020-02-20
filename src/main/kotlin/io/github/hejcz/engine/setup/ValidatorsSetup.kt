@@ -1,11 +1,15 @@
-package io.github.hejcz.core.setup
+package io.github.hejcz.engine.setup
 
-import io.github.hejcz.core.*
-import io.github.hejcz.core.validator.*
+import io.github.hejcz.core.CommandValidator
+import io.github.hejcz.core.validator.PieceAvailabilityValidator
+import io.github.hejcz.core.validator.PiecePlacementValidator
+import io.github.hejcz.core.validator.SinglePieceInObjectValidator
+import io.github.hejcz.core.validator.TilePlacementValidator
 
 class ValidatorsSetup {
 
-    private var validators = defaultValidators()
+    private var validators =
+        defaultValidators()
 
     fun withExtensions(vararg extension: Extension): ValidatorsSetup {
         extension.forEach { it.modify(this) }

@@ -1,6 +1,7 @@
 package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
+import io.github.hejcz.engine.Game
 import io.github.hejcz.helper.GameScenario
 import io.github.hejcz.helper.Players
 import io.github.hejcz.helper.TestBasicRemainingTiles

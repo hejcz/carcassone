@@ -1,6 +1,7 @@
-package io.github.hejcz.core
+package io.github.hejcz.engine
 
-import io.github.hejcz.core.setup.GameSetup
+import io.github.hejcz.core.*
+import io.github.hejcz.engine.setup.GameSetup
 
 class Game private constructor(
     private val flowController: GameFlowController,
@@ -14,7 +15,11 @@ class Game private constructor(
 ) {
 
     constructor(players: Collection<Player>, gameSetup: GameSetup, verbose: Boolean = false) : this(
-        GameFlowController(FlowState(idOfPlayerMakingMove = players.toList()[0].id, gameStarted = false)),
+        GameFlowController(
+            FlowState(
+                idOfPlayerMakingMove = players.toList()[0].id, gameStarted = false
+            )
+        ),
         gameSetup.validators(),
         gameSetup.rules(),
         gameSetup.endRules(),
@@ -34,7 +39,9 @@ class Game private constructor(
     )
 
     private fun copy(flowController: GameFlowController, newEvents: Collection<GameEvent>, newState: State) =
-        Game(flowController, validators, rules, endRules, handlers, newEvents, newState, verbose)
+        Game(
+            flowController, validators, rules, endRules, handlers, newEvents, newState, verbose
+        )
 
     fun dispatch(command: Command): Game {
         printIfVerbose(command)
@@ -50,7 +57,9 @@ class Game private constructor(
             ?: emptySet()
 
         val errors = validateEvents + when {
-            !flowController.isOk(command, state) -> setOf(UnexpectedCommandEvent)
+            !flowController.isOk(command, state) -> setOf(
+                UnexpectedCommandEvent
+            )
             else -> emptySet()
         }
 
@@ -101,17 +110,32 @@ class Game private constructor(
                 return GameChanges(changingState, userEvents + processedEvents)
             }
 
-            val changes = systemEvents.fold(GameChanges(changingState, emptySet())) { acc, event ->
+            val changes = systemEvents.fold(
+                GameChanges(changingState, emptySet())
+            ) { acc, event ->
                 when (event) {
                     is ScorePointsEvent -> GameChanges(
                         acc.state, acc.events + rules.flatMap { it.afterCommand(command, acc.state) })
-                    is EndGameEvent -> GameChanges(acc.state, acc.events + endRules.flatMap { it.apply(acc.state) })
-                    is ChangePlayerEvent -> GameChanges.noEvents(acc.state.changeActivePlayer())
+                    is EndGameEvent -> GameChanges(
+                        acc.state, acc.events + endRules.flatMap { it.apply(acc.state) })
+                    is ChangePlayerEvent -> GameChanges.noEvents(
+                        acc.state.changeActivePlayer()
+                    )
                     is ScoreEvent -> GameChanges.noEvents(
-                        acc.state.returnPieces(event.returnedPieces.map { OwnedPiece(event.playerId, it) })
+                        acc.state.returnPieces(
+                            event.returnedPieces.map {
+                                OwnedPiece(
+                                    event.playerId, it
+                                )
+                            })
                     )
                     is NoScoreEvent -> GameChanges.noEvents(
-                        acc.state.returnPieces(event.returnedPieces.map { OwnedPiece(event.playerId, it) })
+                        acc.state.returnPieces(
+                            event.returnedPieces.map {
+                                OwnedPiece(
+                                    event.playerId, it
+                                )
+                            })
                     )
                     else -> throw RuntimeException("Unknown system event: $event")
                 }

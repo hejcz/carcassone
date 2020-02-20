@@ -1,7 +1,13 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.*
+import io.github.hejcz.core.tile.Tile
+import io.github.hejcz.core.tile.TileA
+import io.github.hejcz.core.tile.TileI
+import io.github.hejcz.engine.Game
+import io.github.hejcz.helper.GameScenario
+import io.github.hejcz.helper.Players
+import io.github.hejcz.helper.TestBasicRemainingTiles
+import io.github.hejcz.helper.TestGameSetup
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -10,7 +16,9 @@ object PutTileValidatorSpec : Spek({
     describe("Putting tile in invalid places") {
 
         fun singlePlayer(vararg tiles: Tile) =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))).dispatch(BeginCmd)
+            Game(
+                Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))
+            ).dispatch(BeginCmd)
 
         it("roads validation") {
             GameScenario(singlePlayer(TileA))

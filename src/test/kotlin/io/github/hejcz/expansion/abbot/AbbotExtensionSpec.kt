@@ -2,8 +2,10 @@ package io.github.hejcz.expansion.abbot
 
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.*
+import io.github.hejcz.engine.Game
+import io.github.hejcz.helper.AbbotTestGameSetup
 import io.github.hejcz.helper.GameScenario
+import io.github.hejcz.helper.TestBasicRemainingTiles
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

@@ -1,7 +1,11 @@
 package io.github.hejcz.core
 
-import io.github.hejcz.core.tile.*
-import io.github.hejcz.helper.*
+import io.github.hejcz.core.tile.TileD
+import io.github.hejcz.engine.Game
+import io.github.hejcz.helper.GameScenario
+import io.github.hejcz.helper.Players
+import io.github.hejcz.helper.TestBasicRemainingTiles
+import io.github.hejcz.helper.TestGameSetup
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -10,7 +14,9 @@ object PutPieceValidatorSpec : Spek({
     describe("Putting handlers in invalid places") {
 
         fun game() =
-            Game(Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))).dispatch(BeginCmd)
+            Game(
+                Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(TileD))
+            ).dispatch(BeginCmd)
 
         it("monk on tile without cloister") {
             GameScenario(game())

@@ -1,6 +1,6 @@
-package io.github.hejcz.core.setup
+package io.github.hejcz.engine.setup
 
-import io.github.hejcz.core.*
+import io.github.hejcz.core.StateExtension
 
 class StateExtensionSetup {
     private var extensions = emptySet<StateExtension>()

@@ -6,8 +6,6 @@ open class GameEvent
 
 // expectations
 
-object BeginEvent : GameEvent()
-
 data class TileEvent(val tileId: String, val playerId: Long) : GameEvent()
 
 object PieceEvent : GameEvent()
@@ -41,8 +39,6 @@ object InvalidTileLocationEvent : GameEvent()
 object InvalidPieceLocationEvent : GameEvent()
 
 object CantSkipPieceEvent : GameEvent()
-
-data class CantPickUpPieceEvent(val magicTarget: MagicTarget) : GameEvent()
 
 object CantPickUpAbbotEvent : GameEvent()
 

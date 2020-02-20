@@ -1,5 +1,6 @@
-package io.github.hejcz.core
+package io.github.hejcz.engine
 
+import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.NoTile
 import io.github.hejcz.expansion.abbot.PickUpAbbotCmd
 import io.github.hejcz.expansion.corncircles.*
@@ -32,7 +33,9 @@ data class GameFlowController(val state: FlowState) {
 
     fun dispatch(command: Command, state: State): GameFlowController {
         val expectation: NewExpectation = expectation(state)
-        return GameFlowController(expectation.newState(command, this.state, state))
+        return GameFlowController(
+            expectation.newState(command, this.state, state)
+        )
     }
 
     private interface NewExpectation {
@@ -48,11 +51,17 @@ data class GameFlowController(val state: FlowState) {
                 tilePlaced = true,
                 placedCornTile = gameState.currentTile() is CornCircleTile,
                 placedWitchTile = gameState.currentTile() is MagicTile,
-                extendedBuilder = !state.extendedBuilder && extendsBuilder(gameState)
+                extendedBuilder = !state.extendedBuilder && extendsBuilder(
+                    gameState
+                )
             )
         override fun events(gameState: State, state: FlowState) = when (val newTile = gameState.currentTile()) {
             is NoTile -> emptySet<GameEvent>()
-            else -> setOf(TileEvent(gameState.currentTile().name(), state.idOfPlayerMakingMove))
+            else -> setOf(
+                TileEvent(
+                    gameState.currentTile().name(), state.idOfPlayerMakingMove
+                )
+            )
         }
 
         // TODO
@@ -64,7 +73,9 @@ data class GameFlowController(val state: FlowState) {
             command is PieceCmd || command is SkipPieceCmd || command is PickUpAbbotCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(piecePlaced = true)
-        override fun events(gameState: State, state: FlowState) = setOf(PieceEvent)
+        override fun events(gameState: State, state: FlowState) = setOf(
+            PieceEvent
+        )
     }
 
     private object MoveWizard : NewExpectation {
@@ -79,7 +90,9 @@ data class GameFlowController(val state: FlowState) {
         override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(scoreCalculated = true)
-        override fun events(gameState: State, state: FlowState) = setOf(ScorePointsEvent)
+        override fun events(gameState: State, state: FlowState) = setOf(
+            ScorePointsEvent
+        )
     }
 
     private object ChooseCornAction : NewExpectation {
@@ -97,8 +110,12 @@ data class GameFlowController(val state: FlowState) {
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(takenCornActions = state.takenCornActions + 1, idOfPlayerMakingMove = gameState.nextPlayerId(1))
         override fun events(gameState: State, state: FlowState) = when (state.chosenCornAction!!) {
-            CornCircleAction.ADD_PIECE -> setOf(AddPieceEvent(gameState.nextPlayerId(1)))
-            CornCircleAction.REMOVE_PIECE -> setOf(RemovePieceEvent(gameState.nextPlayerId(1)))
+            CornCircleAction.ADD_PIECE -> setOf(
+                AddPieceEvent(gameState.nextPlayerId(1))
+            )
+            CornCircleAction.REMOVE_PIECE -> setOf(
+                RemovePieceEvent(gameState.nextPlayerId(1))
+            )
         }
     }
 
@@ -106,7 +123,9 @@ data class GameFlowController(val state: FlowState) {
         override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(idOfPlayerMakingMove = gameState.nextPlayerId(1), changedPlayer = true)
-        override fun events(gameState: State, state: FlowState) = setOf(ChangePlayerEvent)
+        override fun events(gameState: State, state: FlowState) = setOf(
+            ChangePlayerEvent
+        )
     }
 
     private object UseBuilder : NewExpectation {
@@ -120,7 +139,9 @@ data class GameFlowController(val state: FlowState) {
         override fun matches(command: Command, state: FlowState): Boolean = command is SystemCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
             state.copy(endGameSignaled = true)
-        override fun events(gameState: State, state: FlowState) = setOf(EndGameEvent)
+        override fun events(gameState: State, state: FlowState) = setOf(
+            EndGameEvent
+        )
     }
 
     private object StartGame : NewExpectation {

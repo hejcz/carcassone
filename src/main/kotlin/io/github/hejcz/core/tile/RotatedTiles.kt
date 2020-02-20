@@ -1,6 +1,9 @@
 package io.github.hejcz.core.tile
 
-import io.github.hejcz.core.*
+import io.github.hejcz.core.Direction
+import io.github.hejcz.core.Directions
+import io.github.hejcz.core.Location
+import io.github.hejcz.core.Locations
 
 open class TileRotated90(private val tile: Tile) : Tile {
     override fun exploreGreenFields(location: Location): Locations =
