@@ -276,6 +276,22 @@ object InnAndCathedralsExtensionSpec : Spek({
                     ScoreEvent(1, 6, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
                 )
         }
+
+        /**
+         * Fix - inn was not detected if there wasn't any piece on tile with it.
+         */
+        it("small road 2") {
+            GameScenario(singlePlayer(TileL, TileD, TileEC))
+                .then(TileCmd(Position(-1, 0), NoRotation))
+                .then(SkipPieceCmd)
+                .then(TileCmd(Position(1, 0), NoRotation))
+                .then(PieceCmd(SmallPiece, Brigand(Left)))
+                .then(TileCmd(Position(2, 0), NoRotation))
+                .then(SkipPieceCmd)
+                .thenReceivedEventShouldBe(
+                    ScoreEvent(1, 8, setOf(PieceOnBoard(Position(1, 0), SmallPiece, Brigand(Left))))
+                )
+        }
     }
 
     describe("should score 1 points for road tile if there is no inn near road") {

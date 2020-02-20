@@ -3,6 +3,30 @@ package io.github.hejcz.expansion.inn.tiles
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.*
 
+interface InnTile : Tile {
+    fun isInnOnRoad(direction: Direction): Boolean = false
+    fun hasCathedral() = false
+
+    override fun rotate(rotation: Rotation): Tile = when (rotation) {
+        NoRotation -> this
+        Rotation90 -> InnTileRotated90(this)
+        Rotation180 -> InnTileRotated180(this)
+        Rotation270 -> InnTileRotated270(this)
+    }
+
+    private class InnTileRotated90(private val tile: InnTile) : TileRotated90(tile), InnTile {
+        override fun isInnOnRoad(direction: Direction): Boolean = tile.isInnOnRoad(direction.right())
+    }
+
+    private class InnTileRotated180(private val tile: InnTile) : TileRotated180(tile), InnTile {
+        override fun isInnOnRoad(direction: Direction): Boolean = tile.isInnOnRoad(direction.right().right())
+    }
+
+    private class InnTileRotated270(private val tile: InnTile) : TileRotated270(tile), InnTile {
+        override fun isInnOnRoad(direction: Direction): Boolean = tile.isInnOnRoad(direction.left())
+    }
+}
+
 object TileEA : InnTile, TileWithGreenFields by GreenFields(
     setOf(Location(Up), Location(Right), Location(Down, LeftSide), Location(Left, RightSide)),
     setOf(Location(Down, RightSide), Location(Left, LeftSide))

@@ -23,11 +23,6 @@ data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, pri
     fun createOccupiedAreaCompletedEvent(playerId: Long) =
         NoScoreEvent(playerId, piecesOf(playerId))
 
-    fun hasInn(state: State) = pieces().any {
-        val tile = state.tileAt(it.position)
-        tile is InnTile && tile.isInnOnRoad(it.direction)
-    }
-
     fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }
