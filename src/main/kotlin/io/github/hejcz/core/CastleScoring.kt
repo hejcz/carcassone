@@ -17,8 +17,8 @@ val incompleteCastleScoring: CastleScoring = { state: State, castle: Castle ->
 private fun calculatePoints(state: State, pointsPerEmblemAndTile: Int, castle: Castle): Int {
     val points = pointsPerEmblemAndTile * castle.countEmblemsAndTiles()
     return when {
-        hasMage(state, castle.parts) -> points + castle.countTiles()
-        hasWitch(state, castle.parts) -> ceil(points / 2.0).toInt()
+        state.isMageIn(castle.parts) -> points + castle.countTiles()
+        state.isWitchIn(castle.parts) -> ceil(points / 2.0).toInt()
         else -> points
     }
 }

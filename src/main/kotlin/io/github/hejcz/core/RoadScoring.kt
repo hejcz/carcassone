@@ -16,8 +16,8 @@ val roadScoring: RoadScoring = { state: State, road: Road ->
 private fun calculatePoints(state: State, pointsPerEmblemAndTile: Int, road: Road): Int {
     val points = pointsPerEmblemAndTile * road.tilesCount
     return when {
-        hasMage(state, road.parts) -> points + road.tilesCount
-        hasWitch(state, road.parts) -> ceil(points / 2.0).toInt()
+        state.isMageIn(road.parts) -> points + road.tilesCount
+        state.isWitchIn(road.parts) -> ceil(points / 2.0).toInt()
         else -> points
     }
 }

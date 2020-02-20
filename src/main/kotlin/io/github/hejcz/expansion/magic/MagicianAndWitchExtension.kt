@@ -68,11 +68,9 @@ object MageAndWitchExtension : Extension {
     ) : StateExtension, MageAndWitchState {
         override fun id(): StateExtensionId = MageAndWitchState.ID
 
-        override fun isMageOn(position: Position, direction: Direction) =
-            exists(position, direction, MagicTarget.MAGE)
+        override fun getMagePosition(): PositionedDirection? = mage
 
-        override fun isWitchOn(position: Position, direction: Direction) =
-            exists(position, direction, MagicTarget.WITCH)
+        override fun getWitchPosition(): PositionedDirection? = witch
 
         /**
          * When mage and witch are on the same object.

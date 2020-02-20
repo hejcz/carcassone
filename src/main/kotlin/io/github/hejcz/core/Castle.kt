@@ -30,7 +30,6 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
     fun countTiles() = tilesCount
 
     fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
-        .filter { !it.isNPC }
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }
 

@@ -29,7 +29,6 @@ data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, pri
     }
 
     fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
-        .filter { !it.isNPC }
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }
 
