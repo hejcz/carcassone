@@ -29,7 +29,7 @@ interface State : ExtendableState {
     fun currentTileName(): String
     fun anyPlayerHasPiece(position: Position, role: Role): Boolean
     fun all(clazz: KClass<out Role>): List<OwnedPiece>
-    fun currentPlayerPieces(cornSymbol: CornSymbol): List<OwnedPiece>
+    fun allOf(clazz: KClass<out Role>, playerId: Long): List<OwnedPiece>
     fun findPieces(position: Position, role: Role): List<OwnedPiece>
     fun allPlayersIdsStartingWithCurrent(): List<Long>
     fun isAvailableForCurrentPlayer(piece: Piece): Boolean

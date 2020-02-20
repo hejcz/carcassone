@@ -93,12 +93,9 @@ data class GameFlowController(val state: FlowState) {
 
     private object TakeCornAction : NewExpectation {
         override fun matches(command: Command, state: FlowState): Boolean =
-            command is AddPieceCmd && CornCircleAction.ADD_PIECE == state.chosenCornAction
-                || command is RemovePieceCmd && CornCircleAction.REMOVE_PIECE == state.chosenCornAction
-                || command is AvoidCornCircleActionCmd
+            command is AddPieceCmd || command is RemovePieceCmd || command is AvoidCornCircleActionCmd
         override fun newState(command: Command, state: FlowState, gameState: State): FlowState =
-            state.copy(takenCornActions = state.takenCornActions + 1,
-                idOfPlayerMakingMove = gameState.nextPlayerId(1))
+            state.copy(takenCornActions = state.takenCornActions + 1, idOfPlayerMakingMove = gameState.nextPlayerId(1))
         override fun events(gameState: State, state: FlowState) = when (state.chosenCornAction!!) {
             CornCircleAction.ADD_PIECE -> setOf(AddPieceEvent(gameState.nextPlayerId(1)))
             CornCircleAction.REMOVE_PIECE -> setOf(RemovePieceEvent(gameState.nextPlayerId(1)))

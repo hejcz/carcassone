@@ -134,17 +134,9 @@ object MageAndWitchExtension : Extension {
             return isOpenObject
         }
 
-        private fun exists(position: Position, direction: Direction, piece: MagicTarget): Boolean =
-            containsNPC(position, direction, piece)
-
         private fun putNPC(piece: MagicTarget, position: Position, direction: Direction): StateExt = when (piece) {
             MagicTarget.MAGE -> copy(mage = PositionedDirection(position, direction))
             MagicTarget.WITCH -> copy(witch = PositionedDirection(position, direction))
-        }
-
-        private fun containsNPC(position: Position, direction: Direction, piece: MagicTarget): Boolean = when (piece) {
-            MagicTarget.MAGE -> mage == PositionedDirection(position, direction)
-            MagicTarget.WITCH -> witch == PositionedDirection(position, direction)
         }
 
         private fun exploreRoadOrCastle(state: State, npc: PositionedDirection): Set<PositionedDirection> {

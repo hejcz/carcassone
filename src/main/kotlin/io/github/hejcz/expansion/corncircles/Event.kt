@@ -13,3 +13,5 @@ object AvoidCornCircleActionCmd : Command
 data class ChooseCornCircleActionCmd(val action: CornCircleAction) : Command
 
 data class RemovePieceCmd(val position: Position, val piece: Piece, val role: Role) : Command
+
+object PlayerSelectedOtherCornAction : GameEvent()

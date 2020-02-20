@@ -23,6 +23,33 @@ object CornCirclesExtension : Extension {
         deck.addAndShuffle(Korn1, Korn2, Korn3, Korn4, Korn5, Korn6)
     }
 
+    override fun modify(stateExtensionSetup: StateExtensionSetup) {
+        stateExtensionSetup.add(StateExt(CornCircleAction.ADD_PIECE))
+    }
+
+    private data class StateExt(val selected: CornCircleAction) : StateExtension {
+        override fun id(): StateExtensionId = ID
+
+        fun makeDecision(state: State, action: CornCircleAction): State =
+            state.update(copy(selected = action))
+
+        fun isSelected(state: State, action: CornCircleAction) = action == selected
+
+        fun currentPlayerPieces(state: State, symbol: CornSymbol) = when (symbol) {
+            CornSymbol.KNIGHT -> state.allOf(Knight::class, state.currentPlayerId())
+            CornSymbol.BRIGAND -> state.allOf(Brigand::class, state.currentPlayerId())
+            CornSymbol.PEASANT -> state.allOf(Peasant::class, state.currentPlayerId())
+        }
+
+        companion object {
+            val ID = StateExtensionId(
+                CornCirclesExtension::class.java.simpleName
+            )
+        }
+    }
+
+    private fun State.cornState() = this.get(StateExt.ID)!! as StateExt
+
     private val AvoidCornCircleActionHandler = object : CommandHandler {
         override fun isApplicableTo(command: Command): Boolean = command is AvoidCornCircleActionCmd
 
@@ -33,7 +60,9 @@ object CornCirclesExtension : Extension {
         commandValidator<AvoidCornCircleActionCmd> { state, _ ->
             when (val tile = state.recentTile()) {
                 is CornCircleTile -> when {
-                    state.currentPlayerPieces(tile.cornCircleEffect()).isNotEmpty() -> setOf(CantSkipPieceEvent)
+                    state.cornState()
+                        .currentPlayerPieces(state, tile.cornCircleEffect())
+                        .isNotEmpty() -> setOf(CantSkipPieceEvent)
                     else -> emptySet()
                 }
                 else -> emptySet()
@@ -54,6 +83,8 @@ object CornCirclesExtension : Extension {
             when (val tile = state.recentTile()) {
                 is CornCircleTile -> when {
                     !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocationEvent)
+                    state.cornState().isSelected(state, CornCircleAction.REMOVE_PIECE) ->
+                        setOf(PlayerSelectedOtherCornAction)
                     playerDoesNotHaveAnyPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
                     else -> emptySet()
                 }
@@ -64,7 +95,8 @@ object CornCirclesExtension : Extension {
     private val ChooseCornCircleActionHandler = object : CommandHandler {
         override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCmd
 
-        override fun apply(state: State, command: Command): State = state
+        override fun apply(state: State, command: Command): State = state.cornState()
+            .makeDecision(state, (command as ChooseCornCircleActionCmd).action)
     }
 
     private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPieceCmd) =
@@ -85,6 +117,8 @@ object CornCirclesExtension : Extension {
             when (val tile = state.recentTile()) {
                 is CornCircleTile -> when {
                     !tile.cornCircleEffect().matches(command.role) -> setOf(InvalidPieceLocationEvent)
+                    state.cornState().isSelected(state, CornCircleAction.ADD_PIECE) ->
+                        setOf(PlayerSelectedOtherCornAction)
                     playerDoesNotHaveSuchPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
                     else -> emptySet()
                 }

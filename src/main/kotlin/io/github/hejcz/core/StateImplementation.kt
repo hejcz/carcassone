@@ -165,8 +165,8 @@ private data class CoreState(
 
     override fun all(clazz: KClass<out Role>): List<OwnedPiece> = piecesOnBoard.get(clazz)
 
-    override fun currentPlayerPieces(cornSymbol: CornSymbol): List<OwnedPiece> =
-        piecesOnBoard.playerPieces(currentPlayer(), cornSymbol)
+    override fun allOf(clazz: KClass<out Role>, playerId: Long): List<OwnedPiece> =
+        all(clazz).filter { it.playerId == playerId }
 
     override fun findPieces(position: Position, role: Role): List<OwnedPiece> =
         piecesOnBoard.piecesOn(position, role)
