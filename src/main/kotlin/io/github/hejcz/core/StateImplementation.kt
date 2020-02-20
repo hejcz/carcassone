@@ -2,7 +2,7 @@ package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.*
 import io.github.hejcz.expansion.corncircles.*
-import io.github.hejcz.expansion.magic.MageAndWitchExtension
+import io.github.hejcz.expansion.magic.MageAndWitchState
 import kotlin.reflect.KClass
 
 class InitialState(players: Collection<Player>, remainingTiles: List<Tile>, stateExtensions: Set<StateExtension>) :
@@ -203,9 +203,6 @@ private data class CoreState(
         val normalizedOrder = if (order == 0) players.count() else order
         return players.values.first { it.order == normalizedOrder }.id
     }
-
-    override fun getMageAndWitchState(): MageAndWitchExtension.MageAndWitchState? =
-        get(MageAndWitchExtension.MageAndWitchState.ID) as? MageAndWitchExtension.MageAndWitchState
 
     override fun tilesLeft(): Int = remainingTiles.size - 1
 

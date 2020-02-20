@@ -9,14 +9,6 @@ data class Castle(val completed: Boolean, val parts: Set<PositionedDirection>, p
                 .map { (id, knight) -> FoundPiece(knight, part.position, part.direction, id) }
         }
 
-    val hasMage = state.getMageAndWitchState()
-        ?.let { parts.any { part -> it.isMageOn(part.position, part.direction) } }
-        ?: false
-
-    val hasWitch = state.getMageAndWitchState()
-        ?.let { parts.any { part -> it.isWitchOn(part.position, part.direction) } }
-        ?: false
-
     private val tilesCount by lazy {
         parts.map { (position, _) -> position }.distinct().size
     }

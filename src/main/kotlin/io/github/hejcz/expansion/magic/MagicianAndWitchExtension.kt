@@ -59,17 +59,8 @@ object MageAndWitchExtension : Extension {
             }
         }
 
-    private fun extractWitchState(state: State) = (state.get(MageAndWitchState.ID) as StateExt)
-
-    interface MageAndWitchState {
-        fun isMageOn(position: Position, direction: Direction): Boolean
-        fun isWitchOn(position: Position, direction: Direction): Boolean
-        fun mageOrWitchMustBeInstantlyMoved(state: State): Boolean
-
-        companion object {
-            val ID = StateExtensionId(MageAndWitchExtension::class.java.simpleName)
-        }
-    }
+    private fun extractWitchState(state: State) = (state.get(
+        MageAndWitchState.ID) as StateExt)
 
     private data class StateExt(
         private val mage: PositionedDirection? = null,

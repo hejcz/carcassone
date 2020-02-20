@@ -2,7 +2,7 @@ package io.github.hejcz.core
 
 import io.github.hejcz.core.tile.Tile
 import io.github.hejcz.expansion.corncircles.CornSymbol
-import io.github.hejcz.expansion.magic.MageAndWitchExtension
+import io.github.hejcz.expansion.magic.MageAndWitchState
 import kotlin.reflect.KClass
 
 interface StateExtension {
@@ -46,8 +46,5 @@ interface State : ExtendableState {
     fun removePiece(position: Position, piece: Piece, role: Role): State
     fun returnPieces(pieces: Collection<OwnedPiece>): State
     fun changeActivePlayer(): State
-    // extensions state public interfaces
-    fun getMageAndWitchState(): MageAndWitchExtension.MageAndWitchState?
-
     fun setCurrentPlayer(currentPlayer: Long): State
 }

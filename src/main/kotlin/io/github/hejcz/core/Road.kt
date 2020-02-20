@@ -28,14 +28,6 @@ data class Road(val completed: Boolean, val parts: Set<PositionedDirection>, pri
         tile is InnTile && tile.isInnOnRoad(it.direction)
     }
 
-    val hasMage = state.getMageAndWitchState()
-        ?.let { parts.any { part -> it.isMageOn(part.position, part.direction) } }
-        ?: false
-
-    val hasWitch = state.getMageAndWitchState()
-        ?.let { parts.any { part -> it.isWitchOn(part.position, part.direction) } }
-        ?: false
-
     fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
         .filter { !it.isNPC }
         .filter { it.playerId() == playerId }

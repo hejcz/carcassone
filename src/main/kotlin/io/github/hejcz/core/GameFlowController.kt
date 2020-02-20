@@ -3,10 +3,7 @@ package io.github.hejcz.core
 import io.github.hejcz.core.tile.NoTile
 import io.github.hejcz.expansion.abbot.PickUpAbbotCmd
 import io.github.hejcz.expansion.corncircles.*
-import io.github.hejcz.expansion.magic.MagicTile
-import io.github.hejcz.expansion.magic.MoveMageOrWitchCmd
-import io.github.hejcz.expansion.magic.PickUpMageOrWitchCmd
-import io.github.hejcz.expansion.magic.PlaceWitchOrMage
+import io.github.hejcz.expansion.magic.*
 
 data class FlowState(
     val idOfPlayerMakingMove: Long,
@@ -161,7 +158,7 @@ data class GameFlowController(val state: FlowState) {
     }
 
     private fun wizardsAreOnTheSameObject(state: State): Boolean =
-        state.getMageAndWitchState()?.mageOrWitchMustBeInstantlyMoved(state) ?: false
+        state.getWizardState()?.mageOrWitchMustBeInstantlyMoved(state) ?: false
 
     fun events(state: State): Collection<GameEvent> = expectation(state).events(state, this.state)
     fun currentPlayer(): Long = state.idOfPlayerMakingMove
