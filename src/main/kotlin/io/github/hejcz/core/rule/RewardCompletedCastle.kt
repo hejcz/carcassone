@@ -36,5 +36,4 @@ class RewardCompletedCastle(private val castleScoring: CastleScoring) : Rule {
             ?.let { setOf(ScoreEvent(state.currentPlayerId(), castleScoring(state, it), it.piecesOf(state.currentPlayerId()))) }
             ?: emptySet()
     }
-
 }

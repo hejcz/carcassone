@@ -15,5 +15,4 @@ class StateExtensionSetup {
         extensions.forEach { it.modify(this) }
         return this
     }
-
 }

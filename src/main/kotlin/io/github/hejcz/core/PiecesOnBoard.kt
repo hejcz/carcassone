@@ -17,5 +17,4 @@ data class PiecesOnBoard(
         get(role::class).filter { it.pieceOnBoard.position == position && it.pieceOnBoard.role == role }
 
     fun get(kClass: KClass<out Role>) = pieces.getOrDefault(kClass, emptyList())
-
 }

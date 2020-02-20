@@ -2,7 +2,6 @@ package io.github.hejcz.expansion.corncircles
 
 import io.github.hejcz.core.*
 import io.github.hejcz.setup.*
-import io.github.hejcz.core.commandValidator
 
 object CornCirclesExtension : Extension {
 

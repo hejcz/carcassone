@@ -1,4 +1,3 @@
 package io.github.hejcz.core
 
-class UnexpectedCommandException : Throwable() {
-}
+class UnexpectedCommandException : Throwable()

@@ -83,5 +83,4 @@ object AbbotExtension : Extension {
         private fun score(state: State, cloisterPosition: Position): Int =
             1 + cloisterPosition.surrounding().count { state.tileAt(it) !is NoTile }
     }
-
 }

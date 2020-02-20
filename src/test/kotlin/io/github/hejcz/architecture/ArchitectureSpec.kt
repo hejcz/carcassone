@@ -39,6 +39,5 @@ object ArchitectureSpec : Spek({
                     .check(productionClasses)
             }
         }
-
     }
 })

@@ -5,4 +5,3 @@ sealed class MagicTarget
 object Witch : MagicTarget()
 
 object Mage : MagicTarget()
-

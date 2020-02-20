@@ -181,4 +181,3 @@ data class GameFlowController(val state: FlowState) {
     fun events(state: State): Collection<GameEvent> = expectation(state).events(state, this.state)
     fun currentPlayer(): Long = state.idOfPlayerMakingMove
 }
-

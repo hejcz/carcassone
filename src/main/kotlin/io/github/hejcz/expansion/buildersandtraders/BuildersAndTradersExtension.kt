@@ -38,5 +38,4 @@ object BuildersAndTradersExtension : Extension {
             val ID = StateExtensionId("BUILDERS_AND_TRADERS")
         }
     }
-
 }

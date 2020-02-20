@@ -17,5 +17,4 @@ open class GameSetup(private vararg val extensions: Extension) {
     fun handlers() = CommandHandlersSetup().withExtensions(*extensions).handlers()
 
     fun stateExtensions(): Set<StateExtension> = StateExtensionSetup().withExtensions(*extensions).states()
-
 }

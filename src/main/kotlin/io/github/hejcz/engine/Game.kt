@@ -162,5 +162,4 @@ class Game private constructor(
     }
 
     fun recentEvents() = events
-
 }
