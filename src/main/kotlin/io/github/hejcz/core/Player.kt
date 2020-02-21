@@ -1,5 +1,14 @@
 package io.github.hejcz.core
 
+interface IPlayer {
+    val id: Long
+    val order: Int
+    val initialPieces: List<Piece>
+    fun isAvailable(piece: Piece): Boolean
+    fun lockPiece(piece: Piece): IPlayer
+    fun unlockPiece(piece: Piece): IPlayer
+}
+
 data class Player(
     override val id: Long,
     override val order: Int,
