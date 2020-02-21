@@ -16,7 +16,6 @@ object WinnerSelector {
 
     private fun findWinner(pieces: Collection<PieceOnObject>): Pair<Winners, Losers> {
         val totalScoreByPlayer = pieces
-            .filter { !it.isNPC }
             .groupBy { piece -> piece.playerId() }
             .mapValues { (_, pieces) -> pieces.sumBy { it.power() } }
         val maxScore = totalScoreByPlayer.maxBy { (_, totalScore) -> totalScore }!!.value

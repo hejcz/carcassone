@@ -4,18 +4,16 @@ data class FoundPiece(
     val pieceOnBoard: PieceOnBoard,
     val position: Position,
     val direction: Direction,
-    private val playerId: Long? = null,
-    override val isNPC: Boolean = false
+    private val playerId: Long
 ) : PieceOnObject {
     override val piece: Piece = pieceOnBoard.piece
-    override fun playerId(): Long = playerId!!
+    override fun playerId(): Long = playerId
 }
 
 data class GameChanges(val state: State, val events: Collection<GameEvent>)
 
 interface PieceOnObject {
     val piece: Piece
-    val isNPC: Boolean
     fun power() = piece.power()
     fun playerId(): Long
 }
