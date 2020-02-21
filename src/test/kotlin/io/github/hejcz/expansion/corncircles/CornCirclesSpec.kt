@@ -26,7 +26,7 @@ object CornCirclesSpec : Spek({
 
     describe("examples from rule book") {
 
-        it("first example") {
+        it("example of option A - page 21") {
             GameScenario(threePlayerGame(TileL, TileQ, TileW, TileE, TileE, TileH, TileG, TileU, TileU, Korn6, TileU))
                 // red
                 .then(TileCmd(Position(-1, 0), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
@@ -70,7 +70,14 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBeOnlyPlaceTile()
         }
 
-        it("one player adds big and other one small piece to castle") {
+        it("example of option B - page 21") {
+            // TODO fill test
+        }
+    }
+
+    describe("custom tests") {
+
+        it("different pieces may be added to castle with corn action e.g. small one and big one") {
             GameScenario(innAndCornTwoPlayersGame(TileN, TileK, TileEK, Korn5, TileE))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
@@ -106,14 +113,14 @@ object CornCirclesSpec : Spek({
                 )
         }
 
-        it("when corn tile is the last time game should continue") {
+        it("when corn tile is the last tile the game should perform corn action before final scoring") {
             GameScenario(innAndCornTwoPlayersGame(Korn6))
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ChooseCornActionEvent(1))
         }
 
-        it("can't choose corn action until corn tile is drawn") {
+        it("corn action can't be performed when no corn tile is drawn") {
             try {
                 GameScenario(innAndCornTwoPlayersGame(TileD))
                     .then(TileCmd(Position(1, 0), NoRotation))
@@ -124,7 +131,7 @@ object CornCirclesSpec : Spek({
             }
         }
 
-        it("can avoid placing mapple when player has no piece in role specified on tile") {
+        it("can't avoid placing piece when player has piece in role specified on tile") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -135,7 +142,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(CantSkipPieceEvent)
         }
 
-        it("can't avoid placing mapple when player has no piece in role specified on tile") {
+        it("can avoid placing piece when player has no piece in role specified on tile") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(SkipPieceCmd)
@@ -146,7 +153,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(AddPieceEvent(2))
         }
 
-        it("can avoid placing mapple when player has no piece in role specified on tile") {
+        it("can't avoid removing piece when player has no piece in role specified on tile") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -157,7 +164,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(CantSkipPieceEvent)
         }
 
-        it("can't avoid placing mapple when player has no piece in role specified on tile") {
+        it("can avoid remoing piece when player has a piece in role specified on tile") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(SkipPieceCmd)
@@ -168,7 +175,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(RemovePieceEvent(2))
         }
 
-        it("must add piece where it is already deployed") {
+        it("player can add piece to place where he has another piece") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -179,7 +186,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(AddPieceEvent(2))
         }
 
-        it("must not add piece where it is not deployed") {
+        it("player can't add piece to place where he does not have another piece") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -190,7 +197,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it("must not add piece when player does not have such mapple available") {
+        it("player can't add piece which is not in his available resources e.g. playing big piece two times") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(BigPiece, Knight(Up)))
@@ -202,7 +209,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
         }
 
-        it("must remove piece from place where it is already deployed") {
+        it("player can remove piece from place where he has a piece") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -213,7 +220,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(RemovePieceEvent(2))
         }
 
-        it("must not remove piece from place where it is not deployed") {
+        it("player can't remove piece from place where he does not have a piece") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -224,7 +231,8 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it("must not remove piece that is not in his pool e.g. it is already on board") {
+        it("player can't remove piece he did not played " +
+                "e.g. take big piece when he has only small pieces on the board") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -235,7 +243,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(InvalidPieceLocationEvent)
         }
 
-        it("must respect decision of player placing tile 1") {
+        it("if current player chose to remove pieces his opponents can't add piece") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
@@ -246,7 +254,7 @@ object CornCirclesSpec : Spek({
                 .thenReceivedEventShouldBe(PlayerSelectedOtherCornAction)
         }
 
-        it("must respect decision of player placing tile 2") {
+        it("if current player chose to add pieces his opponents can't remove piece") {
             GameScenario(innAndCornTwoPlayersGame(TileD, Korn6))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Up)))
