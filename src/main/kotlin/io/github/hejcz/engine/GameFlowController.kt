@@ -29,7 +29,7 @@ data class FlowState(
 data class GameFlowController(val flowState: FlowState) {
 
     fun isOk(command: Command, gameState: State): Boolean =
-        expectation(gameState).matches(command, flowState)
+        expectation(gameState).matches(command)
 
     fun dispatch(command: Command, gameState: State): GameFlowController {
         val expectation: Stage = expectation(gameState)
@@ -70,13 +70,13 @@ data class GameFlowController(val flowState: FlowState) {
     fun currentPlayer(): Long = flowState.idOfPlayerMakingMove
 
     private interface Stage {
-        fun matches(command: Command, flowState: FlowState): Boolean
+        fun matches(command: Command): Boolean
         fun newState(command: Command, flowState: FlowState, gameState: State): FlowState
         fun events(gameState: State, flowState: FlowState): Set<GameEvent>
     }
 
     private object PlaceTile : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is TileCmd
+        override fun matches(command: Command): Boolean = command is TileCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             FlowState(flowState.idOfPlayerMakingMove).copy(
                 tilePlaced = true,
@@ -93,7 +93,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object PlacePiece : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean =
+        override fun matches(command: Command): Boolean =
             command is PieceCmd || command is SkipPieceCmd || command is PickUpAbbotCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(piecePlaced = true)
@@ -103,7 +103,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object MoveWizard : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean =
+        override fun matches(command: Command): Boolean =
             command is MoveMageOrWitchCmd || command is PickUpMageOrWitchCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(placedWizard = true)
@@ -111,7 +111,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object CalculateScore : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is SystemCmd
+        override fun matches(command: Command): Boolean = command is SystemCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(scoreCalculated = true)
         override fun events(gameState: State, flowState: FlowState) = setOf(
@@ -120,7 +120,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object ChooseCornAction : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is ChooseCornCircleActionCmd
+        override fun matches(command: Command): Boolean = command is ChooseCornCircleActionCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(chosenCornAction = (command as ChooseCornCircleActionCmd).action,
                 idOfPlayerMakingMove = gameState.nextPlayerId(1))
@@ -129,7 +129,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object TakeCornAction : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean =
+        override fun matches(command: Command): Boolean =
             command is AddPieceCmd || command is RemovePieceCmd || command is AvoidCornCircleActionCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(takenCornActions = flowState.takenCornActions + 1, idOfPlayerMakingMove = gameState.nextPlayerId(1))
@@ -144,7 +144,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object ChangePlayer : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is SystemCmd
+        override fun matches(command: Command): Boolean = command is SystemCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(idOfPlayerMakingMove = gameState.nextPlayerId(1), changedPlayer = true)
         override fun events(gameState: State, flowState: FlowState) = setOf(
@@ -153,14 +153,14 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object UseBuilder : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is SystemCmd
+        override fun matches(command: Command): Boolean = command is SystemCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(usedBuilder = true, changedPlayer = true)
         override fun events(gameState: State, flowState: FlowState) = emptySet<GameEvent>()
     }
 
     private object EndGame : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is SystemCmd
+        override fun matches(command: Command): Boolean = command is SystemCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(endGameSignaled = true)
         override fun events(gameState: State, flowState: FlowState) = setOf(
@@ -169,7 +169,7 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private object StartGame : Stage {
-        override fun matches(command: Command, flowState: FlowState): Boolean = command is BeginCmd
+        override fun matches(command: Command): Boolean = command is BeginCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
             flowState.copy(gameStarted = true)
         override fun events(gameState: State, flowState: FlowState) = emptySet<GameEvent>()

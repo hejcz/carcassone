@@ -118,24 +118,24 @@ class Game private constructor(
                         acc.state, acc.events + rules.flatMap { it.afterCommand(command, acc.state) })
                     is EndGameEvent -> GameChanges(
                         acc.state, acc.events + endRules.flatMap { it.apply(acc.state) })
-                    is ChangePlayerEvent -> GameChanges.noEvents(
-                        acc.state.changeActivePlayer()
-                    )
-                    is ScoreEvent -> GameChanges.noEvents(
+                    is ChangePlayerEvent -> GameChanges(acc.state.changeActivePlayer(), acc.events)
+                    is ScoreEvent -> GameChanges(
                         acc.state.returnPieces(
                             event.returnedPieces.map {
                                 OwnedPiece(
                                     event.playerId, it
                                 )
-                            })
+                            }),
+                        acc.events
                     )
-                    is NoScoreEvent -> GameChanges.noEvents(
+                    is NoScoreEvent -> GameChanges(
                         acc.state.returnPieces(
                             event.returnedPieces.map {
                                 OwnedPiece(
                                     event.playerId, it
                                 )
-                            })
+                            }),
+                        acc.events
                     )
                     else -> throw RuntimeException("Unknown system event: $event")
                 }
