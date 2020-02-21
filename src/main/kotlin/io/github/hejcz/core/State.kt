@@ -23,7 +23,7 @@ interface State : ExtendableState {
     fun currentPlayerId(): Long
     fun nextPlayerId(i: Int): Long
     fun countPlayers(): Int
-    fun completedCastle(positionedDirection: PositionedDirection): CompletedCastle?
+    fun completedCastle(positionedDirection: PositionedDirection): Castle?
     fun currentTileName(): String
     fun anyPlayerHasPiece(position: Position, role: Role): Boolean
     fun all(clazz: KClass<out Role>): List<OwnedPiece>

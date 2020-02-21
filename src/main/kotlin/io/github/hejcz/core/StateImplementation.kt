@@ -156,7 +156,8 @@ private data class CoreState(
     override fun setCurrentPlayer(currentPlayer: Long): State =
         copy(currentPlayerIndex = orderedPlayers.indexOfFirst { it.id == currentPlayer })
 
-    override fun completedCastle(positionedDirection: PositionedDirection) = completedCastles[positionedDirection]
+    override fun completedCastle(positionedDirection: PositionedDirection) =
+        completedCastles[positionedDirection]?.castle
 
     override fun currentTileName(): String = currentTile.name()
 
@@ -206,4 +207,8 @@ private data class CoreState(
     override fun tilesLeft(): Int = remainingTiles.size - 1
 
     private fun currentPlayer() = orderedPlayers[currentPlayerIndex]
+
+    private data class CompletedCastle(val castle: Castle, val isNew: Boolean)
+
+    private data class CompletedRoad(val road: Road, val isNew: Boolean)
 }

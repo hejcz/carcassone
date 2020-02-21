@@ -1,9 +1,5 @@
 package io.github.hejcz.core
 
-data class CompletedCastle(val castle: Castle, val isNew: Boolean)
-
-data class CompletedRoad(val road: Road, val isNew: Boolean)
-
 data class FoundPiece(
     val pieceOnBoard: PieceOnBoard,
     val position: Position,
