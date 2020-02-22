@@ -27,7 +27,7 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(0, -1), Rotation180))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Knight(Down)))
-                .thenReceivedEventShouldBe(NoMappleEvent(SmallPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(SmallPiece))
         }
 
         it("should be able to place abbot") {
@@ -63,7 +63,7 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(0, 2), Rotation90))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(AbbotPiece, Abbot))
-                .thenReceivedEventShouldBe(NoMappleEvent(AbbotPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(AbbotPiece))
         }
 
         it("should be able to put Abbot as a Monk in a cloister") {

@@ -7,16 +7,16 @@ import io.github.hejcz.engine.incompleteCastleScoring
 import io.github.hejcz.engine.roadScoring
 
 class RulesSetup {
-    private var rules = BASIC_RULES
+    private var rules = DEFAULT_SCORINGS
 
-    private var endRules = BASIC_END_RULES
+    private var endRules = DEFAULT_END_GAME_SCORINGS
 
-    fun add(vararg newRules: Rule) {
-        rules = rules + newRules
+    fun add(vararg newScorings: Scoring) {
+        rules = rules + newScorings
     }
 
-    fun add(endRule: EndRule) {
-        endRules = endRules + endRule
+    fun add(endGameScoring: EndGameScoring) {
+        endRules = endRules + endGameScoring
     }
 
     fun withExtensions(vararg extensions: Extension): RulesSetup {
@@ -24,15 +24,15 @@ class RulesSetup {
         return this
     }
 
-    fun rules(): Collection<Rule> = rules
+    fun rules(): Collection<Scoring> = rules
 
-    fun endRules(): Collection<EndRule> = endRules
+    fun endRules(): Collection<EndGameScoring> = endRules
 
     companion object {
-        private val BASIC_RULES: List<Rule> =
+        private val DEFAULT_SCORINGS: List<Scoring> =
             listOf(RewardCompletedCastle(castleScoring), RewardCompletedRoad(roadScoring), RewardCompletedCloister)
 
-        private val BASIC_END_RULES: List<EndRule> =
+        private val DEFAULT_END_GAME_SCORINGS: List<EndGameScoring> =
             listOf(
                 RewardIncompleteCastle(incompleteCastleScoring),
                 RewardIncompleteRoad(roadScoring),

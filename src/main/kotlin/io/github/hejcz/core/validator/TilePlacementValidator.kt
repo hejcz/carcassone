@@ -3,7 +3,7 @@ package io.github.hejcz.core.validator
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.NoTile
 
-object TilePlacementValidator : CommandValidator {
+object TilePlacementValidator : CmdValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> = when (command) {
         is TileCmd -> {
             val isValid = setOf(Up, Down, Left, Right).all { direction ->

@@ -20,7 +20,6 @@ class InitialState(players: Collection<Player>, remainingTiles: List<Tile>, stat
         stateExtensions = stateExtensions.associateBy { it.id() }
     ) {
     companion object {
-        internal fun tileAt(board: Board, position: Position): Tile = board.tiles[position] ?: NoTile
         internal fun firstOrNoTile(tiles: List<Tile>): Tile = tiles.getOrElse(0) { NoTile }
         internal fun drop1IfNotEmpty(tiles: List<Tile>): List<Tile> =
             if (tiles.isEmpty()) tiles else tiles.drop(1)
@@ -147,7 +146,7 @@ private data class CoreState(
 
     override fun recentTile(): Tile = recentTile
 
-    override fun tileAt(position: Position): Tile = InitialState.tileAt(board, position)
+    override fun tileAt(position: Position): Tile = board.tiles[position] ?: NoTile
 
     override fun currentPlayerId(): Long = currentPlayer().id
 
@@ -211,4 +210,26 @@ private data class CoreState(
     private data class CompletedCastle(val castle: Castle, val isNew: Boolean)
 
     private data class CompletedRoad(val road: Road, val isNew: Boolean)
+
+}
+
+private data class Board(val tiles: Map<Position, Tile>) {
+    fun withTile(tile: Tile, position: Position) = Board(tiles + (position to tile))
+}
+
+private data class PiecesOnBoard(
+    private val pieces: Map<KClass<out Role>, List<OwnedPiece>> = emptyMap()
+) {
+    fun put(player: IPlayer, position: Position, piece: Piece, role: Role): PiecesOnBoard =
+        copy(pieces = pieces + (role::class to
+            get(role::class) + OwnedPiece(player.id, PieceOnBoard(position, piece, role))))
+
+    fun remove(player: IPlayer, position: Position, piece: Piece, role: Role): PiecesOnBoard =
+        copy(pieces = pieces + (role::class to
+            get(role::class) - OwnedPiece(player.id, PieceOnBoard(position, piece, role))))
+
+    fun piecesOn(position: Position, role: Role): List<OwnedPiece> =
+        get(role::class).filter { it.pieceOnBoard.position == position && it.pieceOnBoard.role == role }
+
+    fun get(kClass: KClass<out Role>) = pieces.getOrDefault(kClass, emptyList())
 }

@@ -42,6 +42,6 @@ object CantPickUpAbbotEvent : GameEvent()
 
 data class InvalidPieceRoleEvent(val piece: Piece, val role: Role) : GameEvent()
 
-data class NoMappleEvent(val piece: Piece) : GameEvent()
+data class NoMeepleEvent(val piece: Piece) : GameEvent()
 
 object UnexpectedCommandEvent : GameEvent()

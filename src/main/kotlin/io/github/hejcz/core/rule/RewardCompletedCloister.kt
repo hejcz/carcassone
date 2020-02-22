@@ -3,11 +3,11 @@ package io.github.hejcz.core.rule
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.NoTile
 
-object RewardCompletedCloister : Rule {
+object RewardCompletedCloister : Scoring {
 
     private const val COMPLETED_CLOISTER_REWARD = 9
 
-    override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
+    override fun apply(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PieceCmd -> afterTilePlaced(state.recentPosition(), state) + afterPiecePlaced(state, command.piece, command.role)
         is SkipPieceCmd -> afterTilePlaced(state.recentPosition(), state)
         else -> emptySet()

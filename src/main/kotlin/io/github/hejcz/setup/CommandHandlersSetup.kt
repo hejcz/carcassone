@@ -1,6 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.CommandHandler
+import io.github.hejcz.core.CmdHandler
 import io.github.hejcz.core.handler.BeginGameHandler
 import io.github.hejcz.core.handler.PutPieceHandler
 import io.github.hejcz.core.handler.PutTileHandler
@@ -9,7 +9,7 @@ import io.github.hejcz.core.handler.SkipPieceHandler
 class CommandHandlersSetup {
     private var handlers = BASIC_HANDLERS
 
-    fun add(handler: CommandHandler) {
+    fun add(handler: CmdHandler) {
         handlers = handlers + handler
     }
 
@@ -21,7 +21,7 @@ class CommandHandlersSetup {
     fun handlers() = handlers.toList()
 
     companion object {
-        private val BASIC_HANDLERS: List<CommandHandler> =
+        private val BASIC_HANDLERS: List<CmdHandler> =
             listOf(PutTileHandler, PutPieceHandler, BeginGameHandler, SkipPieceHandler)
     }
 }

@@ -8,7 +8,7 @@ import io.github.hejcz.helper.TestGameSetup
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-object MappleAvailabilityValidatorSpec : Spek({
+object MeepleAvailabilityValidatorSpec : Spek({
 
     fun playerWithSinglePiece() = Player(id = 1, order = 1, initialPieces = listOf(SmallPiece))
 
@@ -25,7 +25,7 @@ object MappleAvailabilityValidatorSpec : Spek({
                 .then(PieceCmd(SmallPiece, Knight(Up)))
                 .then(TileCmd(Position(2, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Left)))
-                .thenReceivedEventShouldBe(NoMappleEvent(SmallPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(SmallPiece))
         }
 
         it("should allow to put piece player received from completed object") {

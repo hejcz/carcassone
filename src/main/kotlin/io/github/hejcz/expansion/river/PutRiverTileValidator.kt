@@ -3,7 +3,7 @@ package io.github.hejcz.expansion.river
 import io.github.hejcz.core.*
 import io.github.hejcz.expansion.river.tiles.*
 
-object PutRiverTileValidator : CommandValidator {
+object PutRiverTileValidator : CmdValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> =
         when {
             command is TileCmd && state.currentTile() is RiverTile -> when {

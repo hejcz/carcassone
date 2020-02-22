@@ -8,15 +8,15 @@ object AbbotExtension : Extension {
     override fun modify(piecesSetup: PiecesSetup) = piecesSetup.add(AbbotPiece)
     override fun modify(commandHandlersSetup: CommandHandlersSetup) = commandHandlersSetup.add(PickUpAbbotHandler)
     override fun modify(rulesSetup: RulesSetup) {
-        rulesSetup.add(GardenCompletedRule, AbbotPickedUp)
+        rulesSetup.add(GardenCompletedScoring, AbbotPickedUp)
         rulesSetup.add(RewardIncompleteGardens)
     }
 
     override fun modify(validatorsSetup: ValidatorsSetup) = validatorsSetup.add(PickUpAbbotValidator)
 
-    private object AbbotPickedUp : Rule {
+    private object AbbotPickedUp : Scoring {
 
-        override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
+        override fun apply(command: Command, state: State): Collection<GameEvent> = when (command) {
             is PickUpAbbotCmd -> afterAbbotPicked(state, command.position)
             else -> emptySet()
         }
@@ -36,9 +36,9 @@ object AbbotExtension : Extension {
             1 + abbotPosition.surrounding().count { state.tileAt(it) !is NoTile }
     }
 
-    private object GardenCompletedRule : Rule {
+    private object GardenCompletedScoring : Scoring {
 
-        override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
+        override fun apply(command: Command, state: State): Collection<GameEvent> = when (command) {
             is PieceCmd -> afterTilePlaced(state.recentPosition(), state) + afterPiecePlaced(state, command.role)
             is SkipPieceCmd -> afterTilePlaced(state.recentPosition(), state)
             else -> emptySet()
@@ -62,12 +62,12 @@ object AbbotExtension : Extension {
         }
     }
 
-    private object PickUpAbbotHandler : CommandHandler {
+    private object PickUpAbbotHandler : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is PickUpAbbotCmd
         override fun apply(state: State, command: Command): State = state
     }
 
-    private object PickUpAbbotValidator : CommandValidator {
+    private object PickUpAbbotValidator : CmdValidator {
         override fun validate(state: State, command: Command): Collection<GameEvent> =
             when {
                 command is PickUpAbbotCmd && state.findPieces(command.position, Abbot).isEmpty() -> setOf(CantPickUpAbbotEvent)
@@ -75,7 +75,7 @@ object AbbotExtension : Extension {
             }
     }
 
-    private object RewardIncompleteGardens : EndRule {
+    private object RewardIncompleteGardens : EndGameScoring {
         override fun apply(state: State): Collection<GameEvent> =
             state.all(Abbot::class)
                 .map { (playerId, piece) -> ScoreEvent(playerId, score(state, piece.position), emptySet()) }

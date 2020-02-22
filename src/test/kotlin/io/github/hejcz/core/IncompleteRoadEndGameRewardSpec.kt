@@ -45,7 +45,7 @@ object IncompleteRoadEndGameRewardSpec : Spek({
                 .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
 
-        it("should reward multiple players if they share road with equal number of mapples") {
+        it("should reward multiple players if they share road with equal number of meeples") {
             GameScenario(multiPlayer(TileK, TileU, TileJ, TileK))
                 .then(TileCmd(Position(1, 0), NoRotation))
                 .then(PieceCmd(SmallPiece, Brigand(Down))).thenReceivedEventShouldBeOnlyPlaceTile()
@@ -59,7 +59,7 @@ object IncompleteRoadEndGameRewardSpec : Spek({
                 .thenReceivedEventShouldBe(ScoreEvent(2, 5, emptySet()))
         }
 
-        it("should reward single player if he has advantage of mapples over his opponent") {
+        it("should reward single player if he has advantage of meeples over his opponent") {
             GameScenario(multiPlayer(TileV, TileV, TileB, TileU, TileV, TileV, TileV))
                 .then(TileCmd(Position(1, 0), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Brigand(Down))).thenReceivedEventShouldBeOnlyPlaceTile()

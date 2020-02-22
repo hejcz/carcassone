@@ -1,6 +1,6 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.CommandValidator
+import io.github.hejcz.core.CmdValidator
 import io.github.hejcz.core.validator.PieceAvailabilityValidator
 import io.github.hejcz.core.validator.PiecePlacementValidator
 import io.github.hejcz.core.validator.SinglePieceInObjectValidator
@@ -16,14 +16,14 @@ class ValidatorsSetup {
         return this
     }
 
-    fun add(validator: CommandValidator) {
+    fun add(validator: CmdValidator) {
         validators = validators + validator
     }
 
-    fun validators(): List<CommandValidator> = validators.toList()
+    fun validators(): List<CmdValidator> = validators.toList()
 
     companion object {
-        private fun defaultValidators(): Set<CommandValidator> = setOf(
+        private fun defaultValidators(): Set<CmdValidator> = setOf(
             TilePlacementValidator, PiecePlacementValidator, SinglePieceInObjectValidator, PieceAvailabilityValidator
         )
     }

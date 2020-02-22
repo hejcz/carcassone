@@ -3,7 +3,7 @@ package io.github.hejcz.core.rule
 import io.github.hejcz.core.*
 import io.github.hejcz.core.tile.NoTile
 
-object RewardIncompleteCloister : EndRule {
+object RewardIncompleteCloister : EndGameScoring {
     override fun apply(state: State): Collection<GameEvent> =
         state.all(Monk::class).map { (playerId, piece) -> ScoreEvent(playerId, score(state, piece.position), emptySet()) }
 

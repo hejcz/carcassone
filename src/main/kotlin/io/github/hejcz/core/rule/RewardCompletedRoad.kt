@@ -3,9 +3,9 @@ package io.github.hejcz.core.rule
 import io.github.hejcz.core.*
 import io.github.hejcz.engine.RoadScoring
 
-class RewardCompletedRoad(private val scoring: RoadScoring) : Rule {
+class RewardCompletedRoad(private val scoring: RoadScoring) : Scoring {
 
-    override fun afterCommand(command: Command, state: State): Collection<GameEvent> = when (command) {
+    override fun apply(command: Command, state: State): Collection<GameEvent> = when (command) {
         is PieceCmd -> afterTilePlaced(state) + afterPiecePlaced(state, command.role)
         is SkipPieceCmd -> afterTilePlaced(state)
         else -> emptySet()

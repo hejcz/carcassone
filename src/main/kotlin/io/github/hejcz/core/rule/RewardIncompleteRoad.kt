@@ -3,7 +3,7 @@ package io.github.hejcz.core.rule
 import io.github.hejcz.core.*
 import io.github.hejcz.engine.RoadScoring
 
-class RewardIncompleteRoad(private val scoring: RoadScoring) : EndRule {
+class RewardIncompleteRoad(private val scoring: RoadScoring) : EndGameScoring {
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.all(Brigand::class)

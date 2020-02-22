@@ -2,7 +2,7 @@ package io.github.hejcz.core.validator
 
 import io.github.hejcz.core.*
 
-object SinglePieceInObjectValidator : CommandValidator {
+object SinglePieceInObjectValidator : CmdValidator {
     override fun validate(state: State, command: Command): Collection<GameEvent> = when (command) {
         is PieceCmd -> when (val role = command.role) {
             is Knight -> {

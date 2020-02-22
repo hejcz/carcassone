@@ -204,9 +204,9 @@ object CornCirclesSpec : Spek({
                 .then(TileCmd(Position(0, 1), NoRotation))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
                 .then(ChooseCornCircleActionCmd(CornCircleAction.ADD_PIECE))
-                // player has only 1 big mapple
+                // player has only 1 big meeple
                 .then(AddPieceCmd(Position(1, 0), BigPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(BigPiece))
         }
 
         it("player can remove piece from place where he has a piece") {

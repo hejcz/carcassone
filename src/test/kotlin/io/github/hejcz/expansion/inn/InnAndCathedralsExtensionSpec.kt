@@ -217,7 +217,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(PieceCmd(BigPiece, Knight(Up))).thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(2, 0), NoRotation)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(BigPiece, Knight(Up)))
-                .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(BigPiece))
         }
 
         it("wins with small piece") {
@@ -337,7 +337,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(PieceCmd(BigPiece, Brigand(Left)))
                 .then(TileCmd(Position(-1, 0), Rotation90))
                 .then(PieceCmd(BigPiece, Peasant(Location(Up))))
-                .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(BigPiece))
         }
 
         it("should not be returned immediately if road is finished") {
@@ -346,7 +346,7 @@ object InnAndCathedralsExtensionSpec : Spek({
                 .then(PieceCmd(BigPiece, Brigand(Left)))
                 .then(TileCmd(Position(-1, 0), NoRotation))
                 .then(PieceCmd(BigPiece, Brigand(Left)))
-                .thenReceivedEventShouldBe(NoMappleEvent(BigPiece))
+                .thenReceivedEventShouldBe(NoMeepleEvent(BigPiece))
         }
     }
 

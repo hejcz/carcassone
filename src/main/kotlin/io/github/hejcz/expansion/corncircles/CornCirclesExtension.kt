@@ -49,7 +49,7 @@ object CornCirclesExtension : Extension {
 
     private fun State.cornState() = this.get(StateExt.ID)!! as StateExt
 
-    private val AvoidCornCircleActionHandler = object : CommandHandler {
+    private val AvoidCornCircleActionHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is AvoidCornCircleActionCmd
 
         override fun apply(state: State, command: Command): State = state
@@ -68,7 +68,7 @@ object CornCirclesExtension : Extension {
             }
         }
 
-    private val AddPieceHandler = object : CommandHandler {
+    private val AddPieceHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is AddPieceCmd
 
         override fun apply(state: State, command: Command): State =
@@ -85,14 +85,14 @@ object CornCirclesExtension : Extension {
                     state.cornState().isSelected(CornCircleAction.REMOVE_PIECE) ->
                         setOf(PlayerSelectedOtherCornAction)
                     playerDoesNotHaveAnyPieceThere(state, command) -> setOf(InvalidPieceLocationEvent)
-                    !state.isAvailableForCurrentPlayer(command.piece) -> setOf(NoMappleEvent(command.piece))
+                    !state.isAvailableForCurrentPlayer(command.piece) -> setOf(NoMeepleEvent(command.piece))
                     else -> emptySet()
                 }
                 else -> emptySet()
             }
         }
 
-    private val ChooseCornCircleActionHandler = object : CommandHandler {
+    private val ChooseCornCircleActionHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCmd
 
         override fun apply(state: State, command: Command): State = state.cornState()
@@ -103,7 +103,7 @@ object CornCirclesExtension : Extension {
         state.findPieces(command.position, command.role)
             .none { state.currentPlayerId() == it.playerId }
 
-    private val RemovePieceHandler = object : CommandHandler {
+    private val RemovePieceHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is RemovePieceCmd
 
         override fun apply(state: State, command: Command): State =

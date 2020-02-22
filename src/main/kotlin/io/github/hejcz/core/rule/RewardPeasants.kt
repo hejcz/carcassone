@@ -2,7 +2,7 @@ package io.github.hejcz.core.rule
 
 import io.github.hejcz.core.*
 
-object RewardPeasants : EndRule {
+object RewardPeasants : EndGameScoring {
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.all(Peasant::class)

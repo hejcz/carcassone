@@ -78,7 +78,7 @@ object CompletedCastleDetectionSpec : Spek({
                 )
         }
 
-        it("should detect mapples placed before castle completion") {
+        it("should detect meeples placed before castle completion") {
             GameScenario(singlePlayer(TileR, TileD, TileD))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))
@@ -91,7 +91,7 @@ object CompletedCastleDetectionSpec : Spek({
                 )
         }
 
-        it("should return all mapples placed on completed castle") {
+        it("should return all meeples placed on completed castle") {
             GameScenario(singlePlayer(TileR, TileD, TileD, TileN))
                 .then(TileCmd(Position(0, 1), Rotation90))
                 .then(PieceCmd(SmallPiece, Knight(Down)))

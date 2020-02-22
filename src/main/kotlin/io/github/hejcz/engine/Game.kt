@@ -5,10 +5,10 @@ import io.github.hejcz.setup.GameSetup
 
 class Game private constructor(
     private val flowController: GameFlowController,
-    private val validators: Collection<CommandValidator>,
-    private val rules: Collection<Rule>,
-    private val endRules: Collection<EndRule>,
-    private val handlers: Collection<CommandHandler>,
+    private val validators: Collection<CmdValidator>,
+    private val scorings: Collection<Scoring>,
+    private val endGameScorings: Collection<EndGameScoring>,
+    private val handlers: Collection<CmdHandler>,
     private val events: Collection<GameEvent>,
     private val state: State,
     private val verbose: Boolean
@@ -40,7 +40,7 @@ class Game private constructor(
 
     private fun copy(flowController: GameFlowController, newEvents: Collection<GameEvent>, newState: State) =
         Game(
-            flowController, validators, rules, endRules, handlers, newEvents, newState, verbose
+            flowController, validators, scorings, endGameScorings, handlers, newEvents, newState, verbose
         )
 
     fun dispatch(command: Command): Game {
@@ -115,9 +115,9 @@ class Game private constructor(
             ) { acc, event ->
                 when (event) {
                     is ScorePointsEvent -> GameChanges(
-                        acc.state, acc.events + rules.flatMap { it.afterCommand(command, acc.state) })
+                        acc.state, acc.events + scorings.flatMap { it.apply(command, acc.state) })
                     is EndGameEvent -> GameChanges(
-                        acc.state, acc.events + endRules.flatMap { it.apply(acc.state) })
+                        acc.state, acc.events + endGameScorings.flatMap { it.apply(acc.state) })
                     is ChangePlayerEvent -> GameChanges(acc.state.changeActivePlayer(), acc.events)
                     is ScoreEvent -> GameChanges(
                         acc.state.returnPieces(
