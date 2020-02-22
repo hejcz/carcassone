@@ -188,13 +188,14 @@ private class RewardCompletedCastle(private val castleScoring: CastleScoring) : 
 
     private fun afterTilePlaced(state: State): Collection<GameEvent> =
         state.getNewCompletedCastles().flatMap {
+            val resolvedCastle = it.resolve(state)
             when {
-                it.pieces().isNotEmpty() -> generateEvents(it, state)
+                resolvedCastle.pieces().isNotEmpty() -> generateEvents(resolvedCastle, state)
                 else -> emptySet<GameEvent>()
             }
         }
 
-    private fun generateEvents(castle: Castle, state: State): List<GameEvent> {
+    private fun generateEvents(castle: ResolvedCastle, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(castle.pieces())
         val score = castleScoring(state, castle)
         return winners.ids.map { id -> ScoreEvent(id, score, castle.piecesOf(id)) } +
@@ -210,7 +211,7 @@ private class RewardCompletedCastle(private val castleScoring: CastleScoring) : 
                 PositionedDirection(state.recentPosition(), role.direction)
             ) }
             // if castle is finished and player is allowed to put piece inside then this is the only one piece on castle
-            ?.let { setOf(ScoreEvent(state.currentPlayerId(), castleScoring(state, it), it.piecesOf(state.currentPlayerId()))) }
+            ?.let { setOf(ScoreEvent(state.currentPlayerId(), castleScoring(state, it), it.resolve(state).piecesOf(state.currentPlayerId()))) }
             ?: emptySet()
     }
 }
@@ -300,7 +301,7 @@ private class RewardIncompleteCastle(private val scoring: CastleScoring) : EndGa
             when (val score = scoring(state, castle)) {
                 0 -> emptyList()
                 else -> {
-                    val (winners, _) = WinnerSelector.find(castle.pieces())
+                    val (winners, _) = WinnerSelector.find(castle.resolve(state).pieces())
                     winners.ids.map { id -> ScoreEvent(id, score, emptySet()) }
                 }
             }
@@ -311,7 +312,7 @@ private class RewardIncompleteCastle(private val scoring: CastleScoring) : EndGa
             return null
         }
         val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)
-        return CastleImplementation.from(state, positionsToDirections, isCompleted)
+        return UnresolvedCastle.from(state, positionsToDirections, isCompleted)
     }
 }
 

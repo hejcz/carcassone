@@ -65,7 +65,7 @@ private data class CoreState(
     }
 
     override fun getNewCompletedCastles(): List<Castle> =
-        completedCastles.values.asSequence().filter { it.isNew }.map { it.castle.newWith(state = this) }.distinct().toList()
+        completedCastles.values.asSequence().filter { it.isNew }.map { it.castle }.distinct().toList()
 
     override fun getNewCompletedRoads(): List<Road> =
         completedRoads.values.asSequence().filter { it.isNew }.map { it.road.newWith(state = this) }.distinct().toList()
@@ -88,7 +88,7 @@ private data class CoreState(
 
     private fun exploreCastle(state: State, startingPosition: Position, startingDirection: Direction): Castle {
         val (positionsToDirections, isCompleted) = CastlesExplorer.explore(state, startingPosition, startingDirection)
-        return CastleImplementation.from(state, positionsToDirections, isCompleted)
+        return UnresolvedCastle.from(state, positionsToDirections, isCompleted)
     }
 
     private fun detectClosedRoads(state: State): List<Road> =

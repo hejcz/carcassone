@@ -2,47 +2,53 @@ package io.github.hejcz.base
 
 import io.github.hejcz.api.Castle
 import io.github.hejcz.api.PositionedDirection
+import io.github.hejcz.api.ResolvedCastle
 import io.github.hejcz.api.State
 
-data class CastleImplementation(
+data class UnresolvedCastle(
     override val completed: Boolean,
     override val parts: Set<PositionedDirection>,
-    private val state: State
-) : Castle {
-
-    override fun pieces() =
-        parts.flatMap { part ->
-            state.findPieces(part.position, Knight(part.direction))
-                .map { (id, knight) ->
-                    FoundPiece(
-                        knight, part.position, part.direction, id
-                    )
-                }
-        }
-
+    private val emblemsCount: Int
+): Castle {
     private val tilesCount by lazy {
         parts.map { (position, _) -> position }.distinct().size
     }
 
-    private val emblems by lazy {
-        parts
-            .groupBy { (position, _) -> position } // without grouping emblem would be counted multiple times
-            .map { (_, v) -> v.any { (position, direction) -> state.tileAt(position).hasEmblem(direction) } }
-            .count { it }
-    }
+    override fun countEmblemsAndTiles(): Int = tilesCount + emblemsCount
+
+    override fun countTiles(): Int = tilesCount
+
+    override fun resolve(state: State): ResolvedCastle =
+        ResolvedCastleImplementation(
+            this,
+            parts.flatMap { part ->
+                state.findPieces(part.position, Knight(part.direction))
+                    .map { (id, knight) ->
+                        FoundPiece(
+                            knight, part.position, part.direction, id
+                        )
+                    }
+            }
+        )
 
     companion object {
         fun from(state: State, parts: Set<PositionedDirection>, isCompleted: Boolean) =
-            CastleImplementation(isCompleted, parts, state)
+            UnresolvedCastle(
+                isCompleted,
+                parts,
+                parts
+                    .groupBy { (position, _) -> position } // without grouping emblem would be counted multiple times
+                    .map { (_, v) -> v.any { (position, direction) -> state.tileAt(position).hasEmblem(direction) } }
+                    .count { it }
+            )
     }
+}
 
-    override fun countEmblemsAndTiles() = emblems + tilesCount
+class ResolvedCastleImplementation(castle: Castle, private val pieces: List<FoundPiece>):
+    ResolvedCastle, Castle by castle {
 
-    override fun countTiles() = tilesCount
-
+    override fun pieces() = pieces
     override fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()
         .filter { it.playerId() == playerId }
         .map { it.pieceOnBoard }
-
-    override fun newWith(state: State): Castle = copy(state = state)
 }
