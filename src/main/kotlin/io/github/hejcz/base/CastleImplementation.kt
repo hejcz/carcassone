@@ -2,14 +2,13 @@ package io.github.hejcz.base
 
 import io.github.hejcz.api.Castle
 import io.github.hejcz.api.PositionedDirection
-import io.github.hejcz.api.ResolvedCastle
 import io.github.hejcz.api.State
 
 data class UnresolvedCastle(
     override val completed: Boolean,
     override val parts: Set<PositionedDirection>,
     private val emblemsCount: Int
-): Castle {
+) : Castle {
     private val tilesCount by lazy {
         parts.map { (position, _) -> position }.distinct().size
     }
@@ -18,7 +17,7 @@ data class UnresolvedCastle(
 
     override fun countTiles(): Int = tilesCount
 
-    override fun resolve(state: State): ResolvedCastle =
+    override fun resolve(state: State): Castle.Resolved =
         ResolvedCastleImplementation(
             this,
             parts.flatMap { part ->
@@ -44,8 +43,8 @@ data class UnresolvedCastle(
     }
 }
 
-class ResolvedCastleImplementation(castle: Castle, private val pieces: List<FoundPiece>):
-    ResolvedCastle, Castle by castle {
+class ResolvedCastleImplementation(castle: Castle, private val pieces: List<FoundPiece>) :
+    Castle.Resolved, Castle by castle {
 
     override fun pieces() = pieces
     override fun piecesOf(playerId: Long): Collection<PieceOnBoard> = pieces()

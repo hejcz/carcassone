@@ -11,7 +11,7 @@ data class UnresolvedRoad(
         parts.map { it.position }.distinct().count()
     }
 
-    override fun resolve(state: State): ResolvedRoad =
+    override fun resolve(state: State): Road.Resolved =
         ResolvedRoadImplementation(
             this,
             parts.flatMap { road ->
@@ -30,7 +30,7 @@ data class UnresolvedRoad(
     }
 }
 
-class ResolvedRoadImplementation(road: UnresolvedRoad, private val pieces: List<FoundPiece>) : ResolvedRoad, Road by road {
+class ResolvedRoadImplementation(road: UnresolvedRoad, private val pieces: List<FoundPiece>) : Road.Resolved, Road by road {
 
     override val tilesCount by lazy {
         parts.map { it.position }.distinct().count()

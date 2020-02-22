@@ -195,7 +195,7 @@ private class RewardCompletedCastle(private val castleScoring: CastleScoring) : 
             }
         }
 
-    private fun generateEvents(castle: ResolvedCastle, state: State): List<GameEvent> {
+    private fun generateEvents(castle: Castle.Resolved, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(castle.pieces())
         val score = castleScoring(state, castle)
         return winners.ids.map { id -> ScoreEvent(id, score, castle.piecesOf(id)) } +
@@ -233,7 +233,7 @@ private class RewardCompletedRoad(private val scoring: RoadScoring) : Scoring {
             }
         }
 
-    private fun generateEvents(road: ResolvedRoad, state: State): List<GameEvent> {
+    private fun generateEvents(road: Road.Resolved, state: State): List<GameEvent> {
         val (winners, losers) = WinnerSelector.find(road.pieces())
         val score = scoring(state, road)
         return winners.ids.map { id -> road.createPlayerScoredEvent(id, score) } +
