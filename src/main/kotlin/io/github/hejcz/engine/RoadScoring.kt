@@ -1,10 +1,9 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.core.Road
-import io.github.hejcz.core.State
+import io.github.hejcz.api.RoadScoring
+import io.github.hejcz.api.Road
+import io.github.hejcz.api.State
 import kotlin.math.ceil
-
-typealias RoadScoring = (State, Road) -> Int
 
 val roadScoring: RoadScoring = { state: State, road: Road ->
     val pointsPerTile = when {

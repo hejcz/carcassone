@@ -1,11 +1,11 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.core.Castle
-import io.github.hejcz.core.PositionedDirection
-import io.github.hejcz.core.Road
-import io.github.hejcz.core.State
-import io.github.hejcz.expansion.inn.tiles.InnTile
-import io.github.hejcz.expansion.magic.MageAndWitchState
+import io.github.hejcz.api.Castle
+import io.github.hejcz.api.PositionedDirection
+import io.github.hejcz.api.Road
+import io.github.hejcz.api.State
+import io.github.hejcz.components.inn.tiles.InnTile
+import io.github.hejcz.components.magic.MageAndWitchState
 
 fun State.isMageIn(parts: Set<PositionedDirection>) = this.getWizardState()
     ?.getMagePosition()?.let { it in parts } ?: false

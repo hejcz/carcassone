@@ -1,18 +1,21 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.core.Castle
-import io.github.hejcz.core.State
+import io.github.hejcz.api.Castle
+import io.github.hejcz.api.CastleScoring
+import io.github.hejcz.api.State
 import kotlin.math.ceil
 
-typealias CastleScoring = (State, Castle) -> Int
-
 val castleScoring: CastleScoring = { state: State, castle: Castle ->
-    val pointsPerEmblemAndTile = if (state.isCathedralIn(castle)) 3 else 2
-    calculatePoints(state, pointsPerEmblemAndTile, castle)
-}
-
-val incompleteCastleScoring: CastleScoring = { state: State, castle: Castle ->
-    val pointsPerEmblemAndTile = if (state.isCathedralIn(castle)) 0 else 1
+    val pointsPerEmblemAndTile = when {
+        state.isCathedralIn(castle) -> when {
+            castle.completed -> 3
+            else -> 0
+        }
+        else -> when {
+            castle.completed -> 2
+            else -> 1
+        }
+    }
     calculatePoints(state, pointsPerEmblemAndTile, castle)
 }
 

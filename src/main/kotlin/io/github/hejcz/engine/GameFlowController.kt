@@ -1,10 +1,13 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.core.*
-import io.github.hejcz.core.tile.NoTile
-import io.github.hejcz.expansion.abbot.PickUpAbbotCmd
-import io.github.hejcz.expansion.corncircles.*
-import io.github.hejcz.expansion.magic.*
+import io.github.hejcz.api.Command
+import io.github.hejcz.api.GameEvent
+import io.github.hejcz.api.State
+import io.github.hejcz.base.*
+import io.github.hejcz.base.tile.NoTile
+import io.github.hejcz.components.abbot.PickUpAbbotCmd
+import io.github.hejcz.components.corncircles.*
+import io.github.hejcz.components.magic.*
 
 data class FlowState(
     val idOfPlayerMakingMove: Long,

@@ -1,6 +1,7 @@
 package io.github.hejcz.engine
 
-import io.github.hejcz.core.*
+import io.github.hejcz.api.*
+import io.github.hejcz.base.*
 import io.github.hejcz.setup.GameSetup
 
 class Game private constructor(
@@ -21,8 +22,8 @@ class Game private constructor(
             )
         ),
         gameSetup.validators(),
-        gameSetup.rules(),
-        gameSetup.endRules(),
+        gameSetup.rules(roadScoring, castleScoring),
+        gameSetup.endRules(roadScoring, castleScoring),
         gameSetup.handlers(),
         emptySet(),
         InitialState(

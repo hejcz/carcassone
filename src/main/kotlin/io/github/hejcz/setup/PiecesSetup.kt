@@ -1,10 +1,9 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.Piece
-import io.github.hejcz.core.SmallPiece
+import io.github.hejcz.api.Piece
 
 class PiecesSetup {
-    private var pieces = BASIC_PIECES
+    private var pieces = emptyList<Piece>()
 
     fun add(piece: Piece) {
         pieces = pieces + piece
@@ -16,8 +15,4 @@ class PiecesSetup {
     }
 
     fun pieces() = pieces.toList()
-
-    companion object {
-        private val BASIC_PIECES: List<Piece> = (1..7).map { SmallPiece }
-    }
 }

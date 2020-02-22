@@ -1,15 +1,9 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.core.CmdValidator
-import io.github.hejcz.core.validator.PieceAvailabilityValidator
-import io.github.hejcz.core.validator.PiecePlacementValidator
-import io.github.hejcz.core.validator.SinglePieceInObjectValidator
-import io.github.hejcz.core.validator.TilePlacementValidator
+import io.github.hejcz.api.CmdValidator
 
 class ValidatorsSetup {
-
-    private var validators =
-        defaultValidators()
+    private var validators = setOf<CmdValidator>()
 
     fun withExtensions(vararg extension: Extension): ValidatorsSetup {
         extension.forEach { it.modify(this) }
@@ -21,10 +15,4 @@ class ValidatorsSetup {
     }
 
     fun validators(): List<CmdValidator> = validators.toList()
-
-    companion object {
-        private fun defaultValidators(): Set<CmdValidator> = setOf(
-            TilePlacementValidator, PiecePlacementValidator, SinglePieceInObjectValidator, PieceAvailabilityValidator
-        )
-    }
 }

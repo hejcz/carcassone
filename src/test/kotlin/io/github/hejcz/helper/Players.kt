@@ -1,6 +1,6 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.core.Player
+import io.github.hejcz.base.Player
 import io.github.hejcz.setup.PiecesSetup
 
 object Players {
