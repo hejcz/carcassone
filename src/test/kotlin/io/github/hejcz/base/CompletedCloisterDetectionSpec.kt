@@ -42,9 +42,12 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -2), NoRotation))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    SmallPiece, Monk))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        SmallPiece, Monk
+                    )
+                )))
         }
 
         it("should detect completed cloister filling the hole") {
@@ -65,9 +68,12 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(0, -1), NoRotation))
                 .then(PieceCmd(SmallPiece, Monk))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    SmallPiece, Monk))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        SmallPiece, Monk
+                    )
+                )))
         }
 
         it("should detect two cloisters of different players completed in single move") {
@@ -94,12 +100,18 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -2), Rotation90))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(1, -1),
-                    SmallPiece, Monk))))
-                .thenReceivedEventShouldBe(ScoreEvent(2, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    SmallPiece, Monk))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(1, -1),
+                        SmallPiece, Monk
+                    )
+                )))
+                .thenReceivedEventShouldBe(ScoreEvent(2, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        SmallPiece, Monk
+                    )
+                )))
         }
 
         it("should detect two cloisters of same player completed in single move") {
@@ -126,12 +138,18 @@ object CompletedCloisterDetectionSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, -2), Rotation90))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    SmallPiece, Monk))))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(1, -1),
-                    SmallPiece, Monk))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        SmallPiece, Monk
+                    )
+                )))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(1, -1),
+                        SmallPiece, Monk
+                    )
+                )))
         }
     }
 })

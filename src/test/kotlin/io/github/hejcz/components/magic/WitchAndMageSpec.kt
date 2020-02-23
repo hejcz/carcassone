@@ -34,10 +34,13 @@ object WitchAndMageSpec : Spek({
                 .then(TileCmd(Position(0, 2), Rotation180)) // E
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(
-                    1, 4 + 2, setOf(PieceOnBoard(
-                        Position(0, 1), SmallPiece, Knight(
-                            Up
-                        )))))
+                    1, 4 + 2, setOf(
+                        PieceOnBoard(
+                            Position(0, 1), SmallPiece, Knight(
+                                Up
+                            )
+                        )
+                    )))
         }
 
         it("castle - increases score by number of tiles (not emblems)") {
@@ -54,10 +57,13 @@ object WitchAndMageSpec : Spek({
                 .then(TileCmd(Position(0, 3), Rotation180)) // E
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(
-                    1, 8 + 3, setOf(PieceOnBoard(
-                        Position(0, 1), SmallPiece, Knight(
-                            Up
-                        )))))
+                    1, 8 + 3, setOf(
+                        PieceOnBoard(
+                            Position(0, 1), SmallPiece, Knight(
+                                Up
+                            )
+                        )
+                    )))
         }
 
         it("castle - score increase is added after cathedral evaluation") {
@@ -75,10 +81,13 @@ object WitchAndMageSpec : Spek({
                 .then(TileCmd(Position(1, 2), Rotation270)) // E
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(
-                    1, 15 + 5, setOf(PieceOnBoard(
-                        Position(0, 1), SmallPiece, Knight(
-                            Up
-                        )))))
+                    1, 15 + 5, setOf(
+                        PieceOnBoard(
+                            Position(0, 1), SmallPiece, Knight(
+                                Up
+                            )
+                        )
+                    )))
         }
     }
 
@@ -95,10 +104,13 @@ object WitchAndMageSpec : Spek({
                 .then(TileCmd(Position(0, 2), Rotation180)) // E
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(
-                    1, 4 - 2, setOf(PieceOnBoard(
-                        Position(0, 1), SmallPiece, Knight(
-                            Up
-                        )))))
+                    1, 4 - 2, setOf(
+                        PieceOnBoard(
+                            Position(0, 1), SmallPiece, Knight(
+                                Up
+                            )
+                        )
+                    )))
         }
 
         it("from castle by half rounded up including cathedral bonus") {
@@ -116,10 +128,13 @@ object WitchAndMageSpec : Spek({
                 .then(TileCmd(Position(1, 2), Rotation270)) // E
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(ScoreEvent(
-                    1, 15 - 7, setOf(PieceOnBoard(
-                        Position(0, 1), SmallPiece, Knight(
-                            Up
-                        )))))
+                    1, 15 - 7, setOf(
+                        PieceOnBoard(
+                            Position(0, 1), SmallPiece, Knight(
+                                Up
+                            )
+                        )
+                    )))
         }
     }
 
@@ -315,9 +330,12 @@ object WitchAndMageSpec : Spek({
                 .then(MoveMageOrWitchCmd(
                     Position(0, 0), Left, Mage))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 8 - 4, setOf(PieceOnBoard(
-                    Position(1, 0),
-                    SmallPiece, Knight(Up)))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 8 - 4, setOf(
+                    PieceOnBoard(
+                        Position(1, 0),
+                        SmallPiece, Knight(Up)
+                    )
+                )))
         }
 
         it("delays points calculation if npc must be moved 2") {
@@ -335,9 +353,12 @@ object WitchAndMageSpec : Spek({
                 .then(MoveMageOrWitchCmd(
                     Position(0, 0), Left, Witch))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 8 + 4, setOf(PieceOnBoard(
-                    Position(1, 0),
-                    SmallPiece, Knight(Up)))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 8 + 4, setOf(
+                    PieceOnBoard(
+                        Position(1, 0),
+                        SmallPiece, Knight(Up)
+                    )
+                )))
         }
     }
 
@@ -419,9 +440,12 @@ object WitchAndMageSpec : Spek({
                     Position(0, 0), Left, Witch))
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 6, setOf(PieceOnBoard(
-                        Position(0, 1),
-                        SmallPiece, Knight(Up))))
+                    ScoreEvent(1, 6, setOf(
+                        PieceOnBoard(
+                            Position(0, 1),
+                            SmallPiece, Knight(Up)
+                        )
+                    ))
                 )
         }
     }

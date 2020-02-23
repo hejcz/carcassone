@@ -1,6 +1,5 @@
 package io.github.hejcz.api
 
-import io.github.hejcz.base.*
 import kotlin.reflect.KClass
 
 interface State : ExtendableState {
@@ -28,7 +27,6 @@ interface State : ExtendableState {
     fun getNewCompletedRoads(): List<Road>
     // mutators
     fun addTile(position: Position, rotation: Rotation): State
-    fun addPiece(piece: Piece, role: Role): State
     fun addPiece(position: Position, piece: Piece, role: Role): State
     fun removePiece(position: Position, piece: Piece, role: Role): State
     fun returnPieces(pieces: Collection<OwnedPiece>): State

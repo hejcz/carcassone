@@ -1,14 +1,15 @@
 package io.github.hejcz.helper
 
-import io.github.hejcz.base.CoreModule
-import io.github.hejcz.setup.Extension
-import io.github.hejcz.setup.GameSetup
 import io.github.hejcz.api.Tile
+import io.github.hejcz.base.CoreModule
 import io.github.hejcz.components.abbot.AbbotExtension
+import io.github.hejcz.components.buildersandtraders.BuildersAndTradersExtension
 import io.github.hejcz.components.corncircles.CornCirclesExtension
 import io.github.hejcz.components.inn.InnAndCathedralsExtension
 import io.github.hejcz.components.magic.MageAndWitchExtension
 import io.github.hejcz.components.river.RiverExtension
+import io.github.hejcz.setup.Extension
+import io.github.hejcz.setup.GameSetup
 
 interface RemainingTiles {
     fun tiles(): List<Tile>
@@ -40,3 +41,6 @@ class WitchAndMageGameSetup(remainingTiles: RemainingTiles) :
 
 class WitchAndMageAndInnAndCathedralsGameSetup(remainingTiles: RemainingTiles) :
     TestGameSetup(remainingTiles, listOf(InnAndCathedralsExtension, MageAndWitchExtension))
+
+class BuildersAndTradersGameSetup(remainingTiles: RemainingTiles) :
+    TestGameSetup(remainingTiles, listOf(BuildersAndTradersExtension))

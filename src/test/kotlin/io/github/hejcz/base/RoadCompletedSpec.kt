@@ -26,9 +26,12 @@ object RoadCompletedSpec : Spek({
                 .then(TileCmd(Position(-1, 0), Rotation270))
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 3, setOf(PieceOnBoard(
-                        Position(1, 0),
-                        SmallPiece, Brigand(Left))))
+                    ScoreEvent(1, 3, setOf(
+                        PieceOnBoard(
+                            Position(1, 0),
+                            SmallPiece, Brigand(Left)
+                        )
+                    ))
                 )
         }
 
@@ -39,9 +42,12 @@ object RoadCompletedSpec : Spek({
                 .then(TileCmd(Position(-1, 0), Rotation270)).thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(SmallPiece, Brigand(Right)))
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 3, setOf(PieceOnBoard(
-                        Position(-1, 0),
-                        SmallPiece, Brigand(Right))))
+                    ScoreEvent(1, 3, setOf(
+                        PieceOnBoard(
+                            Position(-1, 0),
+                            SmallPiece, Brigand(Right)
+                        )
+                    ))
                 )
         }
 
@@ -54,9 +60,12 @@ object RoadCompletedSpec : Spek({
                 .then(TileCmd(Position(1, -1), Rotation180))
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 4, setOf(PieceOnBoard(
-                        Position(1, 0),
-                        SmallPiece, Brigand(Left))))
+                    ScoreEvent(1, 4, setOf(
+                        PieceOnBoard(
+                            Position(1, 0),
+                            SmallPiece, Brigand(Left)
+                        )
+                    ))
                 )
         }
 
@@ -72,9 +81,12 @@ object RoadCompletedSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 4, setOf(PieceOnBoard(
-                        Position(1, 0),
-                        SmallPiece, Brigand(Down))))
+                    ScoreEvent(1, 4, setOf(
+                        PieceOnBoard(
+                            Position(1, 0),
+                            SmallPiece, Brigand(Down)
+                        )
+                    ))
                 )
         }
 
@@ -90,9 +102,12 @@ object RoadCompletedSpec : Spek({
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 4, setOf(PieceOnBoard(
-                        Position(-1, 0),
-                        SmallPiece, Brigand(Right))))
+                    ScoreEvent(1, 4, setOf(
+                        PieceOnBoard(
+                            Position(-1, 0),
+                            SmallPiece, Brigand(Right)
+                        )
+                    ))
                 )
         }
 
@@ -113,9 +128,12 @@ object RoadCompletedSpec : Spek({
                 .then(TileCmd(Position(0, -1), NoRotation))
                 .then(SkipPieceCmd)
                 .thenReceivedEventShouldBe(
-                    ScoreEvent(1, 3, setOf(PieceOnBoard(
-                        Position(1, -1),
-                        SmallPiece, Brigand(Left))))
+                    ScoreEvent(1, 3, setOf(
+                        PieceOnBoard(
+                            Position(1, -1),
+                            SmallPiece, Brigand(Left)
+                        )
+                    ))
                 )
                 .thenReceivedEventShouldBe(
                     ScoreEvent(
@@ -123,11 +141,13 @@ object RoadCompletedSpec : Spek({
                             PieceOnBoard(
                                 Position(-1, -1), SmallPiece, Brigand(
                                     Left
-                                )),
+                                )
+                            ),
                             PieceOnBoard(
                                 Position(-1, 0), SmallPiece, Brigand(
                                     Left
-                                ))
+                                )
+                            )
                         )
                     )
                 )

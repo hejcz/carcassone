@@ -1,11 +1,9 @@
 package io.github.hejcz.setup
 
-import io.github.hejcz.api.CastleScoring
-import io.github.hejcz.api.EndGameScoring
-import io.github.hejcz.api.RoadScoring
-import io.github.hejcz.api.Scoring
+import io.github.hejcz.api.*
 
-class ScoringSetup(private val castleScoring: CastleScoring, private val roadScoring: RoadScoring) {
+class ScoringSetup(private val castleScoring: CastleScoring, private val roadScoring: RoadScoring,
+                   private val greenFieldScoring: GreenFieldScoring) {
     private var scoring = emptySet<Scoring>()
 
     private var endGameScoring = emptySet<EndGameScoring>()
@@ -34,4 +32,6 @@ class ScoringSetup(private val castleScoring: CastleScoring, private val roadSco
     fun incompleteCastleScoring(): CastleScoring = castleScoring
 
     fun incompleteRoadScoring(): RoadScoring = roadScoring
+
+    fun greenFieldScoring(): GreenFieldScoring = greenFieldScoring
 }

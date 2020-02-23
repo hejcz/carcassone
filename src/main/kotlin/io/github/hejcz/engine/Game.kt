@@ -22,8 +22,8 @@ class Game private constructor(
             )
         ),
         gameSetup.validators(),
-        gameSetup.rules(roadScoring, castleScoring),
-        gameSetup.endRules(roadScoring, castleScoring),
+        gameSetup.rules(roadScoring, castleScoring, greenFieldScoring),
+        gameSetup.endRules(roadScoring, castleScoring, greenFieldScoring),
         gameSetup.handlers(),
         emptySet(),
         InitialState(
@@ -73,11 +73,13 @@ class Game private constructor(
         val handler = handlers.firstOrNull { it.isApplicableTo(command) }
             ?: throw NoHandlerForCommand(command)
 
-        var newState = handler.apply(state, command)
+        var (newState, handlerEvents) = handler.apply(state, command)
 
         var newFlowController = flowController.dispatch(command, state)
 
-        var events = newFlowController.events(newState)
+        val flowEvents = newFlowController.events(newState)
+
+        var events: Collection<GameEvent> = flowEvents + handlerEvents
 
         val dispatchEvents = dispatchEvents(command, newState, events)
 
@@ -119,7 +121,9 @@ class Game private constructor(
                         acc.state, acc.events + scorings.flatMap { it.apply(command, acc.state) })
                     is EndGameEvent -> GameChanges(
                         acc.state, acc.events + endGameScorings.flatMap { it.apply(acc.state) })
-                    is ChangePlayerEvent -> GameChanges(acc.state.changeActivePlayer(), acc.events)
+                    is ChangePlayerEvent -> GameChanges(
+                        acc.state.changeActivePlayer(), acc.events
+                    )
                     is ScoreEvent -> GameChanges(
                         acc.state.returnPieces(
                             event.returnedPieces.map {
@@ -127,7 +131,7 @@ class Game private constructor(
                                     event.playerId, it
                                 )
                             }),
-                        acc.events
+                        acc.events + event.returnedPieces.map { PieceRemoved(event.playerId, it.position, it.piece, it.role) }
                     )
                     is NoScoreEvent -> GameChanges(
                         acc.state.returnPieces(
@@ -136,8 +140,12 @@ class Game private constructor(
                                     event.playerId, it
                                 )
                             }),
-                        acc.events
+                        acc.events + event.returnedPieces.map { PieceRemoved(event.playerId, it.position, it.piece, it.role) }
                     )
+                    is PieceRemoved -> acc.state.getBuilderState()
+                        ?.maybeRemoveBuilderOrPig(acc.state, event)
+                        ?.let { GameChanges(it.state, it.events + acc.events) }
+                        ?: GameChanges(acc.state, acc.events)
                     else -> throw RuntimeException("Unknown system event: $event")
                 }
             }

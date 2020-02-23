@@ -13,8 +13,6 @@ fun State.isMageIn(parts: Set<PositionedDirection>) = this.getWizardState()
 fun State.isWitchIn(parts: Set<PositionedDirection>) = this.getWizardState()
     ?.getWitchPosition()?.let { it in parts } ?: false
 
-fun State.getWizardState() = this.get(MageAndWitchState.ID)?.let { it as MageAndWitchState }
-
 fun State.hasInnOn(road: Road) = road.parts.any {
     val tile = this.tileAt(it.position)
     tile is InnTile && tile.isInnOnRoad(it.direction)

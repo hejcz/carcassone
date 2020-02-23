@@ -2,6 +2,7 @@ package io.github.hejcz.helper
 
 import io.github.hejcz.api.Command
 import io.github.hejcz.api.GameEvent
+import io.github.hejcz.api.PieceOnBoard
 import io.github.hejcz.base.*
 import io.github.hejcz.engine.Game
 import org.amshove.kluent.shouldEqual

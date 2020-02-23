@@ -123,11 +123,13 @@ object CornCirclesSpec : Spek({
                             PieceOnBoard(
                                 Position(1, 0), BigPiece, Knight(
                                     Up
-                                )),
+                                )
+                            ),
                             PieceOnBoard(
                                 Position(1, 0), SmallPiece, Knight(
                                     Up
-                                ))
+                                )
+                            )
                         )
                     )
                 )
@@ -137,11 +139,13 @@ object CornCirclesSpec : Spek({
                             PieceOnBoard(
                                 Position(0, 1), SmallPiece, Knight(
                                     Down
-                                )),
+                                )
+                            ),
                             PieceOnBoard(
                                 Position(0, 1), SmallPiece, Knight(
                                     Down
-                                ))
+                                )
+                            )
                         )
                     )
 

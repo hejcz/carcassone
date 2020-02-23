@@ -18,7 +18,7 @@ data class FlowState(
     val scoreCalculated: Boolean = false,
     val changedPlayer: Boolean = false,
     // builder
-    val extendedBuilder: Boolean = false,
+    val checkedBuilder: Boolean = false,
     val usedBuilder: Boolean = false,
     // witch
     val placedWitchTile: Boolean = false,
@@ -31,15 +31,27 @@ data class FlowState(
 
 data class GameFlowController(val flowState: FlowState) {
 
+    /**
+     * Checks if command matches expectation. Command is not applied to state.
+     */
     fun isOk(command: Command, gameState: State): Boolean =
         expectation(gameState).matches(command)
 
+    /**
+     * Advances flow. Command is not applied to state so it matches isOk method. This is possible
+     * that isOk state returns different expectation for old and new state.
+     */
     fun dispatch(command: Command, gameState: State): GameFlowController {
         val expectation: Stage = expectation(gameState)
         return GameFlowController(
             expectation.newState(command, flowState, gameState)
         )
     }
+
+    /**
+     * Creates event for new expectation. It receives state with command applied.
+     */
+    fun events(gameState: State): Collection<GameEvent> = expectation(gameState).events(gameState, flowState)
 
     private fun expectation(gameState: State): Stage {
         return when {
@@ -59,7 +71,10 @@ data class GameFlowController(val flowState: FlowState) {
     }
 
     private fun newTurn(gameState: State): Stage = when {
-        flowState.extendedBuilder and !flowState.usedBuilder -> UseBuilder
+        !flowState.checkedBuilder -> when {
+            !flowState.usedBuilder and gameState.extendedBuilder() -> UseBuilder
+            else -> CleanBuilder
+        }
         !flowState.changedPlayer -> ChangePlayer
         gameState.tilesLeft() == 0 && !flowState.endGameSignaled -> EndGame
         else -> PlaceTile
@@ -68,7 +83,8 @@ data class GameFlowController(val flowState: FlowState) {
     private fun State.wizardsAreOnTheSameObject(): Boolean =
         this.getWizardState()?.mageOrWitchMustBeInstantlyMoved(this) ?: false
 
-    fun events(gameState: State): Collection<GameEvent> = expectation(gameState).events(gameState, flowState)
+    private fun State.extendedBuilder(): Boolean =
+        this.getBuilderState()?.extendedBuilder(this) ?: false
 
     fun currentPlayer(): Long = flowState.idOfPlayerMakingMove
 
@@ -85,14 +101,12 @@ data class GameFlowController(val flowState: FlowState) {
                 tilePlaced = true,
                 placedCornTile = gameState.currentTile() is CornCircleTile,
                 placedWitchTile = gameState.currentTile() is MagicTile,
-                extendedBuilder = !flowState.extendedBuilder && extendsBuilder()
+                usedBuilder = flowState.usedBuilder
             )
         override fun events(gameState: State, flowState: FlowState) = when (val tile = gameState.currentTile()) {
             is NoTile -> emptySet<GameEvent>()
             else -> setOf(TileEvent(tile.name(), flowState.idOfPlayerMakingMove))
         }
-
-        private fun extendsBuilder(): Boolean = false
     }
 
     private object PlacePiece : Stage {
@@ -158,7 +172,14 @@ data class GameFlowController(val flowState: FlowState) {
     private object UseBuilder : Stage {
         override fun matches(command: Command): Boolean = command is SystemCmd
         override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
-            flowState.copy(usedBuilder = true, changedPlayer = true)
+            flowState.copy(usedBuilder = true, changedPlayer = true, checkedBuilder = true)
+        override fun events(gameState: State, flowState: FlowState) = emptySet<GameEvent>()
+    }
+
+    private object CleanBuilder : Stage {
+        override fun matches(command: Command): Boolean = command is SystemCmd
+        override fun newState(command: Command, flowState: FlowState, gameState: State): FlowState =
+            flowState.copy(usedBuilder = false, checkedBuilder = true)
         override fun events(gameState: State, flowState: FlowState) = emptySet<GameEvent>()
     }
 

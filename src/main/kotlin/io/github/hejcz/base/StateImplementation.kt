@@ -106,11 +106,7 @@ private data class CoreState(
         return UnresolvedRoad.from(parts, isCompleted)
     }
 
-    override fun addPiece(piece: Piece, role: Role): State = doAddPiece(recentPosition, piece, role)
-
-    override fun addPiece(position: Position, piece: Piece, role: Role): State = doAddPiece(position, piece, role)
-
-    private fun doAddPiece(position: Position, piece: Piece, role: Role): CoreState {
+    override fun addPiece(position: Position, piece: Piece, role: Role): State {
         val updatedCurrentPlayer = currentPlayer().lockPiece(piece)
         val updatedPiecesOnBoard = piecesOnBoard.put(updatedCurrentPlayer, position, piece, role)
         return copy(
@@ -124,6 +120,9 @@ private data class CoreState(
         return doRemovePiece(piece, position, role, currentPlayerId())
     }
 
+    override fun returnPieces(pieces: Collection<OwnedPiece>): State =
+        pieces.fold(this) { acc, (id, piece) -> acc.doRemovePiece(piece.piece, piece.position, piece.role, id) }
+
     private fun doRemovePiece(piece: Piece, position: Position, role: Role, ownerId: Long): CoreState {
         val updatedOwner = (players[ownerId] ?: error("No player with id $ownerId")).unlockPiece(piece)
         val updatedPiecesOnBoard = piecesOnBoard.remove(updatedOwner, position, piece, role)
@@ -133,9 +132,6 @@ private data class CoreState(
             orderedPlayers = orderedPlayers.map { if (it.id == updatedOwner.id) updatedOwner else it }
         )
     }
-
-    override fun returnPieces(pieces: Collection<OwnedPiece>): State =
-        pieces.fold(this) { acc, (id, piece) -> acc.doRemovePiece(piece.piece, piece.position, piece.role, id) }
 
     override fun changeActivePlayer(): State = copy(currentPlayerIndex = nextPlayerIndex())
 
@@ -235,11 +231,17 @@ private data class PiecesOnBoard(
 ) {
     fun put(player: IPlayer, position: Position, piece: Piece, role: Role): PiecesOnBoard =
         copy(pieces = pieces + (role::class to
-            get(role::class) + OwnedPiece(player.id, PieceOnBoard(position, piece, role))))
+            get(role::class) + OwnedPiece(
+            player.id,
+            PieceOnBoard(position, piece, role)
+        )))
 
     fun remove(player: IPlayer, position: Position, piece: Piece, role: Role): PiecesOnBoard =
         copy(pieces = pieces + (role::class to
-            get(role::class) - OwnedPiece(player.id, PieceOnBoard(position, piece, role))))
+            get(role::class) - OwnedPiece(
+            player.id,
+            PieceOnBoard(position, piece, role)
+        )))
 
     fun piecesOn(position: Position, role: Role): List<OwnedPiece> =
         get(role::class).filter { it.pieceOnBoard.position == position && it.pieceOnBoard.role == role }

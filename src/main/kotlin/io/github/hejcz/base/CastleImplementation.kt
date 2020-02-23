@@ -1,6 +1,7 @@
 package io.github.hejcz.base
 
 import io.github.hejcz.api.Castle
+import io.github.hejcz.api.PieceOnBoard
 import io.github.hejcz.api.PositionedDirection
 import io.github.hejcz.api.State
 

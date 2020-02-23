@@ -29,8 +29,12 @@ object AbbotExtension : Extension {
                 .let { (playerId, piece) ->
                     setOf(
                         ScoreEvent(
-                            playerId, score(state, piece.position), setOf(PieceOnBoard(position,
-                                AbbotPiece, Abbot))
+                            playerId, score(state, piece.position), setOf(
+                                PieceOnBoard(
+                                    position,
+                                    AbbotPiece, Abbot
+                                )
+                            )
                         )
                     )
                 }
@@ -59,17 +63,18 @@ object AbbotExtension : Extension {
         private fun afterPiecePlaced(state: State, role: Role): Collection<GameEvent> = when {
             role is Abbot && state.recentPosition().isSurrounded(state) ->
                 setOf(
-                    ScoreEvent(state.currentPlayerId(), 9, setOf(PieceOnBoard(state.recentPosition(),
-                        AbbotPiece, Abbot)))
+                    ScoreEvent(state.currentPlayerId(), 9, setOf(
+                        PieceOnBoard(
+                            state.recentPosition(),
+                            AbbotPiece, Abbot
+                        )
+                    ))
                 )
             else -> emptySet()
         }
     }
 
-    private object PickUpAbbotHandler : CmdHandler {
-        override fun isApplicableTo(command: Command): Boolean = command is PickUpAbbotCmd
-        override fun apply(state: State, command: Command): State = state
-    }
+    private val PickUpAbbotHandler = cmdHandler<PickUpAbbotCmd>()
 
     private object PickUpAbbotValidator : CmdValidator {
         override fun validate(state: State, command: Command): Collection<GameEvent> =

@@ -1,8 +1,6 @@
 package io.github.hejcz.base
 
-import io.github.hejcz.api.GameEvent
-import io.github.hejcz.api.Piece
-import io.github.hejcz.api.Role
+import io.github.hejcz.api.*
 
 // expectations
 
@@ -28,9 +26,14 @@ object EndGameEvent : GameEvent, SystemGameEvent
 
 // events
 
-data class ScoreEvent(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>) : GameEvent, MixedGameEvent
+data class ScoreEvent(val playerId: Long, val score: Int, val returnedPieces: Collection<PieceOnBoard>)
+    : GameEvent, MixedGameEvent
 
-data class NoScoreEvent(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>) : GameEvent, MixedGameEvent
+data class NoScoreEvent(val playerId: Long, val returnedPieces: Collection<PieceOnBoard>)
+    : GameEvent, MixedGameEvent
+
+data class PieceRemoved(val playerId: Long, val position: Position, val piece: Piece, val role: Role)
+    : GameEvent, SystemGameEvent
 
 // errors
 

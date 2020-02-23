@@ -1,7 +1,6 @@
 package io.github.hejcz.api
 
 import io.github.hejcz.base.FoundPiece
-import io.github.hejcz.base.PieceOnBoard
 
 interface Castle {
     val completed: Boolean

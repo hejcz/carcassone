@@ -12,5 +12,5 @@ interface CmdHandler {
     /**
      * Modifies game state according to command.
      */
-    fun apply(state: State, command: Command): State
+    fun apply(state: State, command: Command): GameChanges
 }

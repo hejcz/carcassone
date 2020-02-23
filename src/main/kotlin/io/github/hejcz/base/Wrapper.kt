@@ -12,14 +12,8 @@ data class FoundPiece(
     override fun playerId(): Long = playerId
 }
 
-data class GameChanges(val state: State, val events: Collection<GameEvent>)
-
 interface PieceOnObject {
     val piece: Piece
     fun power() = piece.power()
     fun playerId(): Long
 }
-
-data class PieceOnBoard(val position: Position, val piece: Piece, val role: Role)
-
-data class OwnedPiece(val playerId: Long, val pieceOnBoard: PieceOnBoard)

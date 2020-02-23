@@ -1,6 +1,7 @@
 package io.github.hejcz.setup
 
 import io.github.hejcz.api.CastleScoring
+import io.github.hejcz.api.GreenFieldScoring
 import io.github.hejcz.api.RoadScoring
 import io.github.hejcz.api.StateExtension
 
@@ -11,11 +12,11 @@ open class GameSetup(private vararg val extensions: Extension) {
 
     fun pieces() = PiecesSetup().withExtensions(*extensions).pieces()
 
-    fun rules(roadScoring: RoadScoring, castleScoring: CastleScoring) =
-        ScoringSetup(castleScoring, roadScoring).withExtensions(*extensions).rules()
+    fun rules(roadScoring: RoadScoring, castleScoring: CastleScoring, greenFieldScoring: GreenFieldScoring) =
+        ScoringSetup(castleScoring, roadScoring, greenFieldScoring).withExtensions(*extensions).rules()
 
-    fun endRules(roadScoring: RoadScoring, castleScoring: CastleScoring) =
-        ScoringSetup(castleScoring, roadScoring).withExtensions(*extensions).endRules()
+    fun endRules(roadScoring: RoadScoring, castleScoring: CastleScoring, greenFieldScoring: GreenFieldScoring) =
+        ScoringSetup(castleScoring, roadScoring, greenFieldScoring).withExtensions(*extensions).endRules()
 
     fun handlers() = CommandHandlersSetup().withExtensions(*extensions).handlers()
 

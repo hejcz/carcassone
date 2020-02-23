@@ -8,16 +8,17 @@ inline fun <reified T> commandValidator(crossinline handler: (state: State, comm
             (command as? T)?.let { handler(state, command) } ?: emptySet()
     }
 
-inline fun <reified T : Command> eventsHandler(): CmdHandler {
+inline fun <reified T : Command> cmdHandler(): CmdHandler {
     return object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is T
-        override fun apply(state: State, command: Command): State = state
+        override fun apply(state: State, command: Command): GameChanges = GameChanges.withState(state)
     }
 }
 
-inline fun <reified T : Command> eventsHandler(crossinline body: (state: State, command: T) -> State): CmdHandler {
+inline fun <reified T : Command> cmdHandler(crossinline body: (state: State, command: T) -> State): CmdHandler {
     return object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is T
-        override fun apply(state: State, command: Command): State = body(state, command as T)
+        override fun apply(state: State, command: Command): GameChanges =
+            GameChanges.withState(body(state, command as T))
     }
 }

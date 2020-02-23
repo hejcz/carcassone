@@ -2,6 +2,7 @@ package io.github.hejcz.components.corncircles
 
 import io.github.hejcz.api.*
 import io.github.hejcz.base.*
+import io.github.hejcz.components.magic.PickUpMageOrWitchCmd
 import io.github.hejcz.setup.*
 
 object CornCirclesExtension : Extension {
@@ -50,11 +51,7 @@ object CornCirclesExtension : Extension {
 
     private fun State.cornState() = this.get(StateExt.ID)!! as StateExt
 
-    private val AvoidCornCircleActionHandler = object : CmdHandler {
-        override fun isApplicableTo(command: Command): Boolean = command is AvoidCornCircleActionCmd
-
-        override fun apply(state: State, command: Command): State = state
-    }
+    private val AvoidCornCircleActionHandler = cmdHandler<AvoidCornCircleActionCmd>()
 
     private val AvoidCornCircleActionValidator =
         commandValidator<AvoidCornCircleActionCmd> { state, _ ->
@@ -72,10 +69,12 @@ object CornCirclesExtension : Extension {
     private val AddPieceHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is AddPieceCmd
 
-        override fun apply(state: State, command: Command): State =
-            (command as AddPieceCmd).let {
-                state.addPiece(command.position, command.piece, command.role)
-            }
+        override fun apply(state: State, command: Command): GameChanges =
+            GameChanges.withState(
+                (command as AddPieceCmd).let {
+                    state.addPiece(command.position, command.piece, command.role)
+                }
+            )
     }
 
     private val AddPieceValidator =
@@ -96,8 +95,11 @@ object CornCirclesExtension : Extension {
     private val ChooseCornCircleActionHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is ChooseCornCircleActionCmd
 
-        override fun apply(state: State, command: Command): State = state.cornState()
-            .makeDecision(state, (command as ChooseCornCircleActionCmd).action)
+        override fun apply(state: State, command: Command): GameChanges =
+            GameChanges.withState(
+                state.cornState()
+                    .makeDecision(state, (command as ChooseCornCircleActionCmd).action)
+            )
     }
 
     private fun playerDoesNotHaveAnyPieceThere(state: State, command: AddPieceCmd) =
@@ -107,10 +109,13 @@ object CornCirclesExtension : Extension {
     private val RemovePieceHandler = object : CmdHandler {
         override fun isApplicableTo(command: Command): Boolean = command is RemovePieceCmd
 
-        override fun apply(state: State, command: Command): State =
-            (command as RemovePieceCmd).let {
-                state.removePiece(command.position, command.piece, command.role)
-            }
+        override fun apply(state: State, command: Command): GameChanges =
+            GameChanges(
+                (command as RemovePieceCmd).let {
+                    state.removePiece(command.position, command.piece, command.role)
+                },
+                setOf(PieceRemoved(state.currentPlayerId(), command.position, command.piece, command.role))
+            )
     }
 
     private val RemovePieceValidator =

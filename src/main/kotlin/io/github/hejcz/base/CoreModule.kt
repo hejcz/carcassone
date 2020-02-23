@@ -24,7 +24,7 @@ object CoreModule : Extension {
         setup.add(RewardIncompleteRoad(setup.incompleteRoadScoring()))
         setup.add(RewardCompletedCloister)
         setup.add(RewardIncompleteCloister)
-        setup.add(RewardPeasants)
+        setup.add(RewardPeasants(setup.greenFieldScoring()))
     }
 
     override fun modify(setup: CommandHandlersSetup) {
@@ -154,29 +154,27 @@ private object TilePlacementValidator : CmdValidator {
     }
 }
 
-private object BeginGameHandler : CmdHandler {
-    override fun isApplicableTo(command: Command): Boolean = command is BeginCmd
-    override fun apply(state: State, command: Command): State = state
-}
+private val BeginGameHandler = cmdHandler<BeginCmd>()
 
 private object PutPieceHandler : CmdHandler {
     override fun isApplicableTo(command: Command): Boolean = command is PieceCmd
 
-    override fun apply(state: State, command: Command): State =
-        (command as PieceCmd).let { state.addPiece(command.piece, command.role) }
+    override fun apply(state: State, command: Command): GameChanges =
+        GameChanges.withState(
+            (command as PieceCmd).let { state.addPiece(state.recentPosition(), command.piece, command.role) }
+        )
 }
 
 private object PutTileHandler : CmdHandler {
     override fun isApplicableTo(command: Command): Boolean = command is TileCmd
 
-    override fun apply(state: State, command: Command): State =
-        (command as TileCmd).let { state.addTile(command.position, command.rotation) }
+    override fun apply(state: State, command: Command): GameChanges =
+        GameChanges.withState(
+            (command as TileCmd).let { state.addTile(command.position, command.rotation) }
+        )
 }
 
-private object SkipPieceHandler : CmdHandler {
-    override fun isApplicableTo(command: Command): Boolean = command is SkipPieceCmd
-    override fun apply(state: State, command: Command): State = state
-}
+private val SkipPieceHandler = cmdHandler<SkipPieceCmd>()
 
 private class RewardCompletedCastle(private val castleScoring: CastleScoring) : Scoring {
 
@@ -350,21 +348,26 @@ private object RewardIncompleteCloister : EndGameScoring {
         1 + cloisterPosition.surrounding().count { state.tileAt(it) !is NoTile }
 }
 
-private object RewardPeasants : EndGameScoring {
+private class RewardPeasants(private val greenFieldScoring: GreenFieldScoring) : EndGameScoring {
+
+    private data class PeasantOnField(
+        val id: Long, val parts: Set<PositionedLocation>, val piece: PieceOnBoard
+    )
 
     override fun apply(state: State): Collection<GameEvent> {
         return state.all(Peasant::class)
             .map { (playerId, piece) ->
-                playerId to GreenFieldsExplorer.explore(
-                    state, piece.position, (piece.role as Peasant).location
-                )
+                PeasantOnField(
+                    playerId, GreenFieldsExplorer.explore(state, piece.position, (piece.role as Peasant).location)
+                    .map { PositionedLocation(it.first, it.second) }.toSet(),
+                    piece)
             }
-            .groupBy { (_, fieldParts) -> fieldParts }
+            .groupBy { it.parts }
             .values
-            .flatMap { fieldParts ->
+            .flatMap { peasantsOnSameGreenField ->
                 val completedCastles =
-                    fieldParts.first()
-                        .second
+                    peasantsOnSameGreenField.first()
+                        .parts
                         .flatMap { (position, direction) -> reachableCastles(position, direction) }
                         .mapNotNull { state.completedCastle(it) }
                         .distinct()
@@ -372,11 +375,35 @@ private object RewardPeasants : EndGameScoring {
                 if (completedCastles == 0) {
                     return emptySet()
                 }
-                val countedPieces = fieldParts.groupingBy { (playerId, _) -> playerId }.eachCount()
-                val maxElement = countedPieces.maxBy { it.value }!!.value
-                countedPieces.filter { it.value == maxElement }
-                    .map { ScoreEvent(it.key, 3 * completedCastles, emptySet()) }
+
+                val (winners, losers) = WinnerSelector.find(
+                    peasantsOnSameGreenField.map { peasant: PeasantOnField ->
+                        object : PieceOnObject {
+                            override val piece: Piece = peasant.piece.piece
+                            override fun playerId(): Long = peasant.id
+                        }
+                    }
+                )
+
+                val winnersEvents: Collection<GameEvent> = winners.ids.map {
+                    ScoreEvent(
+                        it,
+                        greenFieldScoring(
+                            state,
+                            SimpleGreenField(peasantsOnSameGreenField.first().parts, completedCastles), it
+                        ),
+                        emptySet()
+                    )
+                }
+
+                val losersEvents: Collection<GameEvent> = losers.ids.map { NoScoreEvent(it, emptySet()) }
+
+                winnersEvents + losersEvents
             }
+    }
+
+    private data class SimpleGreenField(override val parts: Set<PositionedLocation>, private val castles: Int)  : GreenField {
+        override fun completedCastles(): Int = castles
     }
 
     private fun reachableCastles(position: Position, location: Location) =

@@ -163,9 +163,12 @@ object AbbotExtensionSpec : Spek({
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(1, -2), NoRotation))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Monk))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Monk
+                    )
+                )))
         }
 
         it("should score for Abbot after finished garden") {
@@ -212,9 +215,12 @@ object AbbotExtensionSpec : Spek({
                 .thenReceivedEventShouldBeOnlyPlaceTile()
                 .then(TileCmd(Position(1, -2), NoRotation))
                 .then(SkipPieceCmd)
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Abbot))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Abbot
+                    )
+                )))
         }
 
         it("should score for Abbot added as the last tile before garden completion") {
@@ -262,9 +268,12 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(0, -1), Rotation180))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PieceCmd(AbbotPiece, Abbot))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Abbot))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 9, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Abbot
+                    )
+                )))
         }
 
         it("should score for incomplete garden at the game end") {
@@ -318,9 +327,12 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(0, -2), Rotation180))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PickUpAbbotCmd(Position(0, -1)))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 3, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Abbot))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Abbot
+                    )
+                )))
         }
 
         it("should be able to pick Abbot instead of placing piece") {
@@ -332,9 +344,12 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(0, 1), Rotation180))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PickUpAbbotCmd(Position(0, -1)))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 2, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Abbot))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 2, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Abbot
+                    )
+                )))
         }
 
         it("should be able to pick Abbot instead of placing piece") {
@@ -378,9 +393,12 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(0, -2), NoRotation))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PickUpAbbotCmd(Position(0, -1)))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 8, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Abbot))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 8, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Abbot
+                    )
+                )))
         }
 
         it("should not be able to pick abbot from tile ha didn't put abbot on") {
@@ -404,9 +422,12 @@ object AbbotExtensionSpec : Spek({
                 .then(TileCmd(Position(1, -1), Rotation90))
                 .thenReceivedEventShouldBe(PieceEvent)
                 .then(PickUpAbbotCmd(Position(0, -1)))
-                .thenReceivedEventShouldBe(ScoreEvent(1, 3, setOf(PieceOnBoard(
-                    Position(0, -1),
-                    AbbotPiece, Abbot))))
+                .thenReceivedEventShouldBe(ScoreEvent(1, 3, setOf(
+                    PieceOnBoard(
+                        Position(0, -1),
+                        AbbotPiece, Abbot
+                    )
+                )))
         }
     }
 })

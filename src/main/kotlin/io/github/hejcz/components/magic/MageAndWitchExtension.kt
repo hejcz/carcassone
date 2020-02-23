@@ -4,7 +4,7 @@ import io.github.hejcz.api.*
 import io.github.hejcz.base.*
 import io.github.hejcz.setup.*
 import io.github.hejcz.base.commandValidator
-import io.github.hejcz.base.eventsHandler
+import io.github.hejcz.base.cmdHandler
 
 object MageAndWitchExtension : Extension {
 
@@ -27,7 +27,7 @@ object MageAndWitchExtension : Extension {
     }
 
     private val MoveMageOrWitchCommandHandler =
-        eventsHandler<MoveMageOrWitchCmd> { state, command ->
+        cmdHandler<MoveMageOrWitchCmd> { state, command ->
             state.update(
                 extractWitchState(state)
                     .addNpcPiece(command.magicTarget, command.position, command.direction)
@@ -48,8 +48,7 @@ object MageAndWitchExtension : Extension {
             }
         }
 
-    private val PickUpMageOrWitchHandler =
-        eventsHandler<PickUpMageOrWitchCmd>()
+    private val PickUpMageOrWitchHandler = cmdHandler<PickUpMageOrWitchCmd>()
 
     private val PickUpMageOrWitchValidator =
         commandValidator<PickUpMageOrWitchCmd> { state, command ->

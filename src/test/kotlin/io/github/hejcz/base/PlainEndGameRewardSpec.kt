@@ -16,12 +16,12 @@ object PlainEndGameRewardSpec : Spek({
 
         fun singlePlayer(vararg tiles: BasicTile) =
             Game(
-                Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true
+                Players.singlePlayer(), TestGameSetup(TestBasicRemainingTiles(*tiles))
             ).dispatch(BeginCmd)
 
         fun multiPlayer(vararg tiles: BasicTile) =
             Game(
-                Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles)), true
+                Players.twoPlayers(), TestGameSetup(TestBasicRemainingTiles(*tiles))
             ).dispatch(BeginCmd)
 
         it("should be scored") {
@@ -107,7 +107,7 @@ object PlainEndGameRewardSpec : Spek({
                 .then(SkipPieceCmd)
                 .then(TileCmd(Position(1, 3), Rotation270))
                 .then(SkipPieceCmd)
-                .thenShouldNotReceiveEvent(ScoreEvent(2, 3, emptySet()))
+                .thenReceivedEventShouldBe(NoScoreEvent(2, emptySet()))
                 .thenReceivedEventShouldBe(ScoreEvent(1, 3, emptySet()))
         }
     }
